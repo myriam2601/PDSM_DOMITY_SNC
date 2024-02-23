@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primaryDarkBlue: #1b263b;
+    --greySecond: #f0f3fe;
+}
