@@ -22,6 +22,11 @@ class ClientController extends Controller
         ]);
     }
 
+    public function getClients(){
+        $clients = Client::all();
+        return response()->json($clients);
+    }
+
     public function create()
     {
         return Inertia::render('Clients/AddClient');

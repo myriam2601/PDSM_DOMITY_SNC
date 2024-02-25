@@ -57,6 +57,8 @@ Route::get('/clients', [ClientController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('clients.index');
 
+Route::get('/AllClients', [ClientController::class, 'getClients']);
+
 
 Route::get('/add-client', [ClientController::class, 'create'])
     ->middleware(['auth', 'verified'])
