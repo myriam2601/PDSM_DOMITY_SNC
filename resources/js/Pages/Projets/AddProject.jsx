@@ -1,20 +1,30 @@
 // Gère un formulaire d'ajout de projet
 
-import React from 'react';
-import { useForm, Head } from '@inertiajs/react';
+import React, {useEffect} from 'react';
+import { useForm, Head, usePage} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
-export default function AddProject({ auth }) {
+export default function AddProject({ auth,clients }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         nom: '',
-        client: '', // Note: Assurez-vous que cela correspond au nom de l'attribut attendu par votre backend
+        client_id:'', // Note: Assurez-vous que cela correspond au nom de l'attribut attendu par votre backend
         debut: '',
         deadline: '',
         description: '',
     });
+
+    useEffect(() => {
+        // Fetch clients when the component mounts
+        // Use the endpoint you have set up in your Laravel routes
+        fetch('/AllClients')
+            .then(response => response.json())
+            .then(clientsData => setData('clients', clientsData))
+            .catch(error => console.error('Error fetching clients:', error));
+    }, []); // The empty dependency array ensures this runs only once on mount
+
 
     const submit = (e) => {
         e.preventDefault();
@@ -22,7 +32,7 @@ export default function AddProject({ auth }) {
             onSuccess: () => reset(),
         });
     };
-
+console.log()
     return (
         <DefaultDashboardLayout user={auth.user}>
             <Head title="Ajouter un Projet" />
@@ -56,7 +66,7 @@ export default function AddProject({ auth }) {
                                 <InputError message={errors.nom} className="mt-2" />
                             </div>
 
-                            {/* LIE UN PROJET AVEC UN CLIENT
+
                             <div className="sm:col-span-6">
                                 <label htmlFor="client_id" className="block text-sm font-medium leading-6 text-primaryDarkBlue">
                                     Choisir un client
@@ -69,18 +79,22 @@ export default function AddProject({ auth }) {
                                     onChange={(e) => setData('client_id', e.target.value)} // Ajustez pour utiliser client_id
                                 >
                                     <option value="">Sélectionnez un client</option>
-                                    <option value="1">Client 1</option>  Utilisez les ID réels de vos clients ici
-                                    <option value="2">Client 2</option>
-                                    <option value="3">Client 3</option>
+                                    { data.clients && data.clients.map((client) => (
+                                        <option key={client.id} value={client.id}>
+                                            {client.cli_nom} {client.cli_prenom}
+                                        </option>
+                                    ))}
                                 </select>
-                                <InputError message={errors.client_id} className="mt-2" />  Ajustez pour utiliser client_id
-                            </div>*/}
+                                        <InputError message={errors.client_id} className="mt-2"/> Ajustez pour utiliser
+                                client_id
+                            </div>
 
 
                             {/* Project Start Date */}
                             <div className="sm:col-span-3">
-                                <label htmlFor="debut" className="block text-sm font-medium leading-6 text-primaryDarkBlue">
-                                    Début du projet
+                                <label htmlFor="debut"
+                                       className="block text-sm font-medium leading-6 text-primaryDarkBlue">
+                                Début du projet
                                 </label>
                                 <input
                                     type="date"
