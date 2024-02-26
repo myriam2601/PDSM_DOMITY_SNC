@@ -18,4 +18,9 @@ class Client extends Model
         'cli_nom', 'cli_prenom', 'cli_email', 'cli_telephone', 'cli_societe', 'cli_adresse', 'cli_cli_npa',
     ];
 
+    public function projets()
+    {
+        return $this->hasMany(Projet::class, 'client_id');
+    }
+
 }

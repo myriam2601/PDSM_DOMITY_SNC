@@ -20,6 +20,10 @@ class Projet extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
     // Vous pouvez ajouter la relation avec Client plus tard ici
 
 }

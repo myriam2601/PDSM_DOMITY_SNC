@@ -57,11 +57,14 @@ class ClientController extends Controller
         return redirect()->route('clients.index'); // Adjust the route name accordingly
     }
 
-    public function show($id)
+    public function show(Client $client)
     {
-       //
-    }
+        $clientWithProjets = $client->load('projets'); // Cela charge les projets associés au client
 
+        return Inertia::render('Clients/Show', [
+            'client' => $clientWithProjets,
+        ]);
+    }
     public function edit($id)
     {
         try {
