@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('nom');
             //$table->foreignId('client_id')->constrained()->cascadeOnDelete(); // Assurez-vous que cela correspond à votre structure
-            Schema::disableForeignKeyConstraints();
+            //Schema::disableForeignKeyConstraints();
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')
             ->references('id')
