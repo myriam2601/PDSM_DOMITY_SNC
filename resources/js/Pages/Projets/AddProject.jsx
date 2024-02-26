@@ -75,8 +75,8 @@ console.log()
                                     id="client_id"
                                     name="client_id"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primaryDarkBlue focus:border-primaryDarkBlue sm:text-sm"
-                                    value={data.client_id} // Ajustez pour utiliser client_id
-                                    onChange={(e) => setData('client_id', e.target.value)} // Ajustez pour utiliser client_id
+                                    value={data.client_id}
+                                    onChange={(e) => setData('client_id', e.target.value)}
                                 >
                                     <option value="">Sélectionnez un client</option>
                                     { data.clients && data.clients.map((client) => (
@@ -85,8 +85,7 @@ console.log()
                                         </option>
                                     ))}
                                 </select>
-                                        <InputError message={errors.client_id} className="mt-2"/> Ajustez pour utiliser
-                                client_id
+                                        <InputError message={errors.client_id} className="mt-2"/>
                             </div>
 
 
