@@ -17,12 +17,19 @@ En cours de développement avec une sortie prévue prochainement.
 
 ## Comment Démarrer
 ### Premier Lancement de l'Application
+
 ```bash
-composer install && php artisan migrate
+composer install
+```
+```bash
+php artisan migrate
 ```
 ### Lancement des serveurs
 ```bash
-npm run dev && php artisan serve
+npm run dev
+```
+```bash
+php artisan serve
 ```
 
 ## Outils Utilisés
