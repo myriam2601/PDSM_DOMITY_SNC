@@ -1,80 +1,61 @@
-<<<<<<< HEAD
-# PDSM_DOMITY_SNC
-Ce répertoire permettra de gérer le projet grep DOMITY uniformément entre les membres de l'équipe de développement. Il permettra également aux membres du COPIL d'avoir une vue d'ensemble sur l'avancée du projet. 
-
-Pour RUN le projet 
-D'abord, si vous avez pas npm, installer le -> npm install
-
-Ensuite, dans 2 terminal different :
-
-php artisan serve (dans le root du projet -> Infomity) 
-
-npm run dev (dans le root du projet -> Infomity) 
-=======
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<img src="91889_DOMITY_H_V_09.jpg" alt="Logo Infomity " width="300" height="200">
 </p>
 
-## About Laravel
+# Gestionnaire de Devis - Infomity SNC
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Bienvenue dans notre projet de développement d'une application de gestion des devis pour Infomity SNC (anciennement DomitySNC).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Équipe de Développement
+- **Josh**
+- **Myriam**
+- **David**
+- **Antonio**
 
-## Learning Laravel
+## Objectif
+Notre mission est de créer une application robuste et conviviale pour simplifier la gestion des devis.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Statut du Projet
+En cours de développement avec une sortie prévue prochainement.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Comment Démarrer
+### Premier Lancement de l'Application
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+composer install
+```
+```bash
+php artisan migrate
+```
+### Lancement des serveurs
+```bash
+npm run dev
+```
+```bash
+php artisan serve
+```
 
-## Laravel Sponsors
+## Outils Utilisés
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Langages utilisés
+- **Backend**: [Laravel](https://laravel.com/) - Framework PHP élégant et expressif pour le développement web.
+- **Front-end**: [React.js](https://reactjs.org/) - Bibliothèque JavaScript pour la construction d'interfaces utilisateur interactives et dynamiques.
+- **Librairie**: [Inertia.js](https://inertiajs.com/) - Bibliothèque JavaScript facilitant le développement d'applications web monopages sans nécessiter une API explicite, en utilisant le rendu côté serveur et s'intégrant avec des frameworks backend comme Laravel.
 
-### Premium Partners
+### Base de données
+- [PostgreSQL](https://www.postgresql.org/) - Système de gestion de base de données relationnelle open-source et puissant.
+  
+### Environnement de Développement
+[PhpStorm](https://www.jetbrains.com/phpstorm/) - Notre allié pour un développement efficace.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Gestion des versions
+[Github - PDSM_DOMITY_SNC](https://github.com/PDSM_DOMITY_SNC) - Suivez notre progression et contribuez au projet.
 
-## Contributing
+### Restez à l'écoute ! 
+Nous sommes impatients de partager cette application avec vous. Restez à l'écoute pour les mises à jour et la version finale!
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Merci de faire partie de cette aventure avec nous! 🚀
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
->>>>>>> josh

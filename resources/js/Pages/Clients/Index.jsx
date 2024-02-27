@@ -8,6 +8,7 @@ import { InertiaLink } from '@inertiajs/inertia-react';
 import { PlusIcon } from "@heroicons/react/20/solid";
 import ClientsDisplay from "@/Components/ClientsDisplay";
 import {Head, Link, useForm} from "@inertiajs/react";
+
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
 export default function MainClient({ auth, clients, url }) {
@@ -28,6 +29,7 @@ export default function MainClient({ auth, clients, url }) {
                 <div>
                     {/* Lien Inertia pour rediriger vers la page de création d'un nouveau client */}
                     <Link href={route('clients.create')}>
+
                         {/* Bouton pour ajouter un client avec une icône Plus */}
                         <button
                             type="button"

@@ -77,3 +77,5 @@ yarn-error.log
 /.idea
 /.vscode
 >>>>>>> josh
+.env.example
+.env.example
