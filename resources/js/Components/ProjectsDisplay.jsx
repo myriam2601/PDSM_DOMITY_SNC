@@ -1,5 +1,6 @@
 import React from "react";
 import { InertiaLink } from "@inertiajs/inertia-react";
+import {Link} from "@inertiajs/react";
 
 const ArrowIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
@@ -19,10 +20,10 @@ export default function ProjectsDisplay({ projets }) {
                             <p className="mt-1 text-sm text-gray-500">Début: {projet.debut}</p>
                             <p className="mt-1 text-sm text-gray-500">Deadline: {projet.deadline}</p>
                         </div>
-                        <InertiaLink href={`/projets/${projet.id}`} className="ml-auto rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-greySecond hover:ring-primaryDarkBlue flex items-center justify-center">
+                        <Link href={`/projets/${projet.id}`} className="ml-auto rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-greySecond hover:ring-primaryDarkBlue flex items-center justify-center">
                             <span>Détail du Projet</span>
                             <ArrowIcon className="ml-2" />
-                        </InertiaLink>
+                        </Link>
                     </div>
                 </li>
             ))}

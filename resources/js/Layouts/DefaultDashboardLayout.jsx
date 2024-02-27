@@ -1,134 +1,113 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment, useState, useEffect } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
 import {
     Bars3Icon,
     BellIcon,
-    XMarkIcon,
+    Cog6ToothIcon,
+    FolderIcon,
+    HomeIcon,
     UsersIcon,
-} from "@heroicons/react/24/outline";
-import {InertiaLink} from "@inertiajs/inertia-react";
+    XMarkIcon,
+    DocumentPlusIcon,
+    DocumentTextIcon,
+} from '@heroicons/react/24/outline';
+import { InertiaLink } from '@inertiajs/inertia-react';
 import {Link} from "@inertiajs/react";
 
 const navigation = [
-    { name: "Dashboard", href: "dashboard" },
-    { name: "Clients", href: "/clients" },
-    { name: "Projects", href: "/projets" },
-    { name: "Services", href: "/services" },
-    { name: "Devis", href: "#" },
+    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
+    { name: 'Clients', href: '/clients', icon: UsersIcon },
+    { name: 'Projets', href: '/projets', icon: FolderIcon },
+    { name: 'Services', href: '/services', icon: DocumentPlusIcon },
+    { name: 'Devis', href: '#', icon: DocumentTextIcon },
 ];
 
 const administrations = [
-    { id: 1, name: "Administrateurs", href: "/admins", initial: "A" },
-    { id: 2, name: "Paramètrage", href: "/app-param", initial: "P" },
+    {
+        id: 1,
+        name: 'Administrateurs',
+        href: '/admins',
+        icon: Cog6ToothIcon, // Assurez-vous que l'icône est correcte ou ajustez selon vos besoins
+    },
+    {
+        id: 2,
+        name: 'Paramètrage',
+        href: '/app-param',
+        icon: Cog6ToothIcon, // Assurez-vous que l'icône est correcte ou ajustez selon vos besoins
+    },
 ];
 
 const userNavigation = [
-    { name: "Profile", href: "/my-profile" },
-    { name: "Se déconnecter", href: "/" },
+    { name: 'Profile', href: '/my-profile' },
+    { name: 'Se déconnecter', href: '/' },
 ];
 
 export default function DefaultDashboardLayout({ children }) {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-
-
-
+    const [sidebarOpen, setSidebarOpen] = useState(true);
 
     return (
         <>
             <div>
-                <Transition.Root show={sidebarOpen} as={Fragment}>
-                    <Dialog
-                        as="div"
-                        className="fixed inset-0 z-50 overflow-hidden"
-                        onClose={setSidebarOpen}
-                    >
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-in-out duration-300"
-                            enterFrom="opacity-0"
-                            enterTo="opacity-100"
-                            leave="ease-in-out duration-300"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
-                        >
-                            <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
-                        </Transition.Child>
+                {/* Static sidebar for desktop */}
+                <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
+                    {/* Sidebar component, swap this element with another sidebar if you like */}
+                    <div className="flex flex-col flex-grow pt-5 bg-gray-800 overflow-y-auto">
+                        <div className="flex items-center flex-shrink-0 px-4">
+                            <img
+                                className="h-8 w-auto"
+                                src="/logo_white.png"
+                                alt="Your Company"
+                            />
 
-                        <Transition.Child
-                            as={Fragment}
-                            enter="transform transition ease-in-out duration-300"
-                            enterFrom="-translate-x-full"
-                            enterTo="translate-x-0"
-                            leave="transform transition ease-in-out duration-300"
-                            leaveFrom="translate-x-0"
-                            leaveTo="-translate-x-full"
-                        >
-                            <div className="flex flex-col w-64 bg-gray-900 h-screen pt-4">
-                                <div className="flex items-center justify-between px-4">
-                                    <Link href="/dashboard">
-                                        <img
-                                            className="h-8 w-auto cursor-pointer"
-                                            src="/logo_white.png"
-                                            alt="Infomity"
-                                        />
+                        </div>
+
+                        <div className="mt-5 flex-grow flex flex-col">
+                            <nav className="flex-1 px-2 space-y-1 bg-gray-800">
+                                {navigation.map((item) => (
+                                    <Link
+                                        key={item.name}
+                                        href={item.href}
+                                        className="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                                    >
+                                        <item.icon className="mr-3 flex-shrink-0 h-6 w-6 text-gray-400" />
+                                        {item.name}
                                     </Link>
-                                    <div>
-                                        <button
-                                            className="text-gray-400 hover:text-white focus:outline-none focus:text-white"
-                                            onClick={() => setSidebarOpen(false)}
-                                        >
-                                            <XMarkIcon className="h-6 w-6" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <nav className="mt-10">
-                                    <ul>
-                                        {navigation.map((item, index) => (
-                                            <li key={index}>
-                                                <Link
-                                                    href={item.href}
-                                                    className="block py-2 px-4 text-gray-400 hover:text-white"
-                                                >
-                                                    {item.name}
-                                                </Link>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    <div className="mt-6">
-                                        <p className="px-4 text-sm font-semibold text-gray-400 uppercase">
-                                            Administration
-                                        </p>
-                                        <ul className="mt-2">
-                                            {administrations.map((item, index) => (
-                                                <li key={index}>
-                                                    <Link
-                                                        href={item.href}
-                                                        className="py-2 px-4 text-gray-400 hover:text-white flex items-center"
-                                                    >
-                                                        <span className="h-6 w-6 bg-gray-800 text-gray-400 flex items-center justify-center rounded-md mr-2">
-                                                            {item.initial}
-                                                        </span>
-                                                        {item.name}
-                                                    </Link>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </nav>
-                            </div>
-                        </Transition.Child>
-                    </Dialog>
-                </Transition.Root>
 
-                <div className="flex flex-col w-full min-h-screen">
-                    <div className="flex-shrink-0">
-                        <header className="flex items-center justify-between bg-white border-b border-gray-200 px-4 py-3">
-                            <button
-                                className="text-gray-700"
-                                onClick={() => setSidebarOpen(true)}
-                            >
-                                <Bars3Icon className="h-6 w-6" />
-                            </button>
+                                ))}
+                                {/* Add a separator or a header for administration links */}
+                                <div className="px-2">
+                                    <div className="text-xs text-gray-400">
+                                        Administration
+                                    </div>
+                                    {administrations.map((admin) => (
+                                        <Link
+                                            key={admin.name}
+                                            href={admin.href}
+                                            className="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                                        >
+                                            <admin.icon className="mr-3 flex-shrink-0 h-6 w-6 text-gray-400" />
+                                            {admin.name}
+                                        </Link>
+                                    ))}
+                                </div>
+                                {/* Additional sections for the sidebar */}
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div className="md:pl-64 flex flex-col">
+                    {/* Header */}
+                    <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                        <button
+                            type="button"
+                            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+                            onClick={() => setSidebarOpen(true)}
+                        >
+                            <span className="sr-only">Open sidebar</span>
+                            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                        </button>
+
+                        <div className="flex-1 px-4 flex justify-between">
                             <div className="flex items-center">
                                 <form className="relative">
                                     <input
@@ -139,21 +118,22 @@ export default function DefaultDashboardLayout({ children }) {
                                 </form>
                                 <div className="ml-4 flex items-center space-x-4 lg:space-x-6">
                                     <button className="text-gray-400 hover:text-gray-500">
-                                        <BellIcon className="h-6 w-6" />
+                                        <BellIcon className="h-6 w-6"/>
                                     </button>
                                     <button className="text-gray-400 hover:text-gray-500">
-                                        <UsersIcon className="h-6 w-6" />
+                                        <UsersIcon className="h-6 w-6"/>
                                     </button>
                                 </div>
-                            </div>
-                        </header>
-                    </div>
 
-                    <main className="flex-1 overflow-y-auto focus:outline-none">
-                        <div className="py-6">
-                            <div className="px-4 sm:px-6 md:px-8">{children}</div>
+                                {/* Profile dropdown */}
+                                <div className="ml-3 relative">
+                                    {/* Trigger for dropdown or link to profile */}
+                                </div>
+                            </div>
                         </div>
-                    </main>
+                    </div>
+                    {children}
+                    {/* /End replace */}
                 </div>
             </div>
         </>
