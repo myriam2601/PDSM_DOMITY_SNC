@@ -7,6 +7,7 @@ import React from "react";
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { PlusIcon } from "@heroicons/react/20/solid";
 import ProjectsDisplay from "@/Components/ProjectsDisplay";
+import ClientsDisplay from "@/Components/ClientsDisplay"; // Ajout de l'import pour ClientsDisplay
 import { Head, useForm } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 

@@ -1,5 +1,7 @@
 <<<<<<< HEAD
+
 # PDSM_DOMITY_SNC
+
 Ce répertoire permettra de gérer le projet grep DOMITY uniformément entre les membres de l'équipe de développement. Il permettra également aux membres du COPIL d'avoir une vue d'ensemble sur l'avancée du projet. 
 
 Pour RUN le projet 
@@ -9,8 +11,9 @@ Ensuite, dans 2 terminal different :
 
 php artisan serve (dans le root du projet -> Infomity) 
 
-npm run dev (dans le root du projet -> Infomity) 
+npm run dev (dans le root du projet -> Infomity)
 =======
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -77,4 +80,5 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
->>>>>>> josh
+
+> > > > > > > josh

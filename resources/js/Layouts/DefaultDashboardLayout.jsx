@@ -6,7 +6,8 @@ import {
     XMarkIcon,
     UsersIcon,
 } from "@heroicons/react/24/outline";
-import {InertiaLink } from "@inertiajs/inertia-react";
+import {InertiaLink} from "@inertiajs/inertia-react";
+import {Link} from "@inertiajs/react";
 
 const navigation = [
     { name: "Dashboard", href: "dashboard" },
@@ -29,13 +30,7 @@ const userNavigation = [
 export default function DefaultDashboardLayout({ children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    useEffect(() => {
-        setSidebarOpen(false); // Close sidebar on route change
-    }, []);
 
-    const toggleSidebar = () => {
-        setSidebarOpen((prevSidebarOpen) => !prevSidebarOpen);
-    };
 
 
     return (
@@ -70,13 +65,13 @@ export default function DefaultDashboardLayout({ children }) {
                         >
                             <div className="flex flex-col w-64 bg-gray-900 h-screen pt-4">
                                 <div className="flex items-center justify-between px-4">
-                                    <InertiaLink href="/dashboard">
+                                    <Link href="/dashboard">
                                         <img
                                             className="h-8 w-auto cursor-pointer"
                                             src="/logo_white.png"
                                             alt="Infomity"
                                         />
-                                    </InertiaLink>
+                                    </Link>
                                     <div>
                                         <button
                                             className="text-gray-400 hover:text-white focus:outline-none focus:text-white"
@@ -90,12 +85,12 @@ export default function DefaultDashboardLayout({ children }) {
                                     <ul>
                                         {navigation.map((item, index) => (
                                             <li key={index}>
-                                                <InertiaLink
+                                                <Link
                                                     href={item.href}
                                                     className="block py-2 px-4 text-gray-400 hover:text-white"
                                                 >
                                                     {item.name}
-                                                </InertiaLink>
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>
@@ -106,7 +101,7 @@ export default function DefaultDashboardLayout({ children }) {
                                         <ul className="mt-2">
                                             {administrations.map((item, index) => (
                                                 <li key={index}>
-                                                    <InertiaLink
+                                                    <Link
                                                         href={item.href}
                                                         className="py-2 px-4 text-gray-400 hover:text-white flex items-center"
                                                     >
@@ -114,7 +109,7 @@ export default function DefaultDashboardLayout({ children }) {
                                                             {item.initial}
                                                         </span>
                                                         {item.name}
-                                                    </InertiaLink>
+                                                    </Link>
                                                 </li>
                                             ))}
                                         </ul>
