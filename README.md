@@ -2,7 +2,7 @@
 # Gestionnaire de Devis - Infomity SNC
 
 Bienvenue dans notre projet de développement d'une application de gestion des devis pour Infomity SNC (anciennement DomitySNC).
-
+![Logo Infomity ](91889_DOMITY_H_V_09.jpg)
 ## Équipe de Développement
 - **Josh**
 - **Myriam**
