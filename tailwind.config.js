@@ -16,7 +16,7 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primaryDarkBlue: 'var(--primaryDarkBlue)', // Add this line
+                primaryDarkBlue: 'var(--primaryDarkBlue)',
                 greySecond: 'var(--greySecond)', // And this line
             },
         },

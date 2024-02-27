@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -11,12 +12,12 @@ use Inertia\Inertia;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| Les routes web pour votre application. Ces routes sont chargées par le
+| RouteServiceProvider dans un groupe qui contient le groupe de middleware "web".
 |
 */
 
+// Route d'accueil
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -26,26 +27,62 @@ Route::get('/', function () {
     ]);
 });
 
+// Route pour afficher un projet
 Route::get('/projets/{projet}', [ProjetController::class, 'show'])->name('projets.show');
 
-
+// Route du tableau de bord
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Ajoutez cette route dans web.php
+// Route pour afficher le formulaire d'ajout d'un projet
 Route::get('/add-project', [ProjetController::class, 'create'])
     ->middleware(['auth', 'verified'])
     ->name('projets.create');
 
+// Routes pour les opérations CRUD sur les projets
 Route::resource('projets', ProjetController::class)
     ->only(['index', 'store'])
     ->middleware(['auth', 'verified']);
 
+// Routes pour les opérations sur le profil de l'utilisateur
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Routes pour le contrôleur ClientController
+Route::get('/clients', [ClientController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('clients.index');
+
+Route::get('/AllClients', [ClientController::class, 'getClients']);
+
+
+Route::get('/add-client', [ClientController::class, 'create'])
+    ->middleware(['auth', 'verified'])
+    ->name('clients.create');
+
+Route::post('/add-client', [ClientController::class, 'store'])
+   ->middleware(['auth', 'verified'])
+  ->name('clients.store');
+
+// Routes pour les opérations CRUD sur les clients
+Route::resource('client', ProjetController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
+
+Route::get('/clients/{client}', [ClientController::class, 'show'])
+    ->name('clients.show');
+
+Route::put('/clients/{client}', [ClientController::class, 'update'])
+    ->middleware(['auth', 'verified'])
+    ->name('clients.update');
+
+Route::delete('/clients/{client}', [ClientController::class, 'destroy'])
+    ->middleware(['auth', 'verified'])
+    ->name('clients.destroy');
+
+// Importation des routes d'authentification générées automatiquement
 require __DIR__.'/auth.php';

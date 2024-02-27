@@ -19,12 +19,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('nom');
-            //$table->foreignId('client_id')->constrained()->cascadeOnDelete(); // Assurez-vous que cela correspond à votre structure
+            $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete(); // Assurez-vous que cela correspond à votre structure de base de données
             $table->date('debut');
             $table->date('deadline');
             $table->text('description');
             $table->timestamps();
         });
+
 
     }
 
