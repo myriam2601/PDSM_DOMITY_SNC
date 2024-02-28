@@ -43,7 +43,7 @@ const userNavigation = [
 ];
 
 export default function DefaultDashboardLayout({ children }) {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false); // Commencez avec le sidebar fermé
 
     return (
         <>

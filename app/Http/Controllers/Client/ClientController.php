@@ -37,7 +37,7 @@ class ClientController extends Controller
         $validated = $request->validate([
             'cli_nom' => 'required|string|max:255',
             'cli_prenom' => 'required|string|max:255',
-            'cli_email' => 'required|email|unique:clients,cli_email', // Adjust to your client table name and email field
+            'cli_email' => 'required|email|unique:client,cli_email', // Adjust to your client table name and email field
             'cli_telephone' => 'required|integer',
             'cli_societe' => 'required|string',
             'cli_adresse' => 'required|string',
