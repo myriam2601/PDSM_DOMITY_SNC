@@ -43,8 +43,7 @@ const userNavigation = [
 ];
 
 export default function DefaultDashboardLayout({ children }) {
-    const [sidebarOpen, setSidebarOpen] = useState(false); // Commencez avec le sidebar fermé
-
+    // TODO : Ouvrir sidemenu avec bars3icon et fermer avec xmarkicon
     return (
         <>
             <div>
@@ -101,7 +100,7 @@ export default function DefaultDashboardLayout({ children }) {
                         <button
                             type="button"
                             className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
-                            onClick={() => setSidebarOpen(true)}
+                            onClick={null}
                         >
                             <span className="sr-only">Open sidebar</span>
                             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
