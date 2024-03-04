@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
 {
@@ -67,8 +68,7 @@ class ClientController extends Controller
     }
     public function edit($id)
     {
-        try {
-            $client = (new Client)->getClientById($id);
+            $client = Client::find($id);
             if ($client) {
                 return Inertia::render('Clients/Edit', [
                     'client' => $client,
@@ -76,15 +76,40 @@ class ClientController extends Controller
             } else {
                 return Redirect::route('clients.index')->with('error', 'Client non trouvé');
             }
-        } catch (\Exception $e) {
-            return Redirect::back()->with('error', $e->getMessage());
-        }
+
     }
 
     public function update(Request $request, $id)
     {
-       //
+            // Validez les données du formulaire
+            $validatedData = $request->validate([
+                'cli_nom' => 'required|string|max:255',
+                'cli_prenom' => 'required|string|max:255',
+                'cli_email' => [
+                    'required',
+                    'email',
+                    Rule::unique('client', 'cli_email')->ignore($id),
+                ],
+                'cli_telephone' => 'required|integer',
+                'cli_societe' => 'required|string',
+                'cli_adresse' => 'required|string',
+                'cli_cli_npa' => 'required|integer',
+                // Ajoutez d'autres champs et règles de validation au besoin
+            ]);
+
+            try {
+                // Récupérez le client
+                $client = Client::findOrFail($id);
+
+                // Mettez à jour les données du client
+                $client->update($validatedData);
+
+                return redirect()->route('clients.edit', ['id' => $id])->with('success', 'Client mis à jour avec succès');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage());
+            }
     }
+
 
     public function destroy($id)
     {
