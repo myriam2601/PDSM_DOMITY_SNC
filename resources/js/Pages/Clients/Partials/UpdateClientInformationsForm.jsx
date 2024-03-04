@@ -147,7 +147,7 @@ export default function UpdateClientInformationForm({ client, className = '' }) 
                             leave="transition ease-in-out"
                             leaveTo="opacity-0"
                         >
-                            <p className="text-sm text-gray-600">Enregistrer.</p>
+                            <p className="text-sm text-gray-600">Modifications enregistrées !</p>
                         </Transition>
                     </div>
                 </form>

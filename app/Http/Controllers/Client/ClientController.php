@@ -99,8 +99,7 @@ class ClientController extends Controller
 
             try {
                 // Récupérez le client
-                $client = Client::findOrFail($id);
-
+                $client = Client::find($id);
                 // Mettez à jour les données du client
                 $client->update($validatedData);
 
@@ -113,6 +112,6 @@ class ClientController extends Controller
 
     public function destroy($id)
     {
-        //
+        $client = Client::find($id);
     }
 }
