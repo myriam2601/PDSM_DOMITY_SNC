@@ -3,7 +3,7 @@ Ce composant React affiche les détails d'un client spécifique. Il utilise Defa
 */
 
 import React from "react";
-import {Head, Link} from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import { PlusIcon, PencilIcon } from "@heroicons/react/20/solid/index.js";
 
@@ -12,7 +12,9 @@ export default function ShowClient({ auth, client }) {
         // Utilisation du layout par défaut pour la disposition et le style de la page
         <DefaultDashboardLayout user={auth.user} title={`Détails du Client - ${client.cli_nom} ${client.cli_prenom}`}>
             {/* Configuration du titre de la page dans l'en-tête du navigateur */}
-            <Head title={`Détails du Client - ${client.cli_nom} ${client.cli_prenom}`}/>
+            <Head title={`Détails du Client - ${client.cli_nom} ${client.cli_prenom}`} />
+
+            {/* Bouton de modification du client */}
             <div className="flex justify-end">
                 <Link href={route('clients.edit', {client: client.id})}>
                     <button
@@ -51,7 +53,6 @@ export default function ShowClient({ auth, client }) {
                         </thead>
                         <tbody>
                         {client.projets.map(projet => (
-
                             <tr key={projet.id} className="border-b">
                                 <td className="px-4 py-2">{projet.nom}</td>
                                 <td className="px-4 py-2">{projet.debut}</td>
