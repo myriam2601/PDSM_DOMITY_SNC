@@ -33,7 +33,20 @@ export default function ShowClient({ auth, client }) {
                 <h2 className="text-2xl font-semibold leading-7 text-primaryDarkBlue">
                     {client.cli_nom} {client.cli_prenom}
                 </h2>
-
+                <p className="text-sm font-semibold leading-5 text-primaryDarkBlue">
+                     {client.cli_societe}
+                </p>
+                <br/>
+                <p className="text-sm font-semibold leading-5 text-primaryDarkBlue">
+                    Email: {client.cli_email}
+                </p>
+                <p className="text-sm font-semibold leading-5 text-primaryDarkBlue">
+                    Téléphone:+41 {client.cli_telephone}
+                </p>
+                <p className="text-sm font-semibold leading-5 text-primaryDarkBlue">
+                    Adresse: {client.cli_adresse}, {client.cli_cli_npa}
+                </p>
+            <br/>
                 {/* Informations spécifiques du client, par exemple: email, téléphone, etc. */}
                 <h2 className="text-lg font-semibold leading-6 text-primaryDarkBlue">
                     Projets Associés
