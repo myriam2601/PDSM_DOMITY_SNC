@@ -3,6 +3,7 @@
 import React from "react";
 import { InertiaLink } from "@inertiajs/inertia-react";
 import {Link} from "@inertiajs/react";
+import {EnvelopeIcon, PhoneIcon} from "@heroicons/react/16/solid/index.js";
 
 export default function ClientCard({ client, auth }) {
     const ArrowIcon = () => (
@@ -28,16 +29,50 @@ export default function ClientCard({ client, auth }) {
                 </div>
                 <div className="flex flex-col">
                     <Link
-                        href={route('clients.show', { client: client.id })}
+                        href={route("clients.show", { client: client.id })}
                         className="ml-auto rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-greySecond hover:ring-primaryDarkBlue flex items-center justify-center"
                     >
                         <span>Détail du client</span>
                         <ArrowIcon className="ml-2" />
                     </Link>
-                    {/* Add more buttons or links for other client-related actions */}
+                    <Link href={route('projets.create')}>
+                        <button
+                            type="button"
+                            className="ml-auto w-full rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-greySecond hover:ring-primaryDarkBlue mt-2 flex items-center justify-center"
+                        >
+                            <span>Ajouter un projet</span>
+                            <ArrowIcon className="ml-2" />
+                        </button>
+                    </Link>
                 </div>
             </div>
-            {/* Add any additional information you want to display for each client */}
+            <div className="-mt-px flex divide-x divide-gray-200">
+                <div className="flex w-0 flex-1">
+                    <a
+                        href={`mailto:${client.cli_email}`}
+                        className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                    >
+                        <EnvelopeIcon
+                            className="h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                        />
+                        Email
+                    </a>
+                </div>
+                <div className="-ml-px flex w-0 flex-1">
+                    <a
+                        href={`tel:${client.cli_telephone}`}
+                        className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                    >
+                        <PhoneIcon
+                            className="h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                        />
+                        Call
+                    </a>
+                </div>
+
+            </div>
         </div>
     );
 }
