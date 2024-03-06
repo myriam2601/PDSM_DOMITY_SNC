@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\Service\ServiceController;
 use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -87,6 +88,46 @@ Route::patch('/clients/{client}', [ClientController::class, 'update'])
 Route::delete('/clients/{client}', [ClientController::class, 'destroy'])
     ->middleware(['auth', 'verified'])
     ->name('clients.destroy');
+
+
+
+
+//Antonio
+// Routes pour le contrôleur ServiceController
+Route::get('/services', [ServiceController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('services.index');
+
+Route::get('/AllServices', [ServiceController::class, 'getServices']);
+
+
+Route::get('/add-service', [ServiceController::class, 'create'])
+    ->middleware(['auth', 'verified'])
+    ->name('services.create');
+
+
+
+Route::post('/add-service', [ServiceController::class, 'store'])
+    ->middleware(['auth', 'verified'])
+    ->name('services.store');
+
+// Routes pour les opérations CRUD sur les services
+//Route::resource('service', ServiceController::class)
+//    ->only(['index', 'store'])
+//    ->middleware(['auth', 'verified']);
+
+Route::get('/services/{service}', [ServiceController::class, 'edit'])
+    ->name('services.edit');
+
+Route::put('/services/{service}', [ServiceController::class, 'update'])
+    ->middleware(['auth', 'verified'])
+    ->name('services.update');
+
+Route::delete('/services/{service}', [ServiceController::class, 'destroy'])
+    ->middleware(['auth', 'verified'])
+    ->name('services.destroy');
+
+
 
 // Importation des routes d'authentification générées automatiquement
 require __DIR__.'/auth.php';
