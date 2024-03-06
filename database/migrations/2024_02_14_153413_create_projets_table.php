@@ -15,24 +15,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projets', function (Blueprint $table) {
+        Schema::create('projet', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('nom');
-            //$table->foreignId('client_id')->constrained()->cascadeOnDelete(); // Assurez-vous que cela correspond à votre structure
-            //Schema::disableForeignKeyConstraints();
-            $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')
-            ->references('id')
-                ->on('client')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
-
+            $table->foreignId('client_id')->constrained('client')->cascadeOnDelete(); // Assurez-vous que cela correspond à votre structure de base de données
             $table->date('debut');
             $table->date('deadline');
             $table->text('description');
             $table->timestamps();
         });
+
 
     }
 
@@ -41,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projets');
+        Schema::dropIfExists('projet');
     }
 };

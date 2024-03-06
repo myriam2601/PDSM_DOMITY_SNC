@@ -10,6 +10,8 @@ class Projet extends Model
 {
     use HasFactory;
 
+    protected $table = 'projet';
+
     protected $fillable = [
         'user_id', 'client_id','nom', 'debut', 'deadline', 'description',
         // Assurez-vous que 'client_id' n'est pas inclus ici tant que la table clients n'est pas en place

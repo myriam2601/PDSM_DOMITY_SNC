@@ -8,7 +8,7 @@ import { InertiaLink } from '@inertiajs/inertia-react';
 import { PlusIcon } from "@heroicons/react/20/solid";
 import ProjectsDisplay from "@/Components/ProjectsDisplay";
 import ClientsDisplay from "@/Components/ClientsDisplay"; // Ajout de l'import pour ClientsDisplay
-import { Head, useForm } from "@inertiajs/react";
+import {Head, Link, useForm} from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
 export default function MainProject({ auth, projets, url }) {
@@ -23,7 +23,7 @@ export default function MainProject({ auth, projets, url }) {
                     </h2>
                 </div>
                 <div>
-                    <InertiaLink href={route('projets.create')}>
+                    <Link href={route('projets.create')}>
                         <button
                             type="button"
                             className="my-3 flex items-center rounded-full bg-primaryDarkBlue px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-greySecond hover:text-primaryDarkBlue"
@@ -31,7 +31,7 @@ export default function MainProject({ auth, projets, url }) {
                             <span>Ajouter un Projet</span>
                             <PlusIcon className="h-5 w-5 ml-2" aria-hidden="true" />
                         </button>
-                    </InertiaLink>
+                    </Link>
                 </div>
             </div>
             <ProjectsDisplay projets={projets} auth={auth} />

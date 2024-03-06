@@ -47,7 +47,7 @@ class ProjetController extends Controller
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
-            'client_id' => 'required|integer|exists:client,id', // Assurez-vous que vous avez une table `clients` avec des ID correspondants
+            'client_id' => 'required|integer|exists:client,id',
             'debut' => 'required|date',
             'deadline' => 'required|date|after:debut',
             'description' => 'required|string',

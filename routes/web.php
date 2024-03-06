@@ -77,7 +77,11 @@ Route::resource('client', ProjetController::class)
 Route::get('/clients/{client}', [ClientController::class, 'show'])
     ->name('clients.show');
 
-Route::put('/clients/{client}', [ClientController::class, 'update'])
+Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])
+    ->middleware(['auth', 'verified'])
+    ->name('clients.edit');
+
+Route::patch('/clients/{client}', [ClientController::class, 'update'])
     ->middleware(['auth', 'verified'])
     ->name('clients.update');
 
