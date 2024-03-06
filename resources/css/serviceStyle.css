@@ -1,0 +1,16 @@
+.services-table{
+    width: 100%;
+}
+.bouton-detail{
+    padding: 0 40px;
+    color: white;
+    background: #0B2559;
+    font-size: 18px;
+}
+.services-table-head{
+    text-align: left;
+}
+.service-search{
+    text-align: right;
+}
+
