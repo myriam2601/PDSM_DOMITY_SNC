@@ -48,6 +48,7 @@ class ProjetController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'client_id' => 'required|integer|exists:client,id',
+            'service_id' => 'required|integer|exists:service,id',
             'debut' => 'required|date',
             'deadline' => 'required|date|after:debut',
             'description' => 'required|string',
@@ -57,6 +58,7 @@ class ProjetController extends Controller
             'user_id' => $request->user()->id, // Assurez-vous que votre table projets a une colonne `user_id` pour stocker l'utilisateur qui crée le projet
             'nom' => $validated['nom'],
             'client_id' => $validated['client_id'], // Utilisez `client_id` ici
+            'service_id' => $validated['service_id'],
             'debut' => $validated['debut'],
             'deadline' => $validated['deadline'],
             'description' => $validated['description'],
