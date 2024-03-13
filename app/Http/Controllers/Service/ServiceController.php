@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
 
 class ServiceController extends Controller
 {
@@ -38,7 +39,12 @@ class ServiceController extends Controller
     {
         $validated = $request->validate([
             'ser_categorie' => 'required|string|max:255',
-            'ser_nom' => 'required|string|max:255',
+            'ser_nom' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('service', 'ser_nom') // Assure que le ser_nom est unique dans la table services
+            ],
             'ser_modalite' => 'required|string',
             'ser_conditions_reglements' => 'required|string',
         ]);
@@ -93,7 +99,12 @@ class ServiceController extends Controller
         //pour valider les champs avec les criteres
         $validated = $request->validate([
             'ser_categorie' => 'required|string|max:255',
-            'ser_nom' => 'required|string|max:255',
+            'ser_nom' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('service', 'ser_nom')->ignore($id), // Ignorer cet ID lors de la vérification d'unicité
+            ],
             'ser_modalite' => 'required|string',
             'ser_conditions_reglements' => 'required|string',
         ]);
