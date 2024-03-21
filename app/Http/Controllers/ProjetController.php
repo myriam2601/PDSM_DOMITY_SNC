@@ -54,7 +54,7 @@ class ProjetController extends Controller
             'description' => 'required|string',
         ]);
 
-        Projet::create([
+        $projet = new Projet([
             'user_id' => $request->user()->id, // Assurez-vous que votre table projets a une colonne `user_id` pour stocker l'utilisateur qui crée le projet
             'nom' => $validated['nom'],
             'client_id' => $validated['client_id'], // Utilisez `client_id` ici
@@ -63,8 +63,13 @@ class ProjetController extends Controller
             'deadline' => $validated['deadline'],
             'description' => $validated['description'],
         ]);
-
-        return redirect()->route('projets.index');
+        
+        $projet->save();
+        
+        return redirect()->route('devis.form')->with([
+            'success'=>'Projet créé avec succès',
+            'projectId' => $projet->id,
+        ]);
     }
 
 

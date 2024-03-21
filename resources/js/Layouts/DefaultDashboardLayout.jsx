@@ -19,7 +19,7 @@ const navigation = [
     { name: 'Clients', href: '/clients', icon: UsersIcon },
     { name: 'Projets', href: '/projets', icon: FolderIcon },
     { name: 'Services', href: '/services', icon: DocumentPlusIcon },
-    { name: 'Devis', href: '#', icon: DocumentTextIcon },
+    { name: 'Devis', href: '/devis', icon: DocumentTextIcon },
 ];
 
 const administrations = [

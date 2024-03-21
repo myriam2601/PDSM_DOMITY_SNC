@@ -1,11 +1,12 @@
 // Gère un formulaire d'ajout de projet
 
 import React, {useEffect} from 'react';
-import { useForm, Head, usePage} from '@inertiajs/react';
+import { useForm, Head, usePage, Link} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
+
 
 export default function AddProject({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -31,15 +32,13 @@ export default function AddProject({ auth }) {
             .catch(error => console.error('Error fetching clients and services:', error));
     }, []);
 
-
-
     const submit = (e) => {
         e.preventDefault();
         post(route('projets.store'), {
             onSuccess: () => reset(),
         });
     };
-console.log()
+
     return (
         <DefaultDashboardLayout user={auth.user}>
             <Head title="Ajouter un Projet" />
@@ -73,7 +72,6 @@ console.log()
                                 />
                                 <InputError message={errors.nom} className="mt-2"/>
                             </div>
-
 
                             <div className="sm:col-span-6">
                                 <label htmlFor="client_id"
@@ -176,6 +174,18 @@ console.log()
                         <div className="flex justify-end">
                             <PrimaryButton disabled={processing}>Ajouter</PrimaryButton>
                         </div>
+                        
+                        <Link href={route('devis.form')}>
+                       
+                        {/* Bouton pour ajouter un client avec une icône Plus */}
+                        <button
+                            type="button"
+                            className="my-3 flex items-center rounded-full bg-primaryDarkBlue px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-greySecond hover:text-primaryDarkBlue"
+                        >
+                            <span>Devis</span>
+                            
+                        </button>
+                    </Link>
                     </form>
                 </div>
             </div>

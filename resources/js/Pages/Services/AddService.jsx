@@ -22,7 +22,7 @@ export default function AddService({ auth }) {
     return (
         <DefaultDashboardLayout user={auth.user}>
             <Head title="Ajouter un Service" />
-
+            
             <div className="divide-y divide-white/5 bg-white">
                 <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                     <div className="md:col-span-1">

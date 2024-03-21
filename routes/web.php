@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\DevisController;
 use App\Http\Controllers\Service\ServiceController;
 use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\ProfileController;
@@ -128,6 +129,22 @@ Route::delete('/services/{service}', [ServiceController::class, 'destroy'])
     ->name('services.destroy');
 
 
+//David
+Route::prefix('/devis')->name('devis.')->group(function(){
+    Route::get('/', [DevisController::class, 'index'])->name('index'); 
+    Route::get('/form', [DevisController::class, 'form'])->name('form'); 
+    Route::post('/store', [DevisController::class, 'store']);
+    //Route::get('/donnees/{id}', [PDFController::class, 'generatePDF']);
+    /* Route::get('/show-all-devis',[DevisController::class, 'showAllDevis']);
+    Route::get('/generer-pdf', function () {
+        return Inertia::render('PDF_Formulaire');
+    }); */
+
+});
+
+
+
+Route::get('/generate-pdf', 'PdfController@generatePDF')->name('generate-pdf');
 
 // Importation des routes d'authentification générées automatiquement
 require __DIR__.'/auth.php';
