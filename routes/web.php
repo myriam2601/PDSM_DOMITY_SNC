@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\DevisController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\Service\ServiceController;
 use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\ProfileController;
@@ -29,23 +30,12 @@ Route::get('/', function () {
     ]);
 });
 
-// Route pour afficher un projet
-Route::get('/projets/{projet}', [ProjetController::class, 'show'])->name('projets.show');
+
 
 // Route du tableau de bord
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route pour afficher le formulaire d'ajout d'un projet
-Route::get('/add-project', [ProjetController::class, 'create'])
-    ->middleware(['auth', 'verified'])
-    ->name('projets.create');
-
-// Routes pour les opérations CRUD sur les projets
-Route::resource('projets', ProjetController::class)
-    ->only(['index', 'store'])
-    ->middleware(['auth', 'verified']);
 
 // Routes pour les opérations sur le profil de l'utilisateur
 Route::middleware('auth')->group(function () {
@@ -131,16 +121,30 @@ Route::delete('/services/{service}', [ServiceController::class, 'destroy'])
 
 //David
 Route::prefix('/devis')->name('devis.')->group(function(){
-    Route::get('/', [DevisController::class, 'index'])->name('index'); 
+    Route::get('/', [DevisController::class, 'index'])->name('index');
     Route::get('/form', [DevisController::class, 'form'])->name('form'); 
     Route::post('/store', [DevisController::class, 'store']);
-    //Route::get('/donnees/{id}', [PDFController::class, 'generatePDF']);
-    /* Route::get('/show-all-devis',[DevisController::class, 'showAllDevis']);
-    Route::get('/generer-pdf', function () {
-        return Inertia::render('PDF_Formulaire');
-    }); */
-
+    Route::get('/generer-pdf/{id}', [PDFController::class, 'generatePDF']);
 });
+
+Route::prefix('/projets')->name('projets.')->group(function(){
+    Route::get('/{projet}', [ProjetController::class, 'show'])->name('show');
+    Route::get('/{projet}/edit', [ProjetController::class, 'edit'])->name('edit')->middleware(['auth', 'verified']);
+    Route::patch('/{projet}', [ProjetController::class, 'update'])->name('update');
+    Route::delete('/{projet}', [ProjetController::class, 'destroy'])->name('destroy')->middleware(['auth', 'verified']);
+});
+
+Route::get('/add-project', [ProjetController::class, 'create'])
+    ->middleware(['auth', 'verified'])
+    ->name('projets.create');
+// Route pour afficher un projet
+
+// Route pour afficher le formulaire d'ajout d'un projet
+
+// Routes pour les opérations CRUD sur les projets
+Route::resource('projets', ProjetController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
 
 
 

@@ -31,7 +31,6 @@ export default function MainProject({ auth, projets, url }) {
                             <span>Ajouter un Projet</span>
                             <PlusIcon className="h-5 w-5 ml-2" aria-hidden="true" />
                         </button>
-                        {/* Ajouter un deuxième boutton pour rediriger vers la création d'un devis */}
                     </Link>
                 </div>
             </div>

@@ -59,7 +59,8 @@ class DevisController extends Controller
     public function index()
     {
          // Récupère tous les devis
-        $devis = Devis::all();
+        $devis = Devis::with('projet.client')->get();
+              
         return Inertia::render('Devis/Index', [
             'auth' => [
                 'user' => auth()->user()

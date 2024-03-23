@@ -5,9 +5,10 @@ import { useForm } from '@inertiajs/react';
 import ModalCalcul from '../../Modal/ModalCalcul.jsx';
 import Conf from '../../Modal/ModalGenerationPDF.jsx';
 import ModalGenerationPDF from '../../Modal/ModalGenerationPDF.jsx';
+import DefaultDashboardLayout from '@/Layouts/DefaultDashboardLayout';
 
 //G:\HEG_IG\projetGREP\PDSM_DOMITY_SNC\resources\js\Modal
-export default function FormulaireInsertion({ success, projectId }) {
+export default function FormulaireInsertion({ success, projectId, auth }) {
     const [ligneDevisTab, setLigneDevisTab] = useState([{ id: 1 }]);
     const [formData, setFormData] = useState({}); // Etat local pour stocker les données du formulaire
     const [localProjectId, setLocalProjectId] = useState(projectId);
@@ -63,12 +64,12 @@ export default function FormulaireInsertion({ success, projectId }) {
     }
 
     return (
-        <>
+        <DefaultDashboardLayout user={auth.user}>
+            
             <Head title="Formulaire Devis" />
             <form onSubmit={handleSubmit}>
                 {ligneDevisTab.map((ligne) => (
                     <div key={ligne.id}>
-                        
                         <LigneDevis 
                             id={ligne.id} 
                             onDelete={handleSupprimerLigne}
@@ -88,6 +89,6 @@ export default function FormulaireInsertion({ success, projectId }) {
                 />
             </form>
             <ModalCalcul tab={formData}/> 
-        </>
+        </DefaultDashboardLayout>
     );
 }

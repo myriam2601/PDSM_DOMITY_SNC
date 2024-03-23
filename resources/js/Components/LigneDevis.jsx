@@ -1,9 +1,3 @@
-/**
- * PROBLEME A REGLER
- * 
- * Le prix TTC n'est pas directement calculé lors de l'insertion d'un ligne de devis
- */
-
 import { useState, useEffect } from 'react';
 import { InputDesignation } from './InputDesignation';
 import { InputFloat } from './InputFloat';
@@ -55,34 +49,33 @@ export function LigneDevis({id, onDelete, onSave}) {
     
     return (
         
-        <div className="flex items-center mb-4" data-id={id}>
-            <div className="flex-1 mr-4">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6" data-id={id}>
+            
+            <div className="sm:col-span-1">
                 <p className="text-sm">Désignation</p>
                 <InputDesignation value={designation} onChange={setDesignation} />
-               
             </div>
-            <div className="flex-1 mr-4">
+            <div className="sm:col-span-1">
                 <p className="text-sm">Quantité</p>
                 <InputFloat value={quantite} onChange={setQuantite} step={1} />
             </div>
-            <div className="flex-1 mr-4">
+            <div className="sm:col-span-1">
                 <p className="text-sm">P.U</p>
                 <InputFloat value={prixUnitaire} onChange={setPrixUnitaire} step={0.5} />
             </div>
-            <div className="flex-1 mr-4">
+            <div className="sm:col-span-1">
                 <p className="text-sm">TVA</p>
                 <InputFloat value={tva} onChange={setTva} step={0.1} />
             </div>
-            <div className="flex-1 mr-4">
+            <div className="sm:col-span-1">
                 <p className="text-sm">Prix HT</p>
                 <p>{formatNumber(prixHT)}</p>
             </div>
-            <div className="flex-1 mr-4">
+            <div className="sm:col-span-1">
                 <p className="text-sm">Prix TTC</p>
                 <p>{formatNumber(prixTTC)}</p>
             </div>
             <button className="ml-4 py-2 px-4 bg-red-500 text-white rounded" onClick={handleDelete}>Supprimer</button>
-
         </div>
     );
 }

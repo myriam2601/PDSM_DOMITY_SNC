@@ -79,32 +79,37 @@ const styles = StyleSheet.create({
   },
 });
 
-const PDFComponent = ({ data }) => {
+const PDFStructure = ({ dev_liste_prestation, client }) => {
   
-  const tabLignesDevis = JSON.parse(data);
-
+  const tabLignesDevis = JSON.parse(dev_liste_prestation);
+  console.log(client)
+  //console.log(tabLignesDevis)
   return (
+    
     <PDFViewer className="w-full h-screen">
       <Document>
         <Page size="A4" style={styles.page}>
           <Text style={styles.header}>Devis</Text>
           
-          {/* Section Émetteur */}
-          <View style={styles.infoSection}>
-            <Text style={styles.infoTitle}>Émetteur:</Text>
-            <Text style={styles.infoContent}>Nom de l'entreprise</Text>
-            <Text style={styles.infoContent}>Adresse de l'entreprise</Text>
-            <Text style={styles.infoContent}>Autres informations</Text>
+            <View style={{ flexDirection: "row", marginBottom: 20 }}>
+            {/* Section Émetteur */}
+            <View style={{ width: "50%" }}>
+              <Text style={styles.infoTitle}>Émetteur:</Text>
+              <Text style={styles.infoContent}>Nom de l'entreprise</Text>
+              <Text style={styles.infoContent}>Adresse de l'entreprise</Text>
+              <Text style={styles.infoContent}>Autres informations</Text>
+            </View>
+
+            {/* Section Destinataire */}
+            <View style={{ width: "50%" }}>
+              <Text style={styles.infoTitle}>Destinataire:</Text>
+              <Text style={styles.infoContent}>Nom : {client.cli_nom}</Text>
+              <Text style={styles.infoContent}>Prenom : {client.cli_prenom}</Text>
+              <Text style={styles.infoContent}>Société : {client.cli_societe}</Text>
+              <Text style={styles.infoContent}>Adresse : {client.cli_adresse} {client.cli_npa}</Text>
+            </View>
           </View>
 
-          {/* Section Destinataire */}
-          <View style={styles.infoSection}>
-            <Text style={styles.infoTitle}>Destinataire:</Text>
-            <Text style={styles.infoContent}>Nom du client</Text>
-            <Text style={styles.infoContent}>Adresse du client</Text>
-          </View>
-
-          {/* Tableau des lignes de devis */}
           <View style={styles.table}>
             <View style={styles.tableRow} fixed>
               <View style={styles.tableColHeader}><Text style={styles.tableCellHeader}>Désignation</Text></View>
@@ -126,17 +131,23 @@ const PDFComponent = ({ data }) => {
             ))}
           </View>
           
-          {/* Section Signature */}
-          <View style={styles.signatureSection}>
-            <Text style={styles.signatureText}>Signature du client:</Text>
-            <View style={{ borderTop: '2 dashed #d1d5db', marginHorizontal: 100, marginTop: 5 }}></View>
+          <View style={{ flexDirection: "row", justifyContent: "flex-end", marginTop: 20 }}>
+            <View style={{ width: "50%" }}>
+              <Text style={[styles.infoContent, { textAlign: "right" }]}>Total TTC: XXXXX €</Text>
+              <Text style={[styles.infoContent, { textAlign: "right" }]}>Accompte (30%): XXXX €</Text>
+            </View>
           </View>
-
-          <Text style={styles.footer}>Merci de faire affaire avec nous !</Text>
+         
+          <View style={{ flexDirection: "row", justifyContent: "flex-end", marginTop: 20 }}>
+            <View style={{ width: "50%" }}>
+              <Text style={[styles.signatureText, { textAlign: "right" }]}>Date et signature du client :</Text>
+              <View style={{ borderBottomWidth: 1, borderColor: '#d1d5db', marginVertical: 5 }}></View>
+            </View>
+          </View>
         </Page>
       </Document>
-    </PDFViewer>
+    </PDFViewer> 
   );
 };
 
-export default PDFComponent;
+export default PDFStructure;

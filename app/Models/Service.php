@@ -14,5 +14,4 @@ class Service extends Model
     protected $fillable = [
         'ser_categorie', 'ser_nom', 'ser_modalite', 'ser_conditions_reglements'
     ];
-
 }

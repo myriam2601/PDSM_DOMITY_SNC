@@ -7,6 +7,7 @@ export function InputDesignation({value, onChange}){
             value={value}
             placeholder="Nouvelle Désignation"
             onChange={(e)=> onChange(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primaryDarkBlue focus:border-primaryDarkBlue sm:text-sm"
             />
         </div>
 }
