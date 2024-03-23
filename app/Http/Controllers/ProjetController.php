@@ -86,6 +86,8 @@ class ProjetController extends Controller
         ]);
     }
 
+
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -102,6 +104,10 @@ class ProjetController extends Controller
             'services' => $services,
         ]);
     }
+
+
+
+
 
     /**
      * Update the specified resource in storage.
@@ -134,6 +140,7 @@ class ProjetController extends Controller
         return redirect()->route('projets.show', $projet);
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
@@ -145,4 +152,5 @@ class ProjetController extends Controller
         // Redirection ou réponse après la suppression
         return redirect()->route('projets.index')->with('success', 'Projet supprimé avec succès');
     }
+
 }
