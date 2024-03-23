@@ -30,15 +30,6 @@ Route::get('/', function () {
     ]);
 });
 
-
-
-Route::get('/projets/{projet}/edit', [ProjetController::class, 'edit'])->name('projets.edit')->middleware(['auth', 'verified']);
-
-Route::patch('/projets/{projet}', [ProjetController::class, 'update'])->name('projets.update');
-
-Route::delete('/projets/{projet}', [ProjetController::class, 'destroy'])->name('projets.destroy')->middleware(['auth', 'verified']);
-
-
 // Route du tableau de bord
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
