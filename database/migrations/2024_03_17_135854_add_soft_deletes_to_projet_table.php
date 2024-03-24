@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('service', function (Blueprint $table) {
-            $table->id();
-            $table->string('ser_categorie');
-            $table->string('ser_nom');
-            $table->string('ser_modalite');
-            $table->string('ser_conditions_reglements');
-            $table->timestamps();
+        Schema::table('projet', function (Blueprint $table) {
+            $table->softDeletes(); // Ceci ajoute la colonne `deleted_at`
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('service');
+        Schema::table('projet', function (Blueprint $table) {
+            //
+        });
     }
 };

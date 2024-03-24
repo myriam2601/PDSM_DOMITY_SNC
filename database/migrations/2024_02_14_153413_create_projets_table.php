@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('nom');
             $table->foreignId('client_id')->constrained('client')->cascadeOnDelete(); // Assurez-vous que cela correspond à votre structure de base de données
+            $table->foreignId('service_id')->nullable()->constrained('service')->cascadeOnDelete(); // Ajout de la clé étrangère service_id
             $table->date('debut');
             $table->date('deadline');
             $table->text('description');

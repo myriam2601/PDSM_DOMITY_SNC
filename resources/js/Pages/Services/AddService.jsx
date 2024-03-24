@@ -68,6 +68,7 @@ export default function AddService({ auth }) {
 
     return (
         <DefaultDashboardLayout user={auth.user}>
+
             <Head title="Ajouter un Service"/>
 
             <div className="divide-y divide-white/5 bg-white">
