@@ -4,6 +4,7 @@ import { useForm } from '@inertiajs/inertia-react';
 import DefaultDashboardLayout from '@/Layouts/DefaultDashboardLayout';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { LigneDevis } from '@/Components/LigneDevis';
+import { PlusIcon } from '@heroicons/react/solid';
 
 // Le composant de la page
 export default function UpdateDevisForm({ designation }) {
