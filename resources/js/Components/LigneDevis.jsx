@@ -30,7 +30,8 @@ export function LigneDevis({ id, prest_designation = '', prest_quantite = 0, pre
         onSave({ designation, quantite, prixUnitaire, tva, prixHT, prixTTC});
     }, [designation, quantite, prixUnitaire, tva, prixHT, prixTTC]);
 
-    const handleDelete = () => {
+    const handleDelete = (e) => {
+        e.preventDefault();
         onDelete(id);
     }
 

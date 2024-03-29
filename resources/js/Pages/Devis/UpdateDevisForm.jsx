@@ -13,18 +13,18 @@ export default function UpdateDevisForm({ auth, designation }) {
     
     const designationJSON = JSON.parse(designation);
     
-    //console.log(designationJSON)
     const [designations, setDesignations] = useState(() => designationJSON.map(ligne => ligne.designation));
     const [formData, setFormData] = useState({});
-    const [ligneDevisTab, setLigneDevisTab] = useState(
+    /* const [ligneDevisTab, setLigneDevisTab] = useState(
         designationJSON.map((item, index) => ({
             ...item,
             id: index + 1, // Commencez les IDs à 1 pour suivre votre exemple initial
           }))
-    );
-    const { data, setData, post, processing, errors } = useForm({    
-        libelle: designationJSON.designation
+    ); */
+    const { data, setData, patch, processing, errors } = useForm({    
+        LignesDevis: designationJSON
     });
+    
 
     const handleAjouterLigne = () => {
         const newId = ligneDevisTab.length + 1;
@@ -32,7 +32,12 @@ export default function UpdateDevisForm({ auth, designation }) {
     }
 
     const handleSupprimerLigne = (id) => {
-        setLigneDevisTab(ligneDevisTab.filter(ligne => ligne.id !== id));
+        console.log(id)
+        console.log(data.LignesDevis)
+        const lignesMiseAJour = data.LignesDevis.filter((ligne, index) => index !== id);
+        console.log(lignesMiseAJour)
+        //setData({ ...data, LignesDevis: lignesMiseAJour });
+        
     }
     
     const handleSaveData = (id, data) => {
@@ -52,20 +57,34 @@ export default function UpdateDevisForm({ auth, designation }) {
     // Soumettre les modifications
     const handleSubmit = (e) => {
         e.preventDefault();
-        patch(route('devis.update', { id: projet.id }));
-        // Ici, utilisez Inertia.js pour soumettre les modifications
-        // Exemple: Inertia.post('/path-to-update-designations', { designations });
+        patch(route('devis.update'));
     };
-    console.log(designationJSON);
+
+    /* data.LignesDevis.map((item, index) => {
+        console.log(`Index: ${index}, Item:`, item.designation);
+    }); */
+    
     return (
         
-
+        
         <DefaultDashboardLayout user={auth.user}>
             <Head title="Formulaire Devis" />
             <form onSubmit={handleSubmit} className="flex flex-col items-center">
                 <div className="min-h-[400px] max-h-[400px] overflow-auto border border-gray-300 shadow rounded-lg w-full max-w-6xl my-10">
-
-                    {ligneDevisTab.map((ligne) => (
+                    {data.LignesDevis.map((ligne, index)=>(
+                        <div key={index}>
+                            <LigneDevis 
+                            id={index}
+                            prest_designation={ligne.designation}
+                            prest_quantite={ligne.quantite}
+                            prest_prix={ligne.prixUnitaire}
+                            prest_tva={ligne.tva}
+                            onDelete={(e) => handleSupprimerLigne(e, index)}
+                            onSave={(data) => handleSaveData(ligne.id, data)}
+                            />
+                        </div>
+                    ))}
+                    {/* {ligneDevisTab.map((ligne) => (
                         <div key={ligne.id}>
                         <LigneDevis 
                             id={ligne.id}
@@ -77,7 +96,7 @@ export default function UpdateDevisForm({ auth, designation }) {
                             onSave={(data) => handleSaveData(ligne.id, data)}
                         />
                         </div>
-                    ))}
+                    ))} */}
                 </div>
                 <div className="space-x-4">
                     <button
