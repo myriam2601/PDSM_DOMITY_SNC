@@ -125,6 +125,7 @@ Route::prefix('/devis')->name('devis.')->group(function(){
     Route::get('/form', [DevisController::class, 'form'])->name('form'); 
     Route::post('/store', [DevisController::class, 'store']);
     Route::get('/generer-pdf/{id}', [PDFController::class, 'generatePDF']);
+    Route::get('/edit/{id}',[DevisController::class, 'edit'])->name('edit');
 });
 
 Route::prefix('/projets')->name('projets.')->group(function(){

@@ -52,14 +52,14 @@ export default function DevisDisplay({ devis }) {
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{devis.dev_date}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{devis.dev_fin_validite}</td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                          <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                          <Link href={`/devis/edit/${devis.id}`} className="text-indigo-600 hover:text-indigo-900">
                             Edit<span className="sr-only">, {devis.dev_nom}</span>
-                          </a>
+                          </Link>
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                          <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                            PDF<span className="sr-only">, {devis.dev_nom}</span>
-                          </a>
+                          <Link href={`/devis/generer-pdf/${devis.id}`} className="text-indigo-600 hover:text-indigo-900">
+                              PDF<span className="sr-only">, {devis.dev_nom}</span>
+                          </Link>
                         </td>
                       </tr>
                     ))}

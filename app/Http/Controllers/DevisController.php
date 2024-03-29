@@ -78,4 +78,19 @@ class DevisController extends Controller
             'projectId' => session('projectId')
         ]);        
     }
+
+    public function edit($id){
+        //
+        $devis = Devis::find($id);
+        
+        $designation = $devis->dev_liste_prestation;
+        
+        return Inertia::render('Devis/UpdateDevisForm', [
+            'auth' => [
+                'user' => auth()->user()
+            ],
+            'designation' => $designation,
+            'success'=>session('success'),
+        ]);   
+    }
 }

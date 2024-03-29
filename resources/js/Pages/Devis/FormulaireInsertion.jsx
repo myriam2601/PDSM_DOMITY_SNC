@@ -72,7 +72,7 @@ export default function FormulaireInsertion({ success, projectId, auth }) {
                     {ligneDevisTab.map((ligne) => (
                         <div key={ligne.id}>
                             <LigneDevis 
-                                id={ligne.id} 
+                                id={ligne.id}
                                 onDelete={handleSupprimerLigne}
                                 onSave={(data) => handleSaveData(ligne.id, data)}
                             />
@@ -89,16 +89,16 @@ export default function FormulaireInsertion({ success, projectId, auth }) {
                     </button>
                     <PrimaryButton disabled={processing} className="mt-4">Ajouter</PrimaryButton>
                 </div>
-                <ModalGenerationPDF 
+                {/* <ModalGenerationPDF 
                     isOpen={showModal}
                     onClose={() => setShowModal(false)}
                     onConfirm={() => {
                         setShowModal(false);
                         window.location.href = `/devis/generate-pdf/${createdDevisId}`;
                     }}
-                />
+                /> */}
             </form>
-            <ModalCalcul tab={formData}/> 
+            {/* <ModalCalcul tab={formData}/>  */}
         </DefaultDashboardLayout>
     );
     

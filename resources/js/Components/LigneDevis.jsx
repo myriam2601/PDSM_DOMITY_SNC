@@ -4,11 +4,11 @@ import { InputFloat } from './InputFloat';
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
 
-export function LigneDevis({id, onDelete, onSave}) {
-    const [designation, setDesignation] = useState("");
-    const [quantite, setQuantite] = useState(0);
-    const [prixUnitaire, setPrixUnitaire] = useState(0);
-    const [tva, setTva] = useState(0);
+export function LigneDevis({ id, prest_designation = '', prest_quantite = 0, prest_prix = 0, prest_tva = 0, onDelete = () => {}, onSave = () => {} }) {
+    const [designation, setDesignation] = useState(prest_designation);
+    const [quantite, setQuantite] = useState(prest_quantite);
+    const [prixUnitaire, setPrixUnitaire] = useState(prest_prix);
+    const [tva, setTva] = useState(prest_tva);
     const [prixHT, setPrixHT] = useState(0);
     const [prixTTC, setPrixTTC] = useState(0);
 
