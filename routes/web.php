@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\DevisController;
+use App\Http\Controllers\ParamController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\Service\ServiceController;
 use App\Http\Controllers\ProjetController;
@@ -120,7 +121,7 @@ Route::delete('/services/{service}', [ServiceController::class, 'destroy'])
 //David
 Route::prefix('/devis')->name('devis.')->group(function(){
     Route::get('/', [DevisController::class, 'index'])->name('index');
-    Route::get('/form', [DevisController::class, 'form'])->name('form'); 
+    Route::get('/form', [DevisController::class, 'form'])->name('form');
     Route::post('/store', [DevisController::class, 'store']);
     Route::get('/generer-pdf/{id}', [PDFController::class, 'generatePDF']);
 });
@@ -150,3 +151,18 @@ Route::get('/generate-pdf', 'PdfController@generatePDF')->name('generate-pdf');
 
 // Importation des routes d'authentification générées automatiquement
 require __DIR__.'/auth.php';
+
+// Route pour afficher le formulaire de création d'un Parametre
+Route::get('/parametres/create', [ParamController::class, 'create'])->name('parametres.create');
+
+// Route pour créer un nouveau Parametre
+Route::post('/parametres', [ParamController::class, 'store'])->name('parametres.store');
+
+// Route pour afficher un Parametre spécifique
+Route::get('/parametres/{parametre}', [ParamController::class, 'show'])->name('parametres.show');
+
+// Route pour afficher le formulaire de mise à jour d'un Parametre
+Route::get('/parametres/{parametre}/edit', [ParamController::class, 'edit'])->name('parametres.edit');
+
+// Route pour mettre à jour un Parametre existant
+Route::put('/parametres/{parametre}', [ParamController::class, 'update'])->name('parametres.update');

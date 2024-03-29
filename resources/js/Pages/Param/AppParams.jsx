@@ -1,10 +1,18 @@
-import React from "react";
-import "../index.css";
-import DefaultDashboardLayout from "../components/DefaultDashboardLayout";
+import React, {useState} from "react";
+import DefaultDashboardLayout from "../../Layouts/DefaultDashboardLayout";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 
 export default function AppParams() {
+    const [formData, setFormData] = useState({
+        par_nom_societe: "",
+        par_adresse: "",
+        par_npa: "",
+        par_email: "",
+        par_telephone: "",
+        par_site_web: "",
+    });
   return (
+
     <DefaultDashboardLayout>
       <div className="divide-y divide-white/5 bg-white">
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
