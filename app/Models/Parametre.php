@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Parametre extends Model
 {
     use HasFactory;
+    protected $table = 'parametre';
     protected $fillable=['par_nom_societe','par_adresse','par_npa','par_email','par_telephone','par_site_web','par_logo','par_accord',];
 }
