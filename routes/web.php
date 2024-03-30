@@ -153,16 +153,15 @@ Route::get('/generate-pdf', 'PdfController@generatePDF')->name('generate-pdf');
 require __DIR__.'/auth.php';
 
 // Route pour afficher le formulaire de création d'un Parametre
-Route::get('/parametres/create', [ParamController::class, 'create'])->name('parametres.create');
+Route::get('/parametres/create', [ParamController::class, 'create'])->name('parametres.create')
+    ->middleware(['auth', 'verified']);;
 
 // Route pour créer un nouveau Parametre
-Route::post('/parametres', [ParamController::class, 'store'])->name('parametres.store');
+Route::post('/parametres', [ParamController::class, 'store'])->name('parametres.store')
+    ->middleware(['auth', 'verified']);;
 
-// Route pour afficher un Parametre spécifique
-Route::get('/parametres/{parametre}', [ParamController::class, 'show'])->name('parametres.show');
-
-// Route pour afficher le formulaire de mise à jour d'un Parametre
-Route::get('/parametres/{parametre}/edit', [ParamController::class, 'edit'])->name('parametres.edit');
 
 // Route pour mettre à jour un Parametre existant
-Route::put('/parametres/{parametre}', [ParamController::class, 'update'])->name('parametres.update');
+Route::put('/parametres/{parametre}', [ParamController::class, 'update'])
+    ->name('parametres.update')
+    ->middleware(['auth', 'verified']);

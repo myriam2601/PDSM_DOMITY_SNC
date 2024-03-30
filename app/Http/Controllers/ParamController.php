@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Parametre;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,9 +13,9 @@ class ParamController extends Controller
     {
         return Inertia::render('Param/AppParams');
     }
-
-    public function store(Request $request){
-        $request->validate([
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
             'par_nom_societe' => 'required|string|max:255',
             'par_adresse' => 'required|string|max:255',
             'par_npa' => 'required|string|max:255',
@@ -23,28 +24,31 @@ class ParamController extends Controller
             'par_site_web' => 'nullable|string|max:255',
             'par_logo' => 'nullable|image|max:1024',
             'par_accord' => 'required|boolean',
-            // Ajoutez d'autres règles de validation si nécessaire
         ]);
+
+        // Traiter le téléchargement du logo s'il est présent dans la requête
         if ($request->hasFile('par_logo')) {
             $path = $request->file('par_logo')->store('logos', 'public');
-            // Stockez $path dans votre base de données si nécessaire
         }
 
-
         // Créer un nouveau Parametre avec les données fournies
-        Parametre::create([
-            'par_nom_societe' => $request->par_nom_societe,
-            'par_adresse' => $request->par_adresse,
-            'par_npa' => $request->par_npa,
-            'par_email' => $request->par_email,
-            'par_telephone' => $request->par_telephone,
-            'par_site_web' => $request->par_site_web,
-            'par_logo' => $request->par_logo,
-            'par_accord' => $request->par_accord ?? false,
-            // Ajoutez d'autres champs si nécessaire
+        $param = new Parametre([
+            'user_id' => $request->user()->id,
+            'par_nom_societe' => $validated['par_nom_societe'],
+            'par_adresse' => $validated['par_adresse'],
+            'par_npa' => $validated['par_npa'],
+            'par_email' => $validated['par_email'],
+            'par_telephone' => $validated['par_telephone'],
+            'par_site_web' => $validated['par_site_web'],
+            'par_logo' => $validated['par_logo'],
+            'par_accord' => $validated['par_accord'] ?? false,
         ]);
-        return redirect()->route('dashboard');
+        $param->save();
 
+        return redirect()->route('dashboard')->with([
+            'success' => 'Paramétrage créé avec succès'
+        ]);
     }
+
 }
 

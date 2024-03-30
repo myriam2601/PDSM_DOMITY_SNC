@@ -3,8 +3,8 @@ import { useForm, Head } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout";
 import 'react-quill/dist/quill.snow.css';
-import "../../../css/serviceStyle.css"
-import {PhotoIcon} from "@heroicons/react/16/solid/index.js";
+import "../../../css/serviceStyle.css";
+import { PhotoIcon } from "@heroicons/react/16/solid/index.js";
 
 export default function ParamApp({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -21,7 +21,6 @@ export default function ParamApp({ auth }) {
     const [preview, setPreview] = useState(null);
     const submit = (e) => {
         e.preventDefault();
-
         const formData = new FormData();
         Object.keys(data).forEach((key) => formData.append(key, data[key]));
 
@@ -33,13 +32,7 @@ export default function ParamApp({ auth }) {
             forceFormData: true,
         });
     };
-    const fieldCompleted = function () {
-        return data.par_nom_societe.length > 0 &&
-            data.par_adresse.length > 0 &&
-            data.par_npa.length > 0 &&
-            // Assurez-vous que tous les champs nécessaires sont remplis
-            data.par_localite.length > 0;
-    }
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -53,7 +46,6 @@ export default function ParamApp({ auth }) {
     return (
         <DefaultDashboardLayout user={auth.user}>
             <Head title="Ajouter un Paramètre"/>
-
             <div className="divide-y divide-white/5 bg-white">
                 <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                     <div className="md:col-span-12">
