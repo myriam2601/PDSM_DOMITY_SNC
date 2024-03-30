@@ -13,11 +13,13 @@ class Parametre extends Model
     protected $table = 'parametre';
 
     // Spécifiez les colonnes que vous souhaitez remplir massivement
-    protected $fillable = ['user_id','par_nom_societe', 'par_adresse', 'par_npa', 'par_email', 'par_telephone', 'par_site_web', 'par_logo', 'par_accord'];
+    protected $fillable = ['user_id','par_nom_societe', 'par_adresse', 'par_npa','par_localite', 'par_email', 'par_telephone', 'par_site_web', 'par_logo', 'par_accord'];
 
     // Définir la relation avec l'utilisateur
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
+
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('par_nom_societe');
             $table->string('par_adresse');
             $table->string('par_npa');
+            $table->string('par_localite');
             $table->string('par_email');
             $table->string('par_telephone');
             $table->string('par_site_web');

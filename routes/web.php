@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\DevisController;
-use App\Http\Controllers\ParamController;
+use App\Http\Controllers\Parametre\ParamController;
 use App\Http\Controllers\PDFController;
-use App\Http\Controllers\Service\ServiceController;
-use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjetController;
+use App\Http\Controllers\Service\ServiceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -160,8 +160,8 @@ Route::get('/parametres/create', [ParamController::class, 'create'])->name('para
 Route::post('/parametres', [ParamController::class, 'store'])->name('parametres.store')
     ->middleware(['auth', 'verified']);;
 
-
-// Route pour mettre à jour un Parametre existant
-Route::put('/parametres/{parametre}', [ParamController::class, 'update'])
-    ->name('parametres.update')
+Route::get('/parametres/{parametre}/edit', [ParamController::class, 'edit'])
+    ->name('parametres.edit')
     ->middleware(['auth', 'verified']);
+
+Route::put('/parametres/{parametre}', [ParamController::class, 'update'])->name('parametres.update');
