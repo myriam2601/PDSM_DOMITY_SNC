@@ -6,6 +6,7 @@ use App\Http\Controllers\Parametre\ParamController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjetController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Service\ServiceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -32,9 +33,9 @@ Route::get('/', function () {
 });
 
 // Route du tableau de bord
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // Routes pour les opérations sur le profil de l'utilisateur
 Route::middleware('auth')->group(function () {

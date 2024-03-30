@@ -22,28 +22,28 @@ const navigation = [
     { name: 'Devis', href: '/devis', icon: DocumentTextIcon },
 ];
 
-const administrations = [
-    {
-        id: 1,
-        name: 'Administrateurs',
-        href: '/admins',
-        icon: Cog6ToothIcon, // Assurez-vous que l'icône est correcte ou ajustez selon vos besoins
-    },
-    {
-        id: 2,
-        name: 'Paramètrage',
-        href: '/app-param',
-        icon: Cog6ToothIcon, // Assurez-vous que l'icône est correcte ou ajustez selon vos besoins
-    },
-];
 
 const userNavigation = [
     { name: 'Profile', href: '/my-profile' },
     { name: 'Se déconnecter', href: '/' },
 ];
 
-export default function DefaultDashboardLayout({ children }) {
+export default function DefaultDashboardLayout({ children, parametreEditUrl  }) {
     // TODO : Ouvrir sidemenu avec bars3icon et fermer avec xmarkicon
+    const administrations = [
+        {
+            id: 1,
+            name: 'Administrateurs',
+            href: '/admins',
+            icon: Cog6ToothIcon,
+        },
+        {
+            id: 2,
+            name: 'Paramètrage',
+            href: parametreEditUrl, // Utilisation de 'parametreEditUrl' passée en tant que prop
+            icon: Cog6ToothIcon,
+        },
+    ];
     return (
         <>
             <div>

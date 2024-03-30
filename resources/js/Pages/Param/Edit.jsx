@@ -14,7 +14,7 @@ export default function Edit({ auth, parametre }) {
         par_email: parametre.par_email || '',
         par_site_web: parametre.par_site_web || '',
         par_telephone: parametre.par_telephone || '',
-        par_logo: null,
+        par_logo: parametre.par_logo || '',
         par_accord: parametre.par_accord || false,
     });
     const [logo, setLogo] = useState(null);
