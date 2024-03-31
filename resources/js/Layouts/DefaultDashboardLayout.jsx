@@ -40,7 +40,7 @@ export default function DefaultDashboardLayout({ children, parametreEditUrl  }) 
         {
             id: 2,
             name: 'Paramètrage',
-            href: parametreEditUrl, // Utilisation de 'parametreEditUrl' passée en tant que prop
+            href: '/parametres/1/edit', // Utilisation de 'parametreEditUrl' passée en tant que prop
             icon: Cog6ToothIcon,
         },
     ];

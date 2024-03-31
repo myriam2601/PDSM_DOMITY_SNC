@@ -160,4 +160,6 @@ Route::get('/parametres/{parametre}/edit', [ParamController::class, 'edit'])
     ->name('parametres.edit')
     ->middleware(['auth', 'verified']);
 
-Route::put('/parametres/{parametre}', [ParamController::class, 'update'])->name('parametres.update');
+Route::put('/parametres/{parametre}', [ParamController::class, 'update'])
+    ->name('parametres.update')
+    ->middleware(['auth', 'verified']);;
