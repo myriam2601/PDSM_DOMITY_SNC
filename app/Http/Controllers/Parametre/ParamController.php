@@ -92,12 +92,18 @@ class ParamController extends Controller
             $path = $request->file('par_logo')->store('logos', 'public');
             $validated['par_logo'] = $path;
         }
-
-        $parametre->update($validated);
-
-        return redirect()->route('dashboard')->with([
-            'success' => 'Paramètre mis à jour avec succès.'
-        ]);
+        try{
+            $param = Parametre::find($parametre->id);
+            $param->update($validated);
+            return redirect()->route('dashboard')->with([
+                'success' => 'Paramètre mis à jour avec succès.'
+            ]);
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->route('parametres.edit', $parametre->id)->with([
+                'error' => 'Une erreur s\'est produite lors de la mise à jour des paramètres.'
+            ]);
+        }
     }
 }
 
