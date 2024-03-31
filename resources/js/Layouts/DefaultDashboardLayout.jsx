@@ -12,7 +12,7 @@ import {
     DocumentTextIcon,
 } from '@heroicons/react/24/outline';
 import { InertiaLink } from '@inertiajs/inertia-react';
-import {Link} from "@inertiajs/react";
+import {Link, usePage} from "@inertiajs/react";
 
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
@@ -28,8 +28,11 @@ const userNavigation = [
     { name: 'Se déconnecter', href: '/' },
 ];
 
-export default function DefaultDashboardLayout({ children, parametreEditUrl  }) {
+export default function DefaultDashboardLayout({ children  }) {
     // TODO : Ouvrir sidemenu avec bars3icon et fermer avec xmarkicon
+    const { parametreId } = usePage().props; // Récupérez parametreId à partir des props
+    const parametreEditUrl = parametreId ? `/parametres/${parametreId}/edit` : null;
+
     const administrations = [
         {
             id: 1,
@@ -40,7 +43,7 @@ export default function DefaultDashboardLayout({ children, parametreEditUrl  }) 
         {
             id: 2,
             name: 'Paramètrage',
-            href: '/parametres/1/edit', // Utilisation de 'parametreEditUrl' passée en tant que prop
+            href: parametreEditUrl, // Utilisation de 'parametreEditUrl' passée en tant que prop
             icon: Cog6ToothIcon,
         },
     ];

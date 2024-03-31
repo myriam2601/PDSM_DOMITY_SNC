@@ -10,13 +10,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+            $user = Auth::user();
+            $parametreId = optional($user->parametre)->id;
 
-        // Vérifiez si l'utilisateur a un paramètre et générez l'URL de modification
-        $parametreEditUrl = optional($user->parametre)->exists ? route('parametres.edit', $user->parametre->id) : null;
-
-        return Inertia::render('Dashboard', [
-            'parametreEditUrl' => $parametreEditUrl,
-        ]);
+            return Inertia::render('Dashboard', [
+                'parametreId' => $parametreId,
+            ]);
     }
 }
