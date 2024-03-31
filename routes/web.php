@@ -51,7 +51,6 @@ Route::get('/clients', [ClientController::class, 'index'])
 
 Route::get('/AllClients', [ClientController::class, 'getClients']);
 
-
 Route::get('/add-client', [ClientController::class, 'create'])
     ->middleware(['auth', 'verified'])
     ->name('clients.create');
@@ -126,6 +125,8 @@ Route::prefix('/devis')->name('devis.')->group(function(){
     Route::post('/store', [DevisController::class, 'store']);
     Route::get('/generer-pdf/{id}', [PDFController::class, 'generatePDF']);
     Route::get('/edit/{id}',[DevisController::class, 'edit'])->name('edit');
+    Route::patch('/update',[DevisController::class, 'update'])->name('update');
+    Route::delete('/delete/{devis}', [DevisController::class, 'destroy'])->name('destroy');
 });
 
 Route::prefix('/projets')->name('projets.')->group(function(){

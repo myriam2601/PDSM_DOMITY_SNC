@@ -140,7 +140,7 @@ class ProjetController extends Controller
     public function destroy(Projet $projet)
     {
         // Logique pour supprimer le projet
-        $projet->delete();
+        //$projet->delete();
 
         // Redirection ou réponse après la suppression
         return redirect()->route('projets.index')->with('success', 'Projet supprimé avec succès');

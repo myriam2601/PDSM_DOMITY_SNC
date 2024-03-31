@@ -4,6 +4,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 
+
 export default function UpdateProjectForm({ projet, clients, services }) {
     const { data, setData, patch, errors, processing } = useForm({
         nom: projet.nom,

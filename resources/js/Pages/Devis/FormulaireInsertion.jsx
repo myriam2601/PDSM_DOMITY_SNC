@@ -44,7 +44,6 @@ export default function FormulaireInsertion({ success, projectId, auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
         post('/devis/store', data, {
             onSuccess: (response) => {
                 // Supposons que votre API retourne l'ID du devis créé dans la réponse
@@ -53,7 +52,6 @@ export default function FormulaireInsertion({ success, projectId, auth }) {
             }
         });
     };
-    
     
     // Fonction pour mettre à jour les données du formulaire
     const handleSaveData = (id, data) => {
@@ -76,8 +74,10 @@ export default function FormulaireInsertion({ success, projectId, auth }) {
                                 onDelete={handleSupprimerLigne}
                                 onSave={(data) => handleSaveData(ligne.id, data)}
                             />
+                            {errors['lignesDevis.0.designation'] && <div>{errors['lignesDevis.0.designation']}</div>}
                         </div>
                     ))}
+                     
                 </div>
                 <div className="space-x-4">
                     <button

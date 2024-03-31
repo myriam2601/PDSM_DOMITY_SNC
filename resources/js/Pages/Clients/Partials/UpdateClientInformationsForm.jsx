@@ -19,7 +19,6 @@ export default function UpdateClientInformationForm({ client, className = '' }) 
 
     const submit = (e) => {
         e.preventDefault();
-
         patch(route('clients.update', { id: client.id }));
     };
 

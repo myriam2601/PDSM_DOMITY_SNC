@@ -3,7 +3,7 @@ import React from 'react';
 import { Head } from '@inertiajs/react';
 import DefaultDashboardLayout from '@/Layouts/DefaultDashboardLayout';
 import UpdateClientInformationForm from "@/Pages/Clients/Partials/UpdateClientInformationsForm.jsx";
-import DeleteClientForm from "@/Pages/Clients/Partials/DeleteClientForm.jsx"; // Assurez-vous que le chemin est correct
+import DeleteClientForm from "@/Pages/Clients/Partials/DeleteClientForm.jsx";
 
 export default function EditClient({ auth, client }) {
     return (
