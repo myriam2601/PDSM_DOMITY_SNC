@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Parametre;
+use App\Http\Controllers\Concerns\RedirectIfParamExists;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Controller;
@@ -11,16 +12,10 @@ use Inertia\Inertia;
 
 class ParamController extends Controller
 {
+    use RedirectIfParamExists;
+
     public function create()
     {
-        $user = auth()->user();
-
-        // Vérifiez si l'utilisateur a déjà un paramètre
-        if ($user->parametre()->exists()) {
-            return redirect()->route('parametres.edit', $user->parametre->id)->with([
-                'message' => 'Vous avez déjà configuré vos paramètres. Vous pouvez les modifier ici.'
-            ]);
-        }
         return Inertia::render('Param/AddParams');
     }
 
@@ -111,5 +106,9 @@ class ParamController extends Controller
         }
     }
 
+    protected function createParametreView()
+    {
+        // TODO: Implement createParametreView() method.
+    }
 }
 

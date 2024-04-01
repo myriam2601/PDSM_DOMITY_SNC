@@ -30,8 +30,12 @@ const userNavigation = [
 
 export default function DefaultDashboardLayout({ children  }) {
     // TODO : Ouvrir sidemenu avec bars3icon et fermer avec xmarkicon
-    const { parametreId } = usePage().props; // Récupérez parametreId à partir des props
-    const parametreEditUrl = parametreId ? `/parametres/${parametreId}/edit` : null;
+    const [parametreEditUrl, setParametreEditUrl] = useState(null);
+    const { parametreId } = usePage().props;
+
+    useEffect(() => {
+        setParametreEditUrl(parametreId ? `/parametres/${parametreId}/edit` : null);
+    }, [parametreId]);
 
     const administrations = [
         {

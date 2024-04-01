@@ -16,11 +16,13 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::all();
+        $parametreId = Auth::user()->parametre->id;
         return Inertia::render('Services/Index', [
             'auth' => [
                 'user' => auth()->user()
             ],
             'services' => $services,
+            'parametreId' => $parametreId,
         ]);
     }
 

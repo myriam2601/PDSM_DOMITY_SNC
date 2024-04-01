@@ -84,7 +84,7 @@ export default function Edit({ auth, parametre }) {
                                     id="par_adresse"
                                     autoComplete="par_adresse"
                                     value={data.par_adresse}
-                                    onChange={e => setData('par_nom_societe', e.target.value)}
+                                    onChange={e => setData('par_adresse', e.target.value)}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                                 <InputError message={errors.par_adresse} className="mt-2"/>

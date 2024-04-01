@@ -8,9 +8,9 @@ import {Head, Link, useForm} from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import DevisDisplay from "@/Components/DevisDisplay";
 
-export default function MainDevis({ auth, devis, url }) {
+export default function MainDevis({ auth, devis, url , parametreId}) {
     return (
-        <DefaultDashboardLayout user={auth.user} title="Devis" url={url}>
+        <DefaultDashboardLayout user={auth.user} title="Devis" url={url} parametreId={parametreId}>
             <Head title="Devis" />
 
             <div className="flex justify-between p-4 sm:p-6 lg:p-8">
