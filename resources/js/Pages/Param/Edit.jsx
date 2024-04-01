@@ -6,7 +6,7 @@ import { PhotoIcon } from "@heroicons/react/24/solid";
 
 
 export default function Edit({ auth, parametre }) {
-    const { data, setData, put, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         par_nom_societe: parametre.par_nom_societe || '',
         par_adresse: parametre.par_adresse || '',
         par_npa: parametre.par_npa || '',
@@ -14,34 +14,41 @@ export default function Edit({ auth, parametre }) {
         par_email: parametre.par_email || '',
         par_site_web: parametre.par_site_web || '',
         par_telephone: parametre.par_telephone || '',
-        par_logo: parametre.par_logo || '',
+       par_logo: parametre.par_logo || '',
         par_accord: parametre.par_accord || false,
     });
-    const [logo, setLogo] = useState(null);
-    const [preview, setPreview] = useState(parametre.par_logo_path); // Assumer que vous avez un chemin d'accès pour l'image
+
+    const [preview, setPreview] = useState(parametre.par_logo); // Assumer que vous avez un chemin d'accès pour l'image
 
 
     const submit = (e) => {
         e.preventDefault();
         const formData = new FormData();
-        Object.keys(data).forEach(key => formData.append(key, data[key]));
+        Object.keys(data).forEach((key) => formData.append(key, data[key]));
+        console.log(data); // Vérification console pour les données
+        console.log(formData); // Vérification console pour formData
 
-        put(route('parametres.update', parametre.id), formData, {
-            onSuccess: () => reset('par_logo'),
+        formData.append('_method', 'put'); // Ajoutez ceci pour simuler la méthode PUT
+
+        post(route('parametres.update', parametre.id), formData, {
+            onSuccess: () => {
+                reset();
+                setPreview(parametre.par_logo);
+            },
             forceFormData: true,
         });
     };
+
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setData('par_logo', file);
-            setPreview(URL.createObjectURL(file));
+            setPreview(URL.createObjectURL(file)); // Mettez à jour l'URL de prévisualisation
         } else {
             setPreview(null);
         }
     };
-
     return (
         <DefaultDashboardLayout user={auth.user}>
             <Head title={`Édition des Paramètres - ${parametre.par_nom_societe}`} />
@@ -49,7 +56,7 @@ export default function Edit({ auth, parametre }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <form onSubmit={submit} className="space-y-6">
+                        <form onSubmit={submit} className="space-y-6" encType="multipart/form-data">
                             {/* Form fields here */}
                             {/* Exemple de champ: Nom de la société */}
                             <div>
@@ -80,7 +87,7 @@ export default function Edit({ auth, parametre }) {
                                     onChange={e => setData('par_nom_societe', e.target.value)}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
-                                <InputError message={errors.par_nom_societe} className="mt-2"/>
+                                <InputError message={errors.par_adresse} className="mt-2"/>
                             </div>
                             <div>
                                 <label htmlFor="par_npa" className="block text-sm font-medium text-gray-700">
@@ -159,36 +166,31 @@ export default function Edit({ auth, parametre }) {
                                 />
                                 <InputError message={errors.par_telephone} className="mt-2"/>
                             </div>
-                            {/* Section de téléchargement du logo */}
-                            <div>
-                                <label htmlFor="par_logo" className="block text-sm font-medium text-gray-700">
+                            {/* Section de prévisualisation du logo */}
+                            <div className="sm:col-span-6">
+                                <label htmlFor="par_logo"
+                                       className="block text-sm font-medium leading-6 text-primaryDarkBlue">
                                     Logo de la société
                                 </label>
-                                <div
-                                    className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                                     <div className="space-y-1 text-center">
                                         {preview ? (
-                                            <img src={preview} alt="Prévisualisation du logo"
-                                                 className="mx-auto h-20 w-20 text-gray-400"/>
+                                            <img src={preview} alt="Prévisualisation du logo" className="mx-auto h-20 w-20 text-gray-400" />
                                         ) : (
-                                            <PhotoIcon className="mx-auto h-12 w-12 text-gray-400"/>
+                                            <PhotoIcon className="mx-auto h-12 w-12 text-gray-400" />
                                         )}
                                         <div className="flex text-sm text-gray-600">
-                                            <label htmlFor="par_logo"
-                                                   className="relative cursor-pointer rounded-md font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
-                                                <span>Télécharger un fichier</span>
-                                                <input
-                                                    id="par_logo"
-                                                    name="par_logo"
-                                                    type="file"
-                                                    className="sr-only"
-                                                    onChange={handleFileChange}
-                                                />
+                                            <label htmlFor="par_logo" className="relative cursor-pointer bg-white rounded-md font-medium text-primaryDarkBlue hover:text-primaryDarkBlue focus-within:outline-none">
+                                                <span>Modifier le logo</span>
+                                                <input id="par_logo" name="par_logo" type="file" className="sr-only" onChange={handleFileChange} />
                                             </label>
                                         </div>
-                                        <p className="text-xs text-gray-500">PNG, JPG, GIF jusqu'à 10MB</p>
+                                        <p className="text-xs text-gray-500">
+                                            PNG, JPG, GIF jusqu'à 10MB
+                                        </p>
                                     </div>
                                 </div>
+                                <InputError message={errors.par_logo} className="mt-2"/>
                             </div>
 
                             <div>
@@ -205,7 +207,7 @@ export default function Edit({ auth, parametre }) {
                                     className="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                                 <InputError message={errors.par_accord} className="mt-2"/>
-                                </div>
+                            </div>
 
                             <div className="flex justify-end">
                                 <button

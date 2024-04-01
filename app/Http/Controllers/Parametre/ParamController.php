@@ -75,7 +75,6 @@ class ParamController extends Controller
     public function update(Request $request, Parametre $parametre): RedirectResponse
     {
         $validated = $request->validate([
-            //'user_id' => $request->user()->id,
             'par_nom_societe' => 'required|string|max:255',
             'par_adresse' => 'required|string|max:255',
             'par_npa' => 'required|string|max:255',
@@ -83,27 +82,34 @@ class ParamController extends Controller
             'par_email' => 'required|email|max:255',
             'par_telephone' => 'required|string|max:255',
             'par_site_web' => 'nullable|string|max:255',
-            'par_logo' => 'nullable|image|max:1024',
+            'par_logo' => 'nullable|image|max:30000', // Le logo peut être nullable
             'par_accord' => 'required|boolean',
         ]);
 
-        // Traiter le téléchargement du logo s'il est présent
-        if ($request->hasFile('par_logo')) {
-            $path = $request->file('par_logo')->store('logos', 'public');
-            $validated['par_logo'] = $path;
-        }
-        try{
+        try {
+            if ($request->hasFile('par_logo')) {
+                $path = $request->file('par_logo')->store('logos', 'public');
+                $validated['par_logo'] = $path;
+            }
             $param = Parametre::find($parametre->id);
+            if (!$param) {
+                throw new \Exception('Paramètre introuvable.');
+            }
             $param->update($validated);
             return redirect()->route('dashboard')->with([
                 'success' => 'Paramètre mis à jour avec succès.'
             ]);
-        }catch (\Exception $e){
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Capturer et rediriger les erreurs de validation
+            return redirect()->route('parametres.edit', $parametre->id)->withErrors($e->validator->errors())->withInput();
+        } catch (\Exception $e) {
+            // Capturer et gérer toutes les autres erreurs
             Log::error($e->getMessage());
             return redirect()->route('parametres.edit', $parametre->id)->with([
                 'error' => 'Une erreur s\'est produite lors de la mise à jour des paramètres.'
             ]);
         }
     }
+
 }
 

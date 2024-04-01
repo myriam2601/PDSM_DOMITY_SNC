@@ -9,6 +9,8 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import ClientsDisplay from "@/Components/ClientsDisplay";
 import {Head, Link, useForm} from "@inertiajs/react";
 
+import ParametrageLinks from '@/Components/ParametrageLinks';
+
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
 export default function MainClient({ auth, clients, url }) {
