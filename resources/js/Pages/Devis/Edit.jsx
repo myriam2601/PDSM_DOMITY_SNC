@@ -7,7 +7,8 @@ import DeleteDevisForm from "./Partials/DeleteDevisForm.jsx";
 export default function EditDevis({ auth, designation, idDevis }) {
     return (
         <DefaultDashboardLayout user={auth.user} title={`Édition du Devis`}>
-            <Head title="salut" />
+            <Head title={`${idDevis.dev_nom}`} />
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -18,7 +19,7 @@ export default function EditDevis({ auth, designation, idDevis }) {
                         />
                     </div>
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <DeleteDevisForm idDevis={idDevis}/>
+                        <DeleteDevisForm idDevis={idDevis} />
                     </div>
                 </div>
             </div>

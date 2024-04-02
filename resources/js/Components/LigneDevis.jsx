@@ -71,8 +71,7 @@ export function LigneDevis({
                     value={designation}
                     onChange={setDesignation}
                 />
-                {console.log(id)}
-                {console.log(errors)}
+                
                 {errors[`${index}.designation`] && (
                     <p className="text-red-500 text-xs italic">
                         {errors[`${index}.designation`]}
