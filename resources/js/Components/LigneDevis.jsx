@@ -5,13 +5,16 @@ import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
 export function LigneDevis({
     id,
+    index,
     prest_designation = "",
     prest_quantite = 0,
     prest_prix = 0,
     prest_tva = 0,
     onDelete = () => {},
     onSave = () => {},
+    errors,
 }) {
+    
     const [designation, setDesignation] = useState(prest_designation);
     const [quantite, setQuantite] = useState(prest_quantite);
     const [prixUnitaire, setPrixUnitaire] = useState(prest_prix);
@@ -36,6 +39,7 @@ export function LigneDevis({
         onSave({ designation, quantite, prixUnitaire, tva, prixHT, prixTTC });
     }, [designation, quantite, prixUnitaire, tva, prixHT, prixTTC]);
 
+    
     const handleDelete = (e) => {
         e.preventDefault();
         onDelete(id);
@@ -53,22 +57,37 @@ export function LigneDevis({
         prixTTC = Math.round(prixTTC * 100) / 100;
         return prixTTC;
     };
-
+    
     return (
+        
         <div
             className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
             data-id={id}
         >
+           
             <div className="sm:col-span-1">
                 <p className="text-sm">Désignation</p>
                 <InputDesignation
                     value={designation}
                     onChange={setDesignation}
                 />
+                {console.log(id)}
+                {console.log(errors)}
+                {errors[`${index}.designation`] && (
+                    <p className="text-red-500 text-xs italic">
+                        {errors[`${index}.designation`]}
+                    </p>
+                )}
             </div>
             <div className="sm:col-span-1">
                 <p className="text-sm">Quantité</p>
                 <InputFloat value={quantite} onChange={setQuantite} step={1} />
+                
+                {errors[`${index}.quantite`] && (
+                    <p className="text-red-500 text-xs italic">
+                        {errors[`${index}.quantite`]}
+                    </p>
+                )}
             </div>
             <div className="sm:col-span-1">
                 <p className="text-sm">P.U</p>
@@ -96,6 +115,8 @@ export function LigneDevis({
             >
                 Supprimer
             </button>
+            
         </div>
+        
     );
 }

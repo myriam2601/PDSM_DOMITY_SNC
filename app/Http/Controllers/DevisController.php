@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Devis;
+use App\Models\Projet;
+use App\Models\Service;
 use Illuminate\Contracts\Validation\Validator as ValidationValidator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
@@ -16,21 +18,29 @@ class DevisController extends Controller
     public function store(Request $request)
     {
         $lignesDevisArray = $request->input('lignesDevis');
-        $projectId = $request->input('projectId');
-
+        
+        $projet = Projet::find($request->input('projectId'));
+        $service = Service::find($projet->service_id);
+        
         $jsonDataArray = [];       
+        
+        $messagesError = [
+            'required' => 'Ce champ ne peut pas être vide.',
+            '*.quantite.min' => 'La quantité doit être au minimum 1',
+        ];        
 
         $validator = Validator::make($lignesDevisArray, [
-            '*.designation' => 'required|unique|string',
+            '*.designation' => 'required|string',
             '*.quantite' => 'required|numeric|min:1',
-            '*.prixUnitaire' => 'required|numeric|min:0',
-            '*.tva' => 'required|numeric|min:0|max:100',
-            // 'projectId' => 'required|exists:projets,id', // Décommentez si nécessaire
-        ]);
-
+        ],$messagesError);
+        
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        $devNom = 'Devis n°' . date('Y') . '-' . $service->ser_categorie;
+        $devDate = now();
+        $devFinValidite = now()->addMonth(); // Ajoute un mois à la date actuelle
 
         foreach ($lignesDevisArray as $ligne) {
 
@@ -42,11 +52,8 @@ class DevisController extends Controller
             $prixTTC = $prixHT + ($prixHT * ($tva / 100));
             $prixTTC = round($prixTTC, 2);
 
-            $devNom = 'DV' . now()->format('YmdHis');
-            $devDate = now();
-            $devFinValidite = now()->addMonth(); // Ajoute un mois à la date actuelle
-
             $data = [
+                'id' => $ligne['id'],
                 'designation' => $ligne['designation'],
                 'quantite' => $quantite,
                 'prixUnitaire' => $prixUnitaire,
@@ -65,11 +72,12 @@ class DevisController extends Controller
         $devis->dev_nom = $devNom; // Assurez-vous que ces champs existent dans votre modèle Devis
         $devis->dev_date = $devDate;
         $devis->dev_fin_validite = $devFinValidite;
-        $devis->projet_id = $projectId;
+        $devis->projet_id = $projet->id;
 
         $devis->save();
 
-        return Redirect::back()->with('success', 'Les devis ont été créés avec succès!');
+        return redirect()->route('devis.index')->with('success', 'Les devis ont été créés avec succès!');
+
     }
 
     /* Affiche tous les devis existants */

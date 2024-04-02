@@ -3,6 +3,7 @@ Ce composant React affiche la page principale des projets, avec une mise en page
 Il comprend également un lien pour ajouter un nouveau projet avec InertiaLink, et affiche la liste des projets à l'aide du composant ProjectsDisplay.
 */
 
+
 import React from "react";
 import {Head, Link, useForm} from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";

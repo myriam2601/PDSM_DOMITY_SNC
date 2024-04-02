@@ -2,10 +2,10 @@ import React from "react";
 import { InertiaLink } from "@inertiajs/inertia-react";
 import {Link} from "@inertiajs/react";
 
-
-
 export default function DevisDisplay({ devis }) {
-  
+    
+
+    
     return (
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="sm:flex sm:items-center">
@@ -63,6 +63,7 @@ export default function DevisDisplay({ devis }) {
                         </td>
                       </tr>
                     ))}
+                    
                   </tbody>
                 </table>
               </div>

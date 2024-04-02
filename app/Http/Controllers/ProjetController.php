@@ -46,6 +46,7 @@ class ProjetController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'client_id' => 'required|integer|exists:client,id',
@@ -64,6 +65,8 @@ class ProjetController extends Controller
             'deadline' => $validated['deadline'],
             'description' => $validated['description'],
         ]);
+        
+        $serviceId = $request->input('service_id');
         
         $projet->save();
         

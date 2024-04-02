@@ -8,20 +8,43 @@ import ModalGenerationPDF from '../../Modal/ModalGenerationPDF.jsx';
 import DefaultDashboardLayout from '@/Layouts/DefaultDashboardLayout';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { PlusIcon } from '@heroicons/react/20/solid'
+
 //G:\HEG_IG\projetGREP\PDSM_DOMITY_SNC\resources\js\Modal
 export default function FormulaireInsertion({ success, projectId, auth }) {
-    const [ligneDevisTab, setLigneDevisTab] = useState([{ id: 1 }]);
-    const [formData, setFormData] = useState({}); // Etat local pour stocker les données du formulaire
     const [localProjectId, setLocalProjectId] = useState(projectId);
     const [showModal, setShowModal] = useState(false);
     const [createdDevisId, setCreatedDevisId] = useState(null);
-
+    //const [indexId, setIndexId] = useState(0);
     const { data, setData, post, processing, errors } = useForm({
-        lignesDevis: [], // Initialisez lignesDevis comme un tableau
-        projectId: localProjectId,
+        lignesDevis: [{
+            id: getUID(),
+            designation: "", 
+            quantite: 1, 
+            prixUnitaire: 0,
+            tva: 7.8,
+        }], // Initialisez lignesDevis comme un tableau
+        projectId: localProjectId, 
     });
-    
+
+    function getUID() {
+        // Get the timestamp and convert 
+        // it into alphanumeric input
+        return Date.now().toString(36);
+    }
+
     useEffect(() => {
+        
+        // Assurez-vous que cette mise à jour ne se produit que lorsque nécessaire
+        if (localProjectId !== data.projectId) {
+            setData(currentData => ({
+                ...currentData,
+                projectId: localProjectId,
+            }));
+        }
+    }, [localProjectId]); // Dépend uniquement de localProjectId
+
+    useEffect(() => {
+        
         if (projectId) {
             localStorage.setItem('projectId', projectId);
             setLocalProjectId(projectId); // Mettre à jour l'état local
@@ -34,17 +57,33 @@ export default function FormulaireInsertion({ success, projectId, auth }) {
     }, [projectId]);
 
     const handleAjouterLigne = () => {
-        const newId = ligneDevisTab.length + 1;
-        setLigneDevisTab([...ligneDevisTab, { id: newId }]);
-    }
-
+         // Obtenez le dernier ID et ajoutez 1
+        const nouvelleLigne = {
+            id: getUID(),
+            designation: "", 
+            quantite: 1, 
+            prixUnitaire: 0,
+            tva: 7.8,
+        };
+        
+        setData((currentData) => ({
+            ...currentData,
+            lignesDevis: [...currentData.lignesDevis, nouvelleLigne],
+        }));      
+    };
+    
     const handleSupprimerLigne = (id) => {
-        setLigneDevisTab(ligneDevisTab.filter(ligne => ligne.id !== id));
-    }
+        const lignesMiseAJour = data.lignesDevis.filter(
+            (ligne) => ligne.id !== id
+        );
+        setData({ ...data, lignesDevis: lignesMiseAJour });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         post('/devis/store', data, {
+            
             onSuccess: (response) => {
                 // Supposons que votre API retourne l'ID du devis créé dans la réponse
                 setCreatedDevisId(response.data.devisId);
@@ -54,29 +93,42 @@ export default function FormulaireInsertion({ success, projectId, auth }) {
     };
     
     // Fonction pour mettre à jour les données du formulaire
-    const handleSaveData = (id, data) => {
-        setFormData(prevState => ({ ...prevState, [id]: data }));
-        
-         // Mettre à jour les données du formulaire avec les nouvelles données
-        setData(data=>({...data, lignesDevis: formData}))
-        setData(data=>({...data, projectId: localProjectId}))
-    }
+    const handleSaveData = (id, newData) => {
+        setData((currentData) => {
+            const updatedLignesDevis = currentData.lignesDevis.map((ligne) =>
+                
+                ligne.id === id ? { ...ligne, ...newData } : ligne
+            
+            );
+            
+            // Retourne un nouvel objet data avec les LignesDevis mises à jour
+            return { ...currentData, lignesDevis: updatedLignesDevis };
+        });
+    };
 
     return (
         <DefaultDashboardLayout user={auth.user}>
             <Head title="Formulaire Devis" />
             <form onSubmit={handleSubmit} className="flex flex-col items-center">
+                
                 <div className="min-h-[400px] max-h-[400px] overflow-auto border border-gray-300 shadow rounded-lg w-full max-w-6xl my-10">
-                    {ligneDevisTab.map((ligne) => (
-                        <div key={ligne.id}>
-                            <LigneDevis 
-                                id={ligne.id}
-                                onDelete={handleSupprimerLigne}
-                                onSave={(data) => handleSaveData(ligne.id, data)}
-                            />
-                            {errors['lignesDevis.0.designation'] && <div>{errors['lignesDevis.0.designation']}</div>}
-                        </div>
-                    ))}
+                {console.log(data.lignesDevis)}
+                {data.lignesDevis.map((ligne, index)=>(
+                    <div key={ligne.id}>
+                        {console.log(ligne)}
+                        <LigneDevis
+                        id={ligne.id}
+                        index={index}
+                        prest_designation={ligne.designation}
+                        prest_quantite={ligne.quantite}
+                        prest_prix={ligne.prixUnitaire}
+                        prest_tva={ligne.tva}
+                        errors={errors}
+                        onDelete={handleSupprimerLigne}
+                        onSave={(newData) => handleSaveData(ligne.id, newData)}
+                        />
+                    </div>
+                ))}
                      
                 </div>
                 <div className="space-x-4">

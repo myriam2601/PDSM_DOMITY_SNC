@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('devis', function (Blueprint $table) {
             $table->id();
             $table->string('dev_nom')->nullable();
+            $table->enum('dev_status', ['en attente', 'accepté', 'refusé'])->default('en attente');
             $table->dateTime('dev_date')->nullable();
             $table->dateTime('dev_fin_validite')->nullable();
             $table->json('dev_liste_prestation');
