@@ -5,27 +5,31 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import { LigneDevis } from "@/Components/LigneDevis";
 import { Head } from "@inertiajs/react";
 import DeleteDevisForm from "./DeleteDevisForm";
+
 /* import { PlusIcon } from '@heroicons/react/24/solid'; */
 
 // Le composant de la page
 export default function UpdateDevisForm({ auth, designation, idDevis }) {
     const designationJSON = JSON.parse(designation);
-
+    const [statut, setStatut] = useState(idDevis.dev_statut);
     const { data, setData, patch, processing, errors } = useForm({
         LignesDevis: designationJSON.map((item, index) => ({
             ...item,
         })),
+        statut: statut,
     });
 
     function getUID() {
-        // Get the timestamp and convert 
+        // Get the timestamp and convert
         // it into alphanumeric input
         return Date.now().toString(36);
     }
-    useEffect(()=>{console.log(errors)},[errors]);
-        
+    useEffect(() => {
+        console.log(errors);
+    }, [errors]);
+
     const handleAjouterLigne = () => {
-        console.log(idDevis)
+        
         //const newId = data.LignesDevis.length + 1;
         const nouvelleLigne = {
             id: getUID(), // Assurez-vous que cette ID est unique dans le tableau
@@ -50,6 +54,10 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
         setData({ ...data, LignesDevis: lignesMiseAJour });
     };
 
+    const handleStatutChange = (e) => {
+        setStatut(e.target.value);
+    };
+
     const handleSaveData = (id, newData) => {
         setData((currentData) => {
             const updatedLignesDevis = currentData.LignesDevis.map((ligne) =>
@@ -63,7 +71,8 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
     // Soumettre les modifications
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+        console.log(data.statut);
+
         patch(route("devis.update", { id: idDevis }));
     };
 
@@ -73,14 +82,17 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
                 {`${idDevis.dev_nom}`}
             </h2>
             <label htmlFor="statut">Statut du devis :</label>
-            <select id="statut" value={idDevis.dev_statut} onChange={handleStatutChange}>
+            <select
+                id="statut"
+                value={statut} // Utilisez l'état `statut` ici
+                onChange={handleStatutChange}
+            >
                 <option value="en attente">En attente</option>
                 <option value="accepté">Accepté</option>
                 <option value="refusé">Refusé</option>
             </select>
             <div className="min-h-[400px] max-h-[400px] overflow-auto border border-gray-300 shadow rounded-lg w-full max-w-6xl my-10">
                 {data.LignesDevis.map((ligne, index) => (
-                    
                     <div key={ligne.id}>
                         <LigneDevis
                             id={ligne.id}
