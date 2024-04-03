@@ -11,6 +11,7 @@ use App\Models\Projet;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 // Front : Projets/Index.jsx et Components/ProjectsDisplay.jsx
@@ -21,12 +22,14 @@ class ProjetController extends Controller
      */
     public function index(): Response
     {
+        $parametreId = Auth::user()->parametre->id;
         return Inertia::render('Projets/Index', [
             'auth' => [
                 'user' => auth()->user()
             ],
             // Add the projects data, assuming you have a 'user' relationship defined on your Projet model
             'projets' => Projet::with('user:id,name')->latest()->get(), // Adjust 'user:id,name' based on your actual relationship and fields you want to select
+            'parametreId' => $parametreId,
         ]);
     }
 
@@ -64,9 +67,9 @@ class ProjetController extends Controller
             'deadline' => $validated['deadline'],
             'description' => $validated['description'],
         ]);
-        
+
         $projet->save();
-        
+
         return redirect()->route('devis.form')->with([
             'success'=>'Projet créé avec succès',
             'projectId' => $projet->id,

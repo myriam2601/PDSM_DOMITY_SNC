@@ -11,9 +11,9 @@ import ClientsDisplay from "@/Components/ClientsDisplay"; // Ajout de l'import p
 import {Head, Link, useForm} from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
-export default function MainProject({ auth, projets, url }) {
+export default function MainProject({ auth, projets, url,  parametreId }) {
     return (
-        <DefaultDashboardLayout user={auth.user} title="Projets" url={url}>
+        <DefaultDashboardLayout user={auth.user} title="Projets" url={url} parametreId={parametreId} >
             <Head title="Projets" />
 
             <div className="flex justify-between p-4 sm:p-6 lg:p-8">

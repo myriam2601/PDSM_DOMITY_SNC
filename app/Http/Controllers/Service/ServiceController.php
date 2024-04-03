@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
@@ -16,11 +17,13 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::all();
+        $parametreId = Auth::user()->parametre->id;
         return Inertia::render('Services/Index', [
             'auth' => [
                 'user' => auth()->user()
             ],
             'services' => $services,
+            'parametreId' => $parametreId,
         ]);
     }
 

@@ -11,7 +11,7 @@ import { Head, useForm } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import "../../../css/serviceStyle.css"
 
-export default function MainService({ auth, services, url }) {
+export default function MainService({ auth, services, url, parametreId }) {
     const [serviceName, setServiceName] = useState("");//hook
     const serviceFiltered = useMemo(()=>{ //usememo return variable pour le filtre
         return services.filter((service)=>{
@@ -20,7 +20,7 @@ export default function MainService({ auth, services, url }) {
     },[services, serviceName])
 
     return (
-        <DefaultDashboardLayout user={auth.user} title="Services" url={url}>
+        <DefaultDashboardLayout user={auth.user} title="Services" url={url} parametreId={parametreId}>
 
             <Head title="Services" />
             <div className="service-search">

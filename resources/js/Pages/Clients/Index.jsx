@@ -9,12 +9,14 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import ClientsDisplay from "@/Components/ClientsDisplay";
 import {Head, Link, useForm} from "@inertiajs/react";
 
+import ParametrageLinks from '@/Components/ParametrageLinks';
+
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
-export default function MainClient({ auth, clients, url }) {
+export default function MainClient({ auth, clients, url, parametreId  }) {
     return (
         // Utilisation du layout par défaut pour la disposition et le style de la page
-        <DefaultDashboardLayout user={auth.user} title="Clients" url={url}>
+        <DefaultDashboardLayout user={auth.user} title="Clients" url={url} parametreId={parametreId}>
             {/* Configuration du titre de la page dans l'en-tête du navigateur */}
             <Head title="Clients" />
 
