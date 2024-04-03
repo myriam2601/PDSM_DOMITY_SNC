@@ -12,16 +12,22 @@ use Inertia\Inertia;
 
 class ParamController extends Controller
 {
-    use RedirectIfParamExists;
 
     public function create()
     {
+        $user = auth()->user();
+
+        // Vérifiez si l'utilisateur a déjà un paramètre
+        if ($user->parametre()->exists()) {
+            return redirect()->route('parametres.edit', $user->parametre->id)->with([
+                'message' => 'Vous avez déjà configuré vos paramètres. Vous pouvez les modifier ici.'
+            ]);
+        }
         return Inertia::render('Param/AddParams');
     }
 
     public function store(Request $request): RedirectResponse
     {
-
         $validated = $request->validate([
             'par_nom_societe' => 'required|string|max:255',
             'par_adresse' => 'required|string|max:255',
@@ -36,30 +42,21 @@ class ParamController extends Controller
 
         // Traiter le téléchargement du logo s'il est présent dans la requête
         if ($request->hasFile('par_logo')) {
+            // Stocker le chemin du fichier téléchargé
             $path = $request->file('par_logo')->store('logos', 'public');
+            // Ajouter le chemin du logo aux données validées
+            $validated['par_logo'] = $path;
         }
 
         // Créer un nouveau Parametre avec les données fournies
-        $param = new Parametre([
-            'user_id' => $request->user()->id,
-            'par_nom_societe' => $validated['par_nom_societe'],
-            'par_adresse' => $validated['par_adresse'],
-            'par_npa' => $validated['par_npa'],
-            'par_localite' => $validated['par_localite'],
-            'par_email' => $validated['par_email'],
-            'par_telephone' => $validated['par_telephone'],
-            'par_site_web' => $validated['par_site_web'],
-            'par_logo' => $validated['par_logo'],
-            'par_accord' => $validated['par_accord'] ?? false,
-        ]);
+        $param = new Parametre($validated);
+        $param->user_id = $request->user()->id;
         $param->save();
 
         return redirect()->route('dashboard')->with([
             'success' => 'Paramétrage créé avec succès'
         ]);
-
     }
-
     public function edit(Parametre $parametre)
     {
         return Inertia::render('Param/Edit', [
@@ -77,7 +74,7 @@ class ParamController extends Controller
             'par_email' => 'required|email|max:255',
             'par_telephone' => 'required|string|max:255',
             'par_site_web' => 'nullable|string|max:255',
-            'par_logo' => 'nullable|image|max:30000', // Le logo peut être nullable
+            'par_logo' => 'nullable|image|max:1024',// Le logo peut être nullable
             'par_accord' => 'required|boolean',
         ]);
 

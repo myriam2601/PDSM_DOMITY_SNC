@@ -143,17 +143,20 @@ Route::resource('projets', ProjetController::class)
 
 
 
-Route::get('/generate-pdf', 'PdfController@generatePDF')->name('generate-pdf');
+Route::get('/generate-pdf', 'PdfController@generatePDF')
+    ->name('generate-pdf');
 
 // Importation des routes d'authentification générées automatiquement
 require __DIR__.'/auth.php';
 
 // Route pour afficher le formulaire de création d'un Parametre
-Route::get('/parametres/create', [ParamController::class, 'create'])->name('parametres.create')
+Route::get('/parametres/create', [ParamController::class, 'create'])
+    ->name('parametres.create')
     ->middleware(['auth', 'verified']);;
 
 // Route pour créer un nouveau Parametre
-Route::post('/parametres', [ParamController::class, 'store'])->name('parametres.store')
+Route::post('/parametres', [ParamController::class, 'store'])
+    ->name('parametres.store')
     ->middleware(['auth', 'verified']);;
 
 Route::get('/parametres/{parametre}/edit', [ParamController::class, 'edit'])

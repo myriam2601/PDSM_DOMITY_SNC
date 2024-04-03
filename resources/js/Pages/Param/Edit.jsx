@@ -14,11 +14,11 @@ export default function Edit({ auth, parametre }) {
         par_email: parametre.par_email || '',
         par_site_web: parametre.par_site_web || '',
         par_telephone: parametre.par_telephone || '',
-       par_logo: parametre.par_logo || '',
+        par_logo: null,
         par_accord: parametre.par_accord || false,
     });
 
-    const [preview, setPreview] = useState(parametre.par_logo); // Assumer que vous avez un chemin d'accès pour l'image
+    const [preview, setPreview] = useState(parametre.par_logo ? `/storage/app/public/${parametre.par_logo}` : null); // Assumer que vous avez un chemin d'accès pour l'image
 
 
     const submit = (e) => {
@@ -33,7 +33,6 @@ export default function Edit({ auth, parametre }) {
         post(route('parametres.update', parametre.id), formData, {
             onSuccess: () => {
                 reset();
-                setPreview(parametre.par_logo);
             },
             forceFormData: true,
         });
@@ -46,7 +45,7 @@ export default function Edit({ auth, parametre }) {
             setData('par_logo', file);
             setPreview(URL.createObjectURL(file)); // Mettez à jour l'URL de prévisualisation
         } else {
-            setPreview(null);
+            setPreview(parametre.par_logo ? `/storage/app/public/${parametre.par_logo}` : null);
         }
     };
     return (
@@ -166,10 +165,9 @@ export default function Edit({ auth, parametre }) {
                                 />
                                 <InputError message={errors.par_telephone} className="mt-2"/>
                             </div>
-                            {/* Section de prévisualisation du logo */}
+                            {/* Section de téléchargement du logo */}
                             <div className="sm:col-span-6">
-                                <label htmlFor="par_logo"
-                                       className="block text-sm font-medium leading-6 text-primaryDarkBlue">
+                                <label htmlFor="par_logo" className="block text-sm font-medium leading-6 text-primaryDarkBlue">
                                     Logo de la société
                                 </label>
                                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
@@ -181,7 +179,7 @@ export default function Edit({ auth, parametre }) {
                                         )}
                                         <div className="flex text-sm text-gray-600">
                                             <label htmlFor="par_logo" className="relative cursor-pointer bg-white rounded-md font-medium text-primaryDarkBlue hover:text-primaryDarkBlue focus-within:outline-none">
-                                                <span>Modifier le logo</span>
+                                                <span>Télécharger un fichier</span>
                                                 <input id="par_logo" name="par_logo" type="file" className="sr-only" onChange={handleFileChange} />
                                             </label>
                                         </div>
@@ -190,6 +188,8 @@ export default function Edit({ auth, parametre }) {
                                         </p>
                                     </div>
                                 </div>
+                            </div>
+                            <div>
                                 <InputError message={errors.par_logo} className="mt-2"/>
                             </div>
 
