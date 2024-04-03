@@ -27,6 +27,9 @@ class DashboardController extends Controller
 
         // Ajouter les données à passer à la vue
         $additionalData = [
+            'auth' => [
+                'user' => auth()->user()
+            ],
             'parametreId' => $parametreId,
             'clientsCount' => $clientsCount,
             'projetsCount' => $projetsCount,
