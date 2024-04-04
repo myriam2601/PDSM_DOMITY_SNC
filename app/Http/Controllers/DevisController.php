@@ -14,6 +14,14 @@ class DevisController extends Controller
 {
     public function store(Request $request)
     {
+        $existingDevis = Devis::where('projet_id', $request->input('projectId'))->first();
+        
+        if ($existingDevis) {
+            $projetNom = Projet::find($existingDevis->projet_id)->nom; // Assurez-vous d'obtenir le nom directement ici
+        
+            // Gérer l'erreur, par exemple, en renvoyant un message d'erreur.
+            return redirect()->route('devis.index')->withInput()->with('echec', 'Echec de l\'insertion, le projet ' . $projetNom . ' existe déjà.');
+        }
         $lignesDevisArray = $request->input('libelles');
         // Ici, vous devez également récupérer les ajustements depuis la requête, si vous les envoyez depuis le front-end
         $ajustementsArray = $request->input('ajustements'); // Assurez-vous que le nom de l'input correspond à ce que vous avez dans le front-end
@@ -26,6 +34,19 @@ class DevisController extends Controller
         $devDate = now();
         $devFinValidite = now()->addMonth(); // Ajoute un mois à la date actuelle
 
+        $messagesError = [
+            'required' => 'Ce champ ne peut pas être vide.',
+            '*.quantite.min' => 'La quantité doit être au minimum 1',
+        ];
+
+        $validator = Validator::make($lignesDevisArray, [
+            '*.designation' => 'required|string',
+            '*.quantite' => 'required|numeric|min:1',
+        ], $messagesError);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->with('echec', 'Echec de l\'insertion, veuillez remplir tous les champs obligatoires');
+        }
         $libelles = [];
         foreach ($lignesDevisArray as $ligne) {
             $quantite = (float) $ligne['quantite'];
@@ -75,12 +96,14 @@ class DevisController extends Controller
             ],
             'reussi' => session('reussi'),
             'info' => session('info'),
+            'echec'=> session('echec'),
             'devis' => $devis,
         ]);
     }
 
     public function form()
     {
+
         return Inertia::render('Devis/Insertion', [
             'auth' => [
                 'user' => auth()->user()

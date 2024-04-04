@@ -13,7 +13,7 @@ class Projet extends Model
     protected $table = 'projet';
 
     protected $fillable = [
-        'user_id','nom','client_id','service_id','debut', 'deadline', 'description',
+        'user_id', 'nom', 'client_id', 'service_id', 'debut', 'deadline', 'description',
     ];
 
     public function user(): BelongsTo
@@ -25,10 +25,15 @@ class Projet extends Model
     {
         return $this->belongsTo(Service::class, 'service_id');
     }
-    
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    public function devis()
+    {
+        return $this->hasOne(Devis::class);
     }
     // Vous pouvez ajouter la relation avec Client plus tard ici
 

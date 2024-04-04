@@ -13,12 +13,14 @@ function classNames(...classes) {
   export default function MainDevis({ auth, devis, url }) {
     const { flash } = usePage().props;
     const [displayCards, setDisplayCards] = useState(false);
-
+    console.log(flash)
     useEffect(() => {
         if (flash.reussi) {
             toast.success(flash.reussi);
         } else if (flash.info) {
             toast.warn(flash.info);
+        }else if(flash.echec){
+          toast.error(flash.echec);
         }
     }, [flash]);
     
