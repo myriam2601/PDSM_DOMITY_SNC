@@ -1,10 +1,26 @@
-import React from "react";
-import { Head } from "@inertiajs/react";
+import React, { useEffect } from "react";
+import { Head, usePage } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import UpdateDevisForm from "./Partials/UpdateDevisForm.jsx"; //prblm avec les raccourcis @ chemin
 import DeleteDevisForm from "./Partials/DeleteDevisForm.jsx";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function EditDevis({ auth, designation, idDevis }) {
+    const { flash } = usePage().props;
+    console.log(flash);
+    useEffect(() => {
+        // Pour débogage
+        if (flash.echec) {
+            toast.error(flash.echec, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+        }
+    }, [flash]);
     return (
         <DefaultDashboardLayout user={auth.user} title={`Édition du Devis`}>
             <Head title={`${idDevis.dev_nom}`} />
@@ -23,6 +39,7 @@ export default function EditDevis({ auth, designation, idDevis }) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </DefaultDashboardLayout>
     );
 }

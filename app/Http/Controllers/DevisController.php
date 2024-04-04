@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Devis;
 use App\Models\Projet;
 use App\Models\Service;
-use Illuminate\Contracts\Validation\Validator as ValidationValidator;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
-
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,23 +14,24 @@ class DevisController extends Controller
 {
     public function store(Request $request)
     {
+
         $lignesDevisArray = $request->input('lignesDevis');
-        
+
         $projet = Projet::find($request->input('projectId'));
         $service = Service::find($projet->service_id);
-        
-        $jsonDataArray = [];       
-        
+
+        $jsonDataArray = [];
+
         $messagesError = [
             'required' => 'Ce champ ne peut pas être vide.',
             '*.quantite.min' => 'La quantité doit être au minimum 1',
-        ];        
+        ];
 
         $validator = Validator::make($lignesDevisArray, [
             '*.designation' => 'required|string',
             '*.quantite' => 'required|numeric|min:1',
-        ],$messagesError);
-        
+        ], $messagesError);
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -73,16 +71,16 @@ class DevisController extends Controller
         $devis->dev_date = $devDate;
         $devis->dev_fin_validite = $devFinValidite;
         $devis->projet_id = $projet->id;
-
+        //$devis->dev_status = 'en attente';
         $devis->save();
 
-        return redirect()->route('devis.index')->with('success', 'Les devis ont été créés avec succès!');
-
+        return redirect()->route('devis.index')->with('reussi', 'Les devis ont été créés avec succès!');
     }
 
     /* Affiche tous les devis existants */
     public function index()
     {
+
         // Récupère tous les devis
         $devis = Devis::with('projet.client')->get();
 
@@ -90,6 +88,8 @@ class DevisController extends Controller
             'auth' => [
                 'user' => auth()->user()
             ],
+            'reussi' => session('reussi'),
+            'info' => session('info'),
             'devis' => $devis,
         ]);
     }
@@ -100,7 +100,7 @@ class DevisController extends Controller
             'auth' => [
                 'user' => auth()->user()
             ],
-            'success' => session('success'),
+            'reussi' => session('reussi'),
             'projectId' => session('projectId')
         ]);
     }
@@ -116,31 +116,56 @@ class DevisController extends Controller
             ],
             'designation' => $designation,
             'idDevis' => $devis,
-            'success' => session('success'),
+            'reussi' => session('reussi'),
+            'echec' => session('echec'),
         ]);
     }
 
     public function update(Request $request)
     {
-        $validated = $request->validate([
-            'LignesDevis.*.id' => 'required|integer',
-            'LignesDevis.*.designation' => 'required|string',
-            'LignesDevis.*.quantite' => 'required|integer',
-            'LignesDevis.*.prixUnitaire' => 'required|numeric',
-            'LignesDevis.*.tva' => 'required|numeric',
-            'LignesDevis.*.prixHT' => 'required|numeric',
-            'LignesDevis.*.prixTTC' => 'required|numeric',
-        ]);
+
+        $lignesDevisArray = $request->input('LignesDevis');
+
+        $messagesError = [
+            'required' => 'Ce champ ne peut pas être vide.',
+            '*.quantite.min' => 'La quantité doit être au minimum 1',
+        ];
+
+        $validator = Validator::make($lignesDevisArray, [
+            '*.designation' => 'required|string',
+            '*.quantite' => 'required|numeric|min:1',
+
+        ], $messagesError);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->with('echec', 'Echec de la mise à jour, veuillez remplir tous vos champs')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $devis = Devis::findOrFail($request->id);
+        $originalJsonData = $devis->dev_liste_prestation;
+        $originalStatut = $devis->dev_status;
+
         $jsonData = json_encode($request->input('LignesDevis'));
+        $etat = $request->input('statutData');
 
-        Devis::where('id', $request->id)->update([
-            'dev_liste_prestation' => $jsonData,
-        ]);
-        // Optionally, flash a success message to session
-        //session()->flash('message', 'Projet mis à jour avec succès.');
+        // Affecter les nouvelles valeurs
+        $devis->dev_liste_prestation = $jsonData;
+        $devis->dev_status = $etat;
 
-        // Redirect back or to a specific route
-        //return redirect()->route('projets.show', $projet);
+        // Vérifier si des modifications ont été apportées
+        if ($devis->isDirty()) {
+            // Sauvegarder si des modifications ont été détectées
+            $devis->save();
+
+            // Rediriger avec un message de succès
+            return redirect()->route('devis.index')->with('reussi', 'La mise à jour du devis a bien été effectuée.');
+        } else {
+            // Rediriger sans sauvegarder si rien n'a changé
+            return redirect()->route('devis.index')->with('info', 'Aucune modification n\'a été detectée.');
+        }
     }
 
     public function destroy(Devis $devis)

@@ -14,7 +14,7 @@ export default function FormulaireInsertion({ success, projectId, auth }) {
     const [localProjectId, setLocalProjectId] = useState(projectId);
     const [showModal, setShowModal] = useState(false);
     const [createdDevisId, setCreatedDevisId] = useState(null);
-    //const [indexId, setIndexId] = useState(0);
+    
     const { data, setData, post, processing, errors } = useForm({
         lignesDevis: [{
             id: getUID(),
@@ -112,10 +112,8 @@ export default function FormulaireInsertion({ success, projectId, auth }) {
             <form onSubmit={handleSubmit} className="flex flex-col items-center">
                 
                 <div className="min-h-[400px] max-h-[400px] overflow-auto border border-gray-300 shadow rounded-lg w-full max-w-6xl my-10">
-                {console.log(data.lignesDevis)}
                 {data.lignesDevis.map((ligne, index)=>(
                     <div key={ligne.id}>
-                        {console.log(ligne)}
                         <LigneDevis
                         id={ligne.id}
                         index={index}

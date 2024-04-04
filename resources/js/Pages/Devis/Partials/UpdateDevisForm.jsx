@@ -11,12 +11,12 @@ import DeleteDevisForm from "./DeleteDevisForm";
 // Le composant de la page
 export default function UpdateDevisForm({ auth, designation, idDevis }) {
     const designationJSON = JSON.parse(designation);
-    const [statut, setStatut] = useState(idDevis.dev_statut);
+    const [statut, setStatut] = useState(idDevis.dev_status);
     const { data, setData, patch, processing, errors } = useForm({
         LignesDevis: designationJSON.map((item, index) => ({
             ...item,
         })),
-        statut: statut,
+        statutData: statut,
     });
 
     function getUID() {
@@ -24,9 +24,11 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
         // it into alphanumeric input
         return Date.now().toString(36);
     }
+
     useEffect(() => {
-        console.log(errors);
-    }, [errors]);
+        setData(data => ({ ...data, statutData: statut }));
+    }, [statut]);
+    
 
     const handleAjouterLigne = () => {
         
@@ -66,14 +68,14 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
             // Retourne un nouvel objet data avec les LignesDevis mises à jour
             return { ...currentData, LignesDevis: updatedLignesDevis };
         });
+        
     };
 
     // Soumettre les modifications
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(data.statut);
-
-        patch(route("devis.update", { id: idDevis }));
+        console.log(idDevis)
+        patch(route("devis.update", idDevis));
     };
 
     return (
@@ -84,7 +86,7 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
             <label htmlFor="statut">Statut du devis :</label>
             <select
                 id="statut"
-                value={statut} // Utilisez l'état `statut` ici
+                value={statut}
                 onChange={handleStatutChange}
             >
                 <option value="en attente">En attente</option>
