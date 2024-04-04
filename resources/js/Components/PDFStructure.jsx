@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
 
 const PDFStructure = ({ dev_liste_prestation, client }) => {
   
-  const tabLignesDevis = JSON.parse(dev_liste_prestation);
-  console.log(client)
-  //console.log(tabLignesDevis)
+  const tabDevis = JSON.parse(dev_liste_prestation);
+  const libelles = tabDevis['libelles']
+ 
   return (
     
     <PDFViewer className="w-full h-screen">
@@ -119,7 +119,7 @@ const PDFStructure = ({ dev_liste_prestation, client }) => {
               <View style={styles.tableColHeader}><Text style={styles.tableCellHeader}>Prix HT</Text></View>
               <View style={styles.tableColHeader}><Text style={styles.tableCellHeader}>Prix TTC</Text></View>
             </View>
-            {tabLignesDevis.map((ligne, index) => (
+            {libelles.map((ligne, index) => (
               <View key={index} style={[styles.tableRow, {backgroundColor: index % 2 === 0 ? '#f0f3fe' : '#fff'}]}>
                 <View style={styles.tableCol}><Text style={styles.tableCell}>{ligne.designation}</Text></View>
                 <View style={styles.tableCol}><Text style={styles.tableCell}>{ligne.quantite}</Text></View>

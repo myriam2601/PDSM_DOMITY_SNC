@@ -1,54 +1,61 @@
-/*
-Ce composant React affiche la page principale des projets, avec une mise en page utilisant DefaultDashboardLayout pour la disposition et le style.
-Il comprend également un lien pour ajouter un nouveau projet avec InertiaLink, et affiche la liste des projets à l'aide du composant ProjectsDisplay.
-*/
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import DevisDisplay from "@/Components/DevisDisplay";
+import { Switch } from '@headlessui/react';
 import { ToastContainer, toast } from "react-toastify";
+import DevisCards from "@/Components/DevisCard";
 
-export default function MainDevis({ auth, devis, url }) {
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ');
+  }
+
+  export default function MainDevis({ auth, devis, url }) {
     const { flash } = usePage().props;
-    console.log(flash);
+    const [displayCards, setDisplayCards] = useState(false);
+
     useEffect(() => {
-        console.log(flash); // Pour débogage
-    
         if (flash.reussi) {
-            toast.success(flash.reussi, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-        } else if (flash.info) { // Vérifie si un message d'info est présent
-            toast.warn(flash.info, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
+            toast.success(flash.reussi);
+        } else if (flash.info) {
+            toast.warn(flash.info);
         }
     }, [flash]);
     
-
     return (
         <DefaultDashboardLayout user={auth.user} title="Devis" url={url}>
             <Head title="Devis" />
-
-            <div className="flex justify-between p-4 sm:p-6 lg:p-8">
-                <div>
-                    <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">
-                        Devis
-                    </h2>
+            <div className="flex justify-between items-center p-4 sm:p-6 lg:p-8">
+                <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">Devis</h2>
+                <div className="flex items-center">
+                    <p className="text-sm font-medium text-gray-900 mr-4">
+                        {displayCards ? "Basculer sur Vue Datagrid" : "Basculer sur Vue Cartes"}
+                    </p>
+                    <Switch
+                      checked={displayCards}
+                      onChange={setDisplayCards}
+                      className={classNames(
+                        displayCards ? 'bg-indigo-600' : 'bg-gray-200',
+                        'relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out'
+                      )}
+                    >
+                      <span className="sr-only">Switch View</span>
+                      <span
+                        className={classNames(
+                          displayCards ? 'translate-x-6' : 'translate-x-1',
+                          'inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out'
+                        )}
+                      />
+                    </Switch>
                 </div>
             </div>
-            <DevisDisplay devis={devis} auth={auth} />
+
+            {displayCards ? (
+                <DevisCards devis={devis} auth={auth} />
+            ) : (
+                <DevisDisplay devis={devis} auth={auth} />
+            )}
+
             <ToastContainer />
         </DefaultDashboardLayout>
     );

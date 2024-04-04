@@ -5,34 +5,41 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import { LigneDevis } from "@/Components/LigneDevis";
 import { Head } from "@inertiajs/react";
 import DeleteDevisForm from "./DeleteDevisForm";
+import ModalCalcul from "@/Modal/ModalCalcul";
 
 /* import { PlusIcon } from '@heroicons/react/24/solid'; */
 
 // Le composant de la page
-export default function UpdateDevisForm({ auth, designation, idDevis }) {
-    const designationJSON = JSON.parse(designation);
-    const [statut, setStatut] = useState(idDevis.dev_status);
+export default function UpdateDevisForm({ auth, devis }) {
+    const dev_liste_prestation = JSON.parse(devis.dev_liste_prestation);
+
+    const libelles = dev_liste_prestation["libelles"];
+    const ajustements = dev_liste_prestation["ajustements"];
+
+    const [statut, setStatut] = useState(devis.dev_status);
     const { data, setData, patch, processing, errors } = useForm({
-        LignesDevis: designationJSON.map((item, index) => ({
+        id: devis.id,
+        ajustements: ajustements
+            ? ajustements.map((item) => ({ ...item }))
+            : [],
+        libelles: libelles.map((item, index) => ({
             ...item,
         })),
         statutData: statut,
     });
 
     function getUID() {
-        // Get the timestamp and convert
-        // it into alphanumeric input
         return Date.now().toString(36);
     }
-
+    console.log(data);
     useEffect(() => {
-        setData(data => ({ ...data, statutData: statut }));
+        setData((data) => ({
+            ...data,
+            statutData: statut,
+        }));
     }, [statut]);
-    
 
     const handleAjouterLigne = () => {
-        
-        //const newId = data.LignesDevis.length + 1;
         const nouvelleLigne = {
             id: getUID(), // Assurez-vous que cette ID est unique dans le tableau
             designation: "", // Valeur par défaut
@@ -45,15 +52,24 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
         // Ajoutez la nouvelle ligne au tableau existant dans 'data.LignesDevis'
         setData((currentData) => ({
             ...currentData,
-            LignesDevis: [...currentData.LignesDevis, nouvelleLigne],
+            libelles: [...currentData.libelles, nouvelleLigne],
         }));
     };
 
     const handleSupprimerLigne = (id) => {
-        const lignesMiseAJour = data.LignesDevis.filter(
+        const lignesMiseAJour = data.libelles.filter(
             (ligne) => ligne.id !== id
         );
-        setData({ ...data, LignesDevis: lignesMiseAJour });
+        setData({ ...data, libelles: lignesMiseAJour });
+    };
+
+    const handleSupprimerAjustement = (indexToRemove) => {
+        setData((currentData) => ({
+            ...currentData,
+            ajustements: currentData.ajustements.filter(
+                (_, index) => index !== indexToRemove
+            ),
+        }));
     };
 
     const handleStatutChange = (e) => {
@@ -62,39 +78,43 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
 
     const handleSaveData = (id, newData) => {
         setData((currentData) => {
-            const updatedLignesDevis = currentData.LignesDevis.map((ligne) =>
+            const updatedLignesDevis = currentData.libelles.map((ligne) =>
                 ligne.id === id ? { ...ligne, ...newData } : ligne
             );
             // Retourne un nouvel objet data avec les LignesDevis mises à jour
-            return { ...currentData, LignesDevis: updatedLignesDevis };
+            return { ...currentData, libelles: updatedLignesDevis };
         });
-        
     };
+
+    // Dans le composant parent
+    function handleAjustement(newAjustement) {
+        // Ajoutez le nouvel ajustement au tableau existant d'ajustements
+        setData((prevData) => ({
+            ...prevData,
+            ajustements: [...prevData.ajustements, newAjustement],
+        }));
+    }
 
     // Soumettre les modifications
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(idDevis)
-        patch(route("devis.update", idDevis));
+        console.log(data);
+        patch(route("devis.update"));
     };
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-center">
             <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">
-                {`${idDevis.dev_nom}`}
+                {`${devis.dev_nom}`}
             </h2>
             <label htmlFor="statut">Statut du devis :</label>
-            <select
-                id="statut"
-                value={statut}
-                onChange={handleStatutChange}
-            >
+            <select id="statut" value={statut} onChange={handleStatutChange}>
                 <option value="en attente">En attente</option>
                 <option value="accepté">Accepté</option>
                 <option value="refusé">Refusé</option>
             </select>
             <div className="min-h-[400px] max-h-[400px] overflow-auto border border-gray-300 shadow rounded-lg w-full max-w-6xl my-10">
-                {data.LignesDevis.map((ligne, index) => (
+                {data.libelles.map((ligne, index) => (
                     <div key={ligne.id}>
                         <LigneDevis
                             id={ligne.id}
@@ -109,6 +129,28 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
                         />
                     </div>
                 ))}
+                <div className="ajustements-section">
+                    {data.ajustements &&
+                        data.ajustements.length > 0 &&
+                        data.ajustements.map((ajustement, index) => (
+                            <div key={index} className="ajustement-item">
+                                <p>
+                                    Ajustement : {ajustement.nomAjustement} -
+                                    Taux : {ajustement.taux}%
+                                </p>
+                                {/* Bouton pour supprimer un ajustement */}
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        handleSupprimerAjustement(index)
+                                    }
+                                    className="delete-ajustement-btn"
+                                >
+                                    Supprimer
+                                </button>
+                            </div>
+                        ))}
+                </div>
             </div>
             <div className="space-x-4">
                 <button
@@ -130,7 +172,7 @@ export default function UpdateDevisForm({ auth, designation, idDevis }) {
                         window.location.href = `/devis/generate-pdf/${createdDevisId}`;
                     }}
                 /> */}
+            <ModalCalcul tab={data} ajustement={handleAjustement} />
         </form>
-        //<ModalCalcul tab={formData}/>
     );
 }

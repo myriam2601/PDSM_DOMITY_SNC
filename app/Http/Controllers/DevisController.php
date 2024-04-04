@@ -14,43 +14,27 @@ class DevisController extends Controller
 {
     public function store(Request $request)
     {
+        $lignesDevisArray = $request->input('libelles');
+        // Ici, vous devez également récupérer les ajustements depuis la requête, si vous les envoyez depuis le front-end
+        $ajustementsArray = $request->input('ajustements'); // Assurez-vous que le nom de l'input correspond à ce que vous avez dans le front-end
+        $idProjet = $request->input('projectId');
 
-        $lignesDevisArray = $request->input('lignesDevis');
-
-        $projet = Projet::find($request->input('projectId'));
+        $projet = Projet::find($idProjet);
         $service = Service::find($projet->service_id);
-
-        $jsonDataArray = [];
-
-        $messagesError = [
-            'required' => 'Ce champ ne peut pas être vide.',
-            '*.quantite.min' => 'La quantité doit être au minimum 1',
-        ];
-
-        $validator = Validator::make($lignesDevisArray, [
-            '*.designation' => 'required|string',
-            '*.quantite' => 'required|numeric|min:1',
-        ], $messagesError);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
 
         $devNom = 'Devis n°' . date('Y') . '-' . $service->ser_categorie;
         $devDate = now();
         $devFinValidite = now()->addMonth(); // Ajoute un mois à la date actuelle
 
+        $libelles = [];
         foreach ($lignesDevisArray as $ligne) {
-
             $quantite = (float) $ligne['quantite'];
             $prixUnitaire = (float) $ligne['prixUnitaire'];
             $tva = (float) $ligne['tva'];
             $prixHT = $quantite * $prixUnitaire;
+            $prixTTC = round($prixHT + ($prixHT * ($tva / 100)), 2);
 
-            $prixTTC = $prixHT + ($prixHT * ($tva / 100));
-            $prixTTC = round($prixTTC, 2);
-
-            $data = [
+            $libelles[] = [
                 'id' => $ligne['id'],
                 'designation' => $ligne['designation'],
                 'quantite' => $quantite,
@@ -59,28 +43,29 @@ class DevisController extends Controller
                 'prixHT' => $prixHT,
                 'prixTTC' => $prixTTC,
             ];
-
-            $jsonDataArray[] = $data;
         }
 
-        $jsonData = json_encode($jsonDataArray);
+        // Construire la structure JSON finale
+        $jsonData = json_encode([
+            'libelles' => $libelles,
+            'ajustements' => $ajustementsArray, // Assurez-vous que cette partie corresponde à la structure attendue
+        ]);
 
         $devis = new Devis();
         $devis->dev_liste_prestation = $jsonData;
-        $devis->dev_nom = $devNom; // Assurez-vous que ces champs existent dans votre modèle Devis
+        $devis->dev_nom = $devNom;
         $devis->dev_date = $devDate;
         $devis->dev_fin_validite = $devFinValidite;
         $devis->projet_id = $projet->id;
-        //$devis->dev_status = 'en attente';
+
         $devis->save();
 
-        return redirect()->route('devis.index')->with('reussi', 'Les devis ont été créés avec succès!');
+        return redirect()->route('devis.index')->with('reussi', 'Le devis a été créé avec succès!');
     }
 
     /* Affiche tous les devis existants */
     public function index()
     {
-
         // Récupère tous les devis
         $devis = Devis::with('projet.client')->get();
 
@@ -96,11 +81,12 @@ class DevisController extends Controller
 
     public function form()
     {
-        return Inertia::render('Devis/FormulaireInsertion', [
+        return Inertia::render('Devis/Insertion', [
             'auth' => [
                 'user' => auth()->user()
             ],
             'reussi' => session('reussi'),
+            'echec' => session('echec'),
             'projectId' => session('projectId')
         ]);
     }
@@ -108,14 +94,12 @@ class DevisController extends Controller
     public function edit($id)
     {
         $devis = Devis::find($id);
-        $designation = $devis->dev_liste_prestation;
 
         return Inertia::render('Devis/Edit', [
             'auth' => [
                 'user' => auth()->user()
             ],
-            'designation' => $designation,
-            'idDevis' => $devis,
+            'devis' => $devis,
             'reussi' => session('reussi'),
             'echec' => session('echec'),
         ]);
@@ -124,7 +108,7 @@ class DevisController extends Controller
     public function update(Request $request)
     {
 
-        $lignesDevisArray = $request->input('LignesDevis');
+        $lignesDevisArray = $request->input('libelles');
 
         $messagesError = [
             'required' => 'Ce champ ne peut pas être vide.',
@@ -139,29 +123,32 @@ class DevisController extends Controller
 
         if ($validator->fails()) {
             return redirect()->back()
-                ->with('echec', 'Echec de la mise à jour, veuillez remplir tous vos champs')
+                ->with('echec', 'Echec de la mise à jour, veuillez remplir tous les champs obligatoires')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         $devis = Devis::findOrFail($request->id);
 
-        $jsonData = json_encode($request->input('LignesDevis'));
-        $etat = $request->input('statutData');
+        $dataToUpdate = [
+            'libelles' => $request->input('libelles', []), // Utilisez une valeur par défaut vide si non présent
+            'ajustements' => $request->input('ajustements', []), // Utilisez null comme valeur par défaut si non présent
+        ];
 
-        // Affecter les nouvelles valeurs
-        $devis->dev_liste_prestation = $jsonData;
-        $devis->dev_status = $etat;
+        $currentData = json_decode($devis->dev_liste_prestation, true);
 
-        // Vérifier si des modifications ont été apportées
-        if ($devis->isDirty()) {
-            // Sauvegarder si des modifications ont été détectées
+        // Comparaison des tableaux PHP
+        $isModified = $currentData !== $dataToUpdate;
+
+        if ($isModified) {
+            // Il y a eu des modifications
+            $devis->dev_liste_prestation = json_encode($dataToUpdate);
+            $devis->dev_status = $request->input('statutData');
+
             $devis->save();
-
-            // Rediriger avec un message de succès
             return redirect()->route('devis.index')->with('reussi', 'La mise à jour du devis a bien été effectuée.');
         } else {
-            // Rediriger sans sauvegarder si rien n'a changé
+            // Aucune modification détectée
             return redirect()->route('devis.index')->with('info', 'Aucune modification n\'a été detectée.');
         }
     }

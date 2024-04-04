@@ -66,13 +66,15 @@ class ProjetController extends Controller
             'description' => $validated['description'],
         ]);
         
+        
         $serviceId = $request->input('service_id');
         
         $projet->save();
+        $idProjet = $projet->id;
         
         return redirect()->route('devis.form')->with([
             'success'=>'Projet créé avec succès',
-            'projectId' => $projet->id,
+            'projectId' => $idProjet,
         ]);
     }
 

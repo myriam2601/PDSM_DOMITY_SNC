@@ -5,9 +5,9 @@ import UpdateDevisForm from "./Partials/UpdateDevisForm.jsx"; //prblm avec les r
 import DeleteDevisForm from "./Partials/DeleteDevisForm.jsx";
 import { ToastContainer, toast } from "react-toastify";
 
-export default function EditDevis({ auth, designation, idDevis }) {
+export default function EditDevis({ auth, devis }) {
     const { flash } = usePage().props;
-    console.log(flash);
+    
     useEffect(() => {
         // Pour débogage
         if (flash.echec) {
@@ -23,19 +23,18 @@ export default function EditDevis({ auth, designation, idDevis }) {
     }, [flash]);
     return (
         <DefaultDashboardLayout user={auth.user} title={`Édition du Devis`}>
-            <Head title={`${idDevis.dev_nom}`} />
+            <Head title={`${devis.dev_nom}`} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <UpdateDevisForm
                             auth={auth}
-                            designation={designation}
-                            idDevis={idDevis}
+                            devis={devis}
                         />
                     </div>
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <DeleteDevisForm idDevis={idDevis} />
+                        <DeleteDevisForm devis={devis} />
                     </div>
                 </div>
             </div>

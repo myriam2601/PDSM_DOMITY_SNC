@@ -4,12 +4,12 @@ import { useForm } from "@inertiajs/react";
 import Modal from "@/Components/Modal"; // Assurez-vous d'avoir ce composant
 import DangerButton from "@/Components/DangerButton"; // Assurez-vous d'avoir ce composant
 
-export default function DeleteDevisForm({ idDevis }) {
+export default function DeleteDevisForm({ devis }) {
     const [showModal, setShowModal] = useState(false);
     const { delete: destroy, processing } = useForm();
 
     const deleteDevis = () => {
-        destroy(route("devis.destroy", idDevis), {
+        destroy(route("devis.destroy", devis), {
             preserveScroll: true,
         });
     };
