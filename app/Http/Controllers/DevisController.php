@@ -145,8 +145,6 @@ class DevisController extends Controller
         }
 
         $devis = Devis::findOrFail($request->id);
-        $originalJsonData = $devis->dev_liste_prestation;
-        $originalStatut = $devis->dev_status;
 
         $jsonData = json_encode($request->input('LignesDevis'));
         $etat = $request->input('statutData');
