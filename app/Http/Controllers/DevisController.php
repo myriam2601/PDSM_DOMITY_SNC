@@ -6,6 +6,7 @@ use App\Models\Devis;
 use App\Models\Projet;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,10 +17,10 @@ class DevisController extends Controller
     {
 
         $existingDevis = Devis::where('projet_id', $request->input('projectId'))->first();
-        
+
         if ($existingDevis) {
             $projetNom = Projet::find($existingDevis->projet_id)->nom; // Assurez-vous d'obtenir le nom directement ici
-        
+
             // Gérer l'erreur, par exemple, en renvoyant un message d'erreur.
             return redirect()->route('devis.index')->withInput()->with('echec', 'Echec de l\'insertion, le projet ' . $projetNom . ' existe déjà.');
         }
@@ -97,6 +98,7 @@ class DevisController extends Controller
     {
         // Récupère tous les devis
         $devis = Devis::with('projet.client')->get();
+        $parametreId = Auth::user()->parametre->id;
 
 
 
