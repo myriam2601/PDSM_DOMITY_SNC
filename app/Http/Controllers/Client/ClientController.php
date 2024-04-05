@@ -58,7 +58,7 @@ class ClientController extends Controller
             'cli_cli_npa' => $validated['cli_cli_npa'],
         ]);
 
-        return redirect()->route('clients.index'); // Adjust the route name accordingly
+        return redirect()->route('clients.index'); 
     }
 
     public function show(Client $client)
@@ -69,6 +69,7 @@ class ClientController extends Controller
             'client' => $clientWithProjets,
         ]);
     }
+
     public function edit($id)
     {
             $client = Client::find($id);

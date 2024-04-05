@@ -49,6 +49,7 @@ class ProjetController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'client_id' => 'required|integer|exists:client,id',
@@ -68,11 +69,17 @@ class ProjetController extends Controller
             'description' => $validated['description'],
         ]);
 
+        
+        
+        $serviceId = $request->input('service_id');
+        
         $projet->save();
+        $idProjet = $projet->id;
+        
 
         return redirect()->route('devis.form')->with([
             'success'=>'Projet créé avec succès',
-            'projectId' => $projet->id,
+            'projectId' => $idProjet,
         ]);
     }
 
@@ -150,7 +157,7 @@ class ProjetController extends Controller
     public function destroy(Projet $projet)
     {
         // Logique pour supprimer le projet
-        $projet->delete();
+        //$projet->delete();
 
         // Redirection ou réponse après la suppression
         return redirect()->route('projets.index')->with('success', 'Projet supprimé avec succès');

@@ -46,7 +46,6 @@ Route::get('/clients', [ClientController::class, 'index'])
 
 Route::get('/AllClients', [ClientController::class, 'getClients']);
 
-
 Route::get('/add-client', [ClientController::class, 'create'])
     ->middleware(['auth', 'verified'])
     ->name('clients.create');
@@ -117,10 +116,16 @@ Route::delete('/services/{service}', [ServiceController::class, 'destroy'])
 //David
 Route::prefix('/devis')->name('devis.')->group(function(){
     Route::get('/', [DevisController::class, 'index'])->name('index');
-    Route::get('/form', [DevisController::class, 'form'])->name('form');
-    Route::post('/store', [DevisController::class, 'store']);
-    Route::get('/generer-pdf/{id}', [PDFController::class, 'generatePDF']);
+
+    Route::get('/form', [DevisController::class, 'form'])->name('form'); 
+    Route::post('/store', [DevisController::class, 'store'])->name('store'); // Assurez-vous d'ajouter également un nom à cette route si vous y faites référence quelque part.
+    Route::get('/generer-pdf/{id}', [PDFController::class, 'generatePDF'])->name('generatePDF'); // Pensez à nommer toutes vos routes.
+    Route::get('/edit/{id}',[DevisController::class, 'edit'])->name('edit');
+    Route::patch('/update',[DevisController::class, 'update'])->name('update');
+    Route::delete('/delete/{devis}', [DevisController::class, 'destroy'])->name('destroy');
+
 });
+
 
 Route::prefix('/projets')->name('projets.')->group(function(){
     Route::get('/{projet}', [ProjetController::class, 'show'])->name('show');

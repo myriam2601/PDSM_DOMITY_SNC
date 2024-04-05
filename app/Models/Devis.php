@@ -12,7 +12,8 @@ class Devis extends Model
     protected $fillable = [
         // Ajoutez tous les attributs fillable que vous avez
         'projet_id',
-        'nom'
+        'nom',
+        'dev_liste_prestation'
         // autres attributs...
     ];
 
