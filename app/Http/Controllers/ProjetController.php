@@ -22,7 +22,8 @@ class ProjetController extends Controller
      */
     public function index(): Response
     {
-        $parametreId = Auth::user()->parametre->id;
+        $parametreId = optional(Auth::user()->parametre)->id;
+
         return Inertia::render('Projets/Index', [
             'auth' => [
                 'user' => auth()->user()

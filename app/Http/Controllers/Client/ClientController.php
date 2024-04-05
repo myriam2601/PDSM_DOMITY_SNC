@@ -15,7 +15,7 @@ class ClientController extends Controller
 {
     public function index()
     {
-        $parametreId = Auth::user()->parametre->id;
+        $parametreId = optional(Auth::user()->parametre)->id;
         $clients = Client::all();
         return Inertia::render('Clients/Index', [
             'auth' => [
