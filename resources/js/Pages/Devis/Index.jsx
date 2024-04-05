@@ -10,7 +10,8 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
 
-  export default function MainDevis({ auth, devis, url }) {
+
+  export default function MainDevis({ auth, devis, url, parametreId }) {
     const { flash } = usePage().props;
     const [displayCards, setDisplayCards] = useState(false);
     console.log(flash)
@@ -24,8 +25,9 @@ function classNames(...classes) {
         }
     }, [flash]);
     
+
     return (
-        <DefaultDashboardLayout user={auth.user} title="Devis" url={url}>
+        <DefaultDashboardLayout user={auth.user} title="Devis" url={url} parametreId={parametreId}>
             <Head title="Devis" />
             <div className="flex justify-between items-center p-4 sm:p-6 lg:p-8">
                 <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">Devis</h2>

@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Projet extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'projet';
 
@@ -31,10 +32,12 @@ class Projet extends Model
         return $this->belongsTo(Client::class, 'client_id');
     }
 
+
     public function devis()
     {
         return $this->hasOne(Devis::class);
     }
     // Vous pouvez ajouter la relation avec Client plus tard ici
+
 
 }

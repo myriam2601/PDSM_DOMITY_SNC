@@ -13,4 +13,22 @@
 .service-search{
     text-align: right;
 }
+.step-arrow{
+
+}
+.step-wrap{
+    border: 1px solid #ddd;
+}
+.step-wrap-header{
+    height: 6rem;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.step-editor{
+    /*height: 15rem;*/
+}
 

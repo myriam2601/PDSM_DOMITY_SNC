@@ -11,6 +11,7 @@ use App\Models\Projet;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 // Front : Projets/Index.jsx et Components/ProjectsDisplay.jsx
@@ -21,12 +22,14 @@ class ProjetController extends Controller
      */
     public function index(): Response
     {
+        $parametreId = Auth::user()->parametre->id;
         return Inertia::render('Projets/Index', [
             'auth' => [
                 'user' => auth()->user()
             ],
             // Add the projects data, assuming you have a 'user' relationship defined on your Projet model
             'projets' => Projet::with('user:id,name')->latest()->get(), // Adjust 'user:id,name' based on your actual relationship and fields you want to select
+            'parametreId' => $parametreId,
         ]);
     }
 
@@ -65,6 +68,7 @@ class ProjetController extends Controller
             'deadline' => $validated['deadline'],
             'description' => $validated['description'],
         ]);
+
         
         
         $serviceId = $request->input('service_id');
@@ -72,6 +76,7 @@ class ProjetController extends Controller
         $projet->save();
         $idProjet = $projet->id;
         
+
         return redirect()->route('devis.form')->with([
             'success'=>'Projet créé avec succès',
             'projectId' => $idProjet,
@@ -91,6 +96,8 @@ class ProjetController extends Controller
         ]);
     }
 
+
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -107,6 +114,10 @@ class ProjetController extends Controller
             'services' => $services,
         ]);
     }
+
+
+
+
 
     /**
      * Update the specified resource in storage.
@@ -139,6 +150,7 @@ class ProjetController extends Controller
         return redirect()->route('projets.show', $projet);
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
@@ -150,4 +162,5 @@ class ProjetController extends Controller
         // Redirection ou réponse après la suppression
         return redirect()->route('projets.index')->with('success', 'Projet supprimé avec succès');
     }
+
 }

@@ -14,6 +14,7 @@ class DevisController extends Controller
 {
     public function store(Request $request)
     {
+
         $existingDevis = Devis::where('projet_id', $request->input('projectId'))->first();
         
         if ($existingDevis) {
@@ -49,14 +50,17 @@ class DevisController extends Controller
         }
         $libelles = [];
         foreach ($lignesDevisArray as $ligne) {
+
             $quantite = (float) $ligne['quantite'];
             $prixUnitaire = (float) $ligne['prixUnitaire'];
             $tva = (float) $ligne['tva'];
             $prixHT = $quantite * $prixUnitaire;
+
             $prixTTC = round($prixHT + ($prixHT * ($tva / 100)), 2);
 
             $libelles[] = [
                 'id' => $ligne['id'],
+
                 'designation' => $ligne['designation'],
                 'quantite' => $quantite,
                 'prixUnitaire' => $prixUnitaire,
@@ -64,6 +68,7 @@ class DevisController extends Controller
                 'prixHT' => $prixHT,
                 'prixTTC' => $prixTTC,
             ];
+
         }
 
         // Construire la structure JSON finale
@@ -72,12 +77,15 @@ class DevisController extends Controller
             'ajustements' => $ajustementsArray, // Assurez-vous que cette partie corresponde à la structure attendue
         ]);
 
+
         $devis = new Devis();
         $devis->dev_liste_prestation = $jsonData;
         $devis->dev_nom = $devNom;
         $devis->dev_date = $devDate;
         $devis->dev_fin_validite = $devFinValidite;
+
         $devis->projet_id = $projet->id;
+
 
         $devis->save();
 
@@ -90,6 +98,8 @@ class DevisController extends Controller
         // Récupère tous les devis
         $devis = Devis::with('projet.client')->get();
 
+
+
         return Inertia::render('Devis/Index', [
             'auth' => [
                 'user' => auth()->user()
@@ -98,6 +108,7 @@ class DevisController extends Controller
             'info' => session('info'),
             'echec'=> session('echec'),
             'devis' => $devis,
+            'parametreId' => $parametreId,
         ]);
     }
 
@@ -112,6 +123,7 @@ class DevisController extends Controller
             'echec' => session('echec'),
             'projectId' => session('projectId')
         ]);
+
     }
 
     public function edit($id)
@@ -181,5 +193,6 @@ class DevisController extends Controller
         $devis->delete();
 
         return redirect()->route('devis.index');
+
     }
 }

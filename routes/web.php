@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\DevisController;
+use App\Http\Controllers\Parametre\ParamController;
 use App\Http\Controllers\PDFController;
-use App\Http\Controllers\Service\ServiceController;
-use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjetController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Service\ServiceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,20 +24,13 @@ use Inertia\Inertia;
 
 // Route d'accueil
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('login');
 });
 
-
-
 // Route du tableau de bord
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // Routes pour les opérations sur le profil de l'utilisateur
 Route::middleware('auth')->group(function () {
@@ -121,12 +116,14 @@ Route::delete('/services/{service}', [ServiceController::class, 'destroy'])
 //David
 Route::prefix('/devis')->name('devis.')->group(function(){
     Route::get('/', [DevisController::class, 'index'])->name('index');
+
     Route::get('/form', [DevisController::class, 'form'])->name('form'); 
     Route::post('/store', [DevisController::class, 'store'])->name('store'); // Assurez-vous d'ajouter également un nom à cette route si vous y faites référence quelque part.
     Route::get('/generer-pdf/{id}', [PDFController::class, 'generatePDF'])->name('generatePDF'); // Pensez à nommer toutes vos routes.
     Route::get('/edit/{id}',[DevisController::class, 'edit'])->name('edit');
     Route::patch('/update',[DevisController::class, 'update'])->name('update');
     Route::delete('/delete/{devis}', [DevisController::class, 'destroy'])->name('destroy');
+
 });
 
 
@@ -151,7 +148,26 @@ Route::resource('projets', ProjetController::class)
 
 
 
-Route::get('/generate-pdf', 'PdfController@generatePDF')->name('generate-pdf');
+Route::get('/generate-pdf', 'PdfController@generatePDF')
+    ->name('generate-pdf');
 
 // Importation des routes d'authentification générées automatiquement
 require __DIR__.'/auth.php';
+
+// Route pour afficher le formulaire de création d'un Parametre
+Route::get('/parametres/create', [ParamController::class, 'create'])
+    ->name('parametres.create')
+    ->middleware(['auth', 'verified']);;
+
+// Route pour créer un nouveau Parametre
+Route::post('/parametres', [ParamController::class, 'store'])
+    ->name('parametres.store')
+    ->middleware(['auth', 'verified']);;
+
+Route::get('/parametres/{parametre}/edit', [ParamController::class, 'edit'])
+    ->name('parametres.edit')
+    ->middleware(['auth', 'verified']);
+
+Route::match(['post', 'put'], '/parametres/{parametre}', [ParamController::class, 'update'])
+    ->name('parametres.update')
+    ->middleware(['auth', 'verified']);

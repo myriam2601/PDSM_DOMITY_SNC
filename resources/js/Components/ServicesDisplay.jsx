@@ -22,7 +22,7 @@ export default function ServicesDisplay({ services, auth }) {
             )}
             {services.map((service)=>{
                 return (
-                    <tr>
+                    <tr key={service.id}>
                         <td>{service.ser_nom}</td>
                         <td>
                             <a href={route('services.edit', { service: service.id })}>

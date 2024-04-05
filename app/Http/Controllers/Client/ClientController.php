@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
@@ -14,12 +15,14 @@ class ClientController extends Controller
 {
     public function index()
     {
+        $parametreId = Auth::user()->parametre->id;
         $clients = Client::all();
         return Inertia::render('Clients/Index', [
             'auth' => [
                 'user' => auth()->user()
             ],
             'clients' => $clients,
+            'parametreId' => $parametreId,
         ]);
     }
 
