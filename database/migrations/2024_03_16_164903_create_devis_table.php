@@ -18,9 +18,11 @@ return new class extends Migration
             $table->dateTime('dev_date')->nullable();
             $table->dateTime('dev_fin_validite')->nullable();
             $table->json('dev_liste_prestation');
-           // $table->unsignedBigInteger('projet_id')->unique();
+            $table->unsignedBigInteger('projet_id'); // Assurez-vous que cette ligne existe.
+            $table->foreign('projet_id')->references('id')->on('projet')->onDelete('cascade');
             $table->timestamps();
         });
+
     }
 
     /**

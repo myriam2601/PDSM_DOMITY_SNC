@@ -12,6 +12,7 @@ import {Head, Link, useForm} from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
 export default function MainProject({ auth, projets, url,  parametreId }) {
+    console.log(projets);
     return (
         <DefaultDashboardLayout user={auth.user} title="Projets" url={url} parametreId={parametreId} >
             <Head title="Projets" />

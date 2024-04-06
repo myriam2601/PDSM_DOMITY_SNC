@@ -37,7 +37,6 @@ class Projet extends Model
     {
         return $this->hasOne(Devis::class);
     }
-    // Vous pouvez ajouter la relation avec Client plus tard ici
 
 
 }

@@ -50,7 +50,7 @@ class ProjetController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        
+
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'client_id' => 'required|integer|exists:client,id',
@@ -70,13 +70,13 @@ class ProjetController extends Controller
             'description' => $validated['description'],
         ]);
 
-        
-        
+
+
         $serviceId = $request->input('service_id');
-        
+
         $projet->save();
         $idProjet = $projet->id;
-        
+
 
         return redirect()->route('devis.form')->with([
             'success'=>'Projet créé avec succès',
@@ -90,12 +90,13 @@ class ProjetController extends Controller
     public function show(Projet $projet)
     {
         // Charger des données supplémentaires si nécessaire
-        $projet->load('user', 'client', 'service');
+        $projet->load('user', 'client', 'service', 'devis');
 
         return Inertia::render('Projets/Show', [
             'projet' => $projet,
         ]);
     }
+
 
 
 
