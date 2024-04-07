@@ -3,6 +3,7 @@ import { useForm, Head } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
+import {ArrowLeftIcon} from "@heroicons/react/24/outline/index.js";
 
 export default function AddClient({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -29,6 +30,10 @@ export default function AddClient({ auth }) {
             <div className="divide-y divide-white/5 bg-white">
                 <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                     <div className="md:col-span-1">
+                        <a href="javascript:history.back()"
+                           className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                            <ArrowLeftIcon className="w-4 h-4"/>
+                        </a>
                         <h2 className="text-base font-semibold leading-7 text-primaryDarkBlue">
                             Ajouter un nouveau Client
                         </h2>
@@ -40,7 +45,7 @@ export default function AddClient({ auth }) {
                     <form onSubmit={submit} className="md:col-span-2 space-y-6">
                         <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-6">
-                                <label htmlFor="cli_nom" className="block text-sm font-medium leading-6 text-primaryDarkBlue">
+                            <label htmlFor="cli_nom" className="block text-sm font-medium leading-6 text-primaryDarkBlue">
                                     Nom
                                 </label>
                                 <input

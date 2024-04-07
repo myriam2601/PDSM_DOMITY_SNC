@@ -2,18 +2,23 @@ import React from "react";
 import { Head, Link } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import { PencilIcon } from "@heroicons/react/20/solid/index.js";
-import {DocumentTextIcon} from "@heroicons/react/24/outline";
+import { DocumentTextIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function ShowProject({ auth, projet }) {
+    console.log("Project Data: ", projet);
+    console.log("Devis for Project: ", projet.devis);
     return (
         <DefaultDashboardLayout user={auth.user} title={`Détails du Projet - ${projet.nom}`}>
             <Head title={`Détails du Projet - ${projet.nom}`}/>
 
-            <div className="flex justify-end">
+            <div className="flex justify-between items-center p-4 sm:p-6 lg:p-8">
+                <a href="javascript:history.back()" className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                    <ArrowLeftIcon className="w-4 h-4"/>
+                </a>
                 <Link href={route('projets.edit', {projet: projet.id})}>
                     <button
                         type="button"
-                        className="my-3 flex items-center rounded-full bg-primaryDarkBlue px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-greySecond hover:text-primaryDarkBlue"
+                        className="flex items-center rounded-full bg-primaryDarkBlue px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-greySecond hover:text-primaryDarkBlue"
                     >
                         <span>Modifier le Projet</span>
                         <PencilIcon className="h-5 w-5 ml-2" aria-hidden="true"/>
@@ -41,8 +46,6 @@ export default function ShowProject({ auth, projet }) {
                         </Link>
                     </div>
                 )}
-
-
             </div>
         </DefaultDashboardLayout>
     );
