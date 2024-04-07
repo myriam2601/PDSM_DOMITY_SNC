@@ -8,9 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 
-/**voir si un service existe, update et delete
- * voir si un service est bien lié à un projet
- */
+
 class ServiceTest extends TestCase
 {
 
