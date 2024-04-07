@@ -33,7 +33,7 @@ class ServiceFonctionnelTest extends TestCase
         $this->actingAs($user);
 
         $serviceData =[
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',
@@ -56,7 +56,7 @@ class ServiceFonctionnelTest extends TestCase
         $this->actingAs($user);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',
@@ -65,7 +65,7 @@ class ServiceFonctionnelTest extends TestCase
         $id = $service->id;
 
         $updatedData = [
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Mettre à jour Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',
@@ -90,7 +90,7 @@ class ServiceFonctionnelTest extends TestCase
         $this->actingAs($user);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',
@@ -117,7 +117,7 @@ class ServiceFonctionnelTest extends TestCase
         $this->actingAs($user);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',

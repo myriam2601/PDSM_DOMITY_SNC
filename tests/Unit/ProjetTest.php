@@ -29,7 +29,7 @@ class ProjetTest extends TestCase
         ]);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois'
@@ -70,7 +70,7 @@ class ProjetTest extends TestCase
         ]);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois'
@@ -116,7 +116,7 @@ class ProjetTest extends TestCase
         ]);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois'
@@ -158,7 +158,7 @@ class ProjetTest extends TestCase
         ]);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois'
