@@ -23,7 +23,7 @@ export default function ParamApp({ auth }) {
         e.preventDefault();
         const formData = new FormData();
         Object.keys(data).forEach((key) => formData.append(key, data[key]));
-
+        console.log(preview)
         post(route('parametres.store'), formData, {
             onSuccess: () => {
                 reset();

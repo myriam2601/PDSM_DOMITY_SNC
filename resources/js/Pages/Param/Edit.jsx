@@ -18,9 +18,9 @@ export default function Edit({ auth, parametre }) {
         par_accord: parametre.par_accord || false,
     });
 
-    const [preview, setPreview] = useState(parametre.par_logo ? `/storage/app/public/${parametre.par_logo}` : null); // Assumer que vous avez un chemin d'accès pour l'image
-
-
+    //const [preview, setPreview] = useState(parametre.par_logo ? `/storage/app/public/${parametre.par_logo}` : null); // Assumer que vous avez un chemin d'accès pour l'image
+    console.log(parametre.par_logo)
+    const [preview, setPreview] = useState(parametre.par_logo ? `/storage/${parametre.par_logo}` : null);
     const submit = (e) => {
         e.preventDefault();
         const formData = new FormData();

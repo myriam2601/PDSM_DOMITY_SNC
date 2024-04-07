@@ -6,6 +6,7 @@ import {
     View,
     StyleSheet,
     PDFViewer,
+    Image,
 } from "@react-pdf/renderer";
 
 // Styles inspirés de Tailwind pour @react-pdf/renderer
@@ -114,11 +115,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#1F2937",
     },
+    logoContainer: {
+        width: 60, // Ajustez selon la taille de votre logo
+        height: 60,
+    },
 });
 
-const PDFStructure = ({ dev_liste_prestation, client }) => {
+const PDFStructure = ({ dev_liste_prestation, client, parametre }) => {
+
     const tabDevis = JSON.parse(dev_liste_prestation);
-    console.log(tabDevis);
+    console.log(parametre);
     const libelles = tabDevis["libelles"];
     const ajustements = tabDevis["ajustements"];
     console.log(ajustements);
@@ -127,14 +133,18 @@ const PDFStructure = ({ dev_liste_prestation, client }) => {
             <Document>
                 <Page size="A4" style={styles.page}>
                     <View style={styles.elegantHeader}>
-                        <View style={styles.logoContainer}>
-                            <Text>logo</Text> {/* Votre logo ici */}
-                        </View>
-                        <Text style={styles.companyInfo}>
-                            Nom de l'entreprise {"\n"}
-                            Adresse de l'entreprise {"\n"}
-                            Autres informations
-                        </Text>
+                    <Text style={styles.companyInfo}>
+                        {parametre.par_nom_societe}{"\n"}
+                        {parametre.par_adresse}{"\n"}
+                        {parametre.par_localite}{"\n"}
+                        {parametre.par_npa}{"\n"}
+                        {parametre.par_email}{"\n"}
+                        {parametre.par_site_web}{"\n"}
+                    </Text>
+                        <Image
+                        style={styles.logoContainer}
+                        src={`/storage/${parametre.par_logo}`}
+                        />
                     </View>
                     <Text style={styles.header}>Devis</Text>
 
@@ -143,10 +153,10 @@ const PDFStructure = ({ dev_liste_prestation, client }) => {
                         <View style={{ width: "50%" }}>
                             <Text style={styles.infoTitle}>Émetteur:</Text>
                             <Text style={styles.infoContent}>
-                                Nom de l'entreprise
+                            {parametre.par_nom_societe}
                             </Text>
                             <Text style={styles.infoContent}>
-                                Adresse de l'entreprise
+                            {parametre.par_adresse}
                             </Text>
                             <Text style={styles.infoContent}>
                                 Autres informations

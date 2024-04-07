@@ -15,20 +15,21 @@ class DevisController extends Controller
 {
     public function store(Request $request)
     {
-
+        
         $existingDevis = Devis::where('projet_id', $request->input('projectId'))->first();
-
+        
         if ($existingDevis) {
             $projetNom = Projet::find($existingDevis->projet_id)->nom; // Assurez-vous d'obtenir le nom directement ici
 
             // Gérer l'erreur, par exemple, en renvoyant un message d'erreur.
             return redirect()->route('devis.index')->withInput()->with('echec', 'Echec de l\'insertion, le projet ' . $projetNom . ' existe déjà.');
         }
+
         $lignesDevisArray = $request->input('libelles');
         // Ici, vous devez également récupérer les ajustements depuis la requête, si vous les envoyez depuis le front-end
         $ajustementsArray = $request->input('ajustements'); // Assurez-vous que le nom de l'input correspond à ce que vous avez dans le front-end
         $idProjet = $request->input('projectId');
-
+        
         $projet = Projet::find($idProjet);
         $service = Service::find($projet->service_id);
 
