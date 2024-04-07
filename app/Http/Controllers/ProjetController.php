@@ -28,8 +28,7 @@ class ProjetController extends Controller
             'auth' => [
                 'user' => auth()->user()
             ],
-            // Add the projects data, assuming you have a 'user' relationship defined on your Projet model
-            'projets' => Projet::with('user:id,name')->latest()->get(), // Adjust 'user:id,name' based on your actual relationship and fields you want to select
+            'projets' => Projet::with(['user:id,name', 'devis'])->latest()->get(), // Assurez-vous d'inclure 'devis' ici
             'parametreId' => $parametreId,
         ]);
     }
@@ -39,9 +38,9 @@ class ProjetController extends Controller
      */
     public function create()
     {
-        // Assurez-vous que le chemin 'Projets/AddProject' correspond au fichier de votre composant React dans resources/js/Pages/Projets/AddProject.jsx
+
         return Inertia::render('Projets/AddProject', [
-            // Vous pouvez passer ici des données supplémentaires nécessaires pour le formulaire, par exemple, une liste de clients si vous en avez besoin
+
         ]);
     }
 
@@ -105,13 +104,10 @@ class ProjetController extends Controller
      */
     public function edit(Projet $projet)
     {
-        // Assurez-vous que le nom de la table est correct ici. Utilisez `Client::all()` si votre table s'appelle `client`.
         $clients = Client::all();
-        // Même chose ici pour les services. Utilisez `Service::all()` si votre table s'appelle `service`.
         $services = Service::all();
         return Inertia::render('Projets/Edit', [
             'projet' => $projet,
-            // Assurez-vous que le nom passé ici correspond à ce que vous utilisez dans le composant React.
             'clients' => $clients,
             'services' => $services,
         ]);
