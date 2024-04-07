@@ -17,7 +17,6 @@ class ServiceFonctionnelTest extends TestCase
 
     /**
      * TODO: DANS LE DOSSIER FEATURE NOUS AURONS TOUS NOS TEST FONCTIONNELS, CAD REDIRECTION DES PAGES ETC
-     * TODO : TESTER LES ERREURS AUSSI AVEC LES assertStatus(404)....
     */
     use RefreshDatabase; // vide la base de données avant chaque test
 
@@ -51,7 +50,7 @@ class ServiceFonctionnelTest extends TestCase
         $user = User::create([
             'name' => 'User Domity',
             'email' => 'user@domity.com',
-            'password' => bcrypt('password'), // Pour chiffrer le mot de passe
+            'password' => bcrypt('password'),
         ]);
 
         $this->actingAs($user);
@@ -85,7 +84,7 @@ class ServiceFonctionnelTest extends TestCase
         $user = User::create([
             'name' => 'User Domity',
             'email' => 'user@domity.com',
-            'password' => bcrypt('password'), // Pour chiffrer le mot de passe
+            'password' => bcrypt('password'),
         ]);
 
         $this->actingAs($user);
@@ -106,14 +105,13 @@ class ServiceFonctionnelTest extends TestCase
     }
 
 
-    //TODO : FAUT LANCER LE SERVEUR POUR LES REALISER
     /** @test */
     public function user_get_service()
     {
         $user = User::create([
             'name' => 'User Domity',
             'email' => 'user@domity.com',
-            'password' => bcrypt('password'), // Pour chiffrer le mot de passe
+            'password' => bcrypt('password'),
         ]);
 
         $this->actingAs($user);
