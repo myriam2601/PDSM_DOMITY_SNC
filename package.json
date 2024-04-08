@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "setup": "node create-symlink.js"
     },
     "devDependencies": {
         "@headlessui/react": "^1.7.18",
