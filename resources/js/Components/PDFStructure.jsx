@@ -13,7 +13,7 @@ import {
 const styles = StyleSheet.create({
     page: {
         flexDirection: "column",
-        backgroundColor: "#fff",
+        backgroundColor: "#ffffff",
         paddingHorizontal: 50,
         paddingVertical: 30,
     },
@@ -21,66 +21,68 @@ const styles = StyleSheet.create({
         fontSize: 24,
         marginBottom: 20,
         textAlign: "center",
-        color: "#374151",
+        color: "#111827",
     },
     infoSection: {
         marginBottom: 20,
     },
     infoTitle: {
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: "bold",
         marginBottom: 4,
-        color: "#374151",
+        color: "#111827",
     },
     infoContent: {
-        fontSize: 12,
-        color: "#4b5563",
+        fontSize: 14,
+        color: "#374151",
         marginBottom: 4,
     },
     table: {
         display: "table",
-        width: "auto",
-        borderCollapse: "collapse",
+        width: "100%", // Augmente la largeur pour une meilleure disposition
+        borderStyle: "solid",
+        borderWidth: 1,
+        borderColor: "#d1d5db",
     },
     tableRow: {
         flexDirection: "row",
         borderBottomWidth: 1,
         borderColor: "#d1d5db",
-        backgroundColor: "#f9fafb",
+        backgroundColor: "#f3f4f6", // Un gris plus clair pour les rangées
     },
     tableColHeader: {
         width: "16.666%",
         borderRightWidth: 1,
         borderColor: "#d1d5db",
-        backgroundColor: "#1b263b",
-        padding: 8,
+        backgroundColor: "#374151", // Un fond plus foncé pour l'entête
+        padding: 10,
     },
     tableCol: {
         width: "16.666%",
         borderRightWidth: 1,
         borderColor: "#d1d5db",
-        padding: 8,
+        padding: 10,
     },
     tableCellHeader: {
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: "bold",
-        color: "#FFFFFF",
+        color: "#ffffff",
     },
     tableCell: {
-        fontSize: 10,
+        fontSize: 14,
         color: "#4b5563",
     },
     signatureSection: {
         marginTop: 20,
     },
     signatureText: {
-        fontSize: 12,
-        color: "#374151",
+        fontSize: 14,
+        color: "#111827",
         marginBottom: 5,
         textAlign: "center",
     },
     footer: {
-        fontSize: 12,
+        fontSize: 14,
         textAlign: "center",
         color: "#6b7280",
         marginTop: 20,
@@ -92,34 +94,33 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     logoContainer: {
-        width: 60, // Ajustez selon la taille de votre logo
+        width: 60,
         height: 60,
     },
     companyInfo: {
-        fontSize: 12,
-        color: "#4B5563", // Gris foncé
+        fontSize: 14,
+        color: "#1f2937",
     },
     elegantTableHeader: {
-        backgroundColor: "#E5E7EB", // Gris clair
+        backgroundColor: "#e5e7eb",
     },
     sectionTitle: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: "bold",
-        color: "#1F2937", // Presque noir
+        color: "#1f2937",
         marginBottom: 8,
     },
     totalSection: {
         marginTop: 32,
         textAlign: "right",
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: "bold",
-        color: "#1F2937",
-    },
-    logoContainer: {
-        width: 60, // Ajustez selon la taille de votre logo
-        height: 60,
+        color: "#1f2937",
     },
 });
+
+// Utilisation des styles dans le composant PDFStructure reste inchangée.
+
 
 const PDFStructure = ({ dev_liste_prestation, client, parametre }) => {
 
@@ -265,7 +266,7 @@ const PDFStructure = ({ dev_liste_prestation, client, parametre }) => {
                                 {" "}
                                 {/* Stylez comme vous le souhaitez */}
                                 <Text
-                                    style={{ fontWeight: "bold", fontSize: 16 }}
+                                    style={{ fontWeight: "bold", fontSize: 24 }}
                                 >
                                     {ajustement.appellationAjustement} :
                                 </Text>

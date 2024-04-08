@@ -17,7 +17,6 @@ class ServiceFonctionnelTest extends TestCase
 
     /**
      * TODO: DANS LE DOSSIER FEATURE NOUS AURONS TOUS NOS TEST FONCTIONNELS, CAD REDIRECTION DES PAGES ETC
-     * TODO : TESTER LES ERREURS AUSSI AVEC LES assertStatus(404)....
     */
     use RefreshDatabase; // vide la base de données avant chaque test
 
@@ -34,7 +33,7 @@ class ServiceFonctionnelTest extends TestCase
         $this->actingAs($user);
 
         $serviceData =[
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',
@@ -51,13 +50,13 @@ class ServiceFonctionnelTest extends TestCase
         $user = User::create([
             'name' => 'User Domity',
             'email' => 'user@domity.com',
-            'password' => bcrypt('password'), // Pour chiffrer le mot de passe
+            'password' => bcrypt('password'),
         ]);
 
         $this->actingAs($user);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',
@@ -66,7 +65,7 @@ class ServiceFonctionnelTest extends TestCase
         $id = $service->id;
 
         $updatedData = [
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Mettre à jour Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',
@@ -85,13 +84,13 @@ class ServiceFonctionnelTest extends TestCase
         $user = User::create([
             'name' => 'User Domity',
             'email' => 'user@domity.com',
-            'password' => bcrypt('password'), // Pour chiffrer le mot de passe
+            'password' => bcrypt('password'),
         ]);
 
         $this->actingAs($user);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',
@@ -106,20 +105,19 @@ class ServiceFonctionnelTest extends TestCase
     }
 
 
-    //TODO : FAUT LANCER LE SERVEUR POUR LES REALISER
     /** @test */
     public function user_get_service()
     {
         $user = User::create([
             'name' => 'User Domity',
             'email' => 'user@domity.com',
-            'password' => bcrypt('password'), // Pour chiffrer le mot de passe
+            'password' => bcrypt('password'),
         ]);
 
         $this->actingAs($user);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois',

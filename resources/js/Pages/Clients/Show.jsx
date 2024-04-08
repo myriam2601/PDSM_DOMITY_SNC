@@ -6,13 +6,14 @@ import React from "react";
 import { Head, Link } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import { PlusIcon, PencilIcon } from "@heroicons/react/20/solid/index.js";
+import {ArrowLeftIcon} from "@heroicons/react/24/outline";
 
 export default function ShowClient({ auth, client }) {
     return (
         // Utilisation du layout par défaut pour la disposition et le style de la page
         <DefaultDashboardLayout user={auth.user} title={`Détails du Client - ${client.cli_nom} ${client.cli_prenom}`}>
             {/* Configuration du titre de la page dans l'en-tête du navigateur */}
-            <Head title={`Détails du Client - ${client.cli_nom} ${client.cli_prenom}`} />
+            <Head title={`Détails du Client - ${client.cli_nom} ${client.cli_prenom}`}/>
 
             {/* Bouton de modification du client */}
             <div className="flex justify-end">
@@ -29,12 +30,16 @@ export default function ShowClient({ auth, client }) {
 
             {/* Section de contenu avec les détails du client */}
             <div className="p-6">
+                <a href="javascript:history.back()"
+                   className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                    <ArrowLeftIcon className="w-4 h-4"/>
+                </a>
                 {/* Titre de la page avec le nom et le prénom du client */}
                 <h2 className="text-2xl font-semibold leading-7 text-primaryDarkBlue">
                     {client.cli_nom} {client.cli_prenom}
                 </h2>
                 <p className="text-sm font-semibold leading-5 text-primaryDarkBlue">
-                     {client.cli_societe}
+                    {client.cli_societe}
                 </p>
                 <br/>
                 <p className="text-sm font-semibold leading-5 text-primaryDarkBlue">
@@ -46,7 +51,7 @@ export default function ShowClient({ auth, client }) {
                 <p className="text-sm font-semibold leading-5 text-primaryDarkBlue">
                     Adresse: {client.cli_adresse}, {client.cli_cli_npa}
                 </p>
-            <br/>
+                <br/>
                 {/* Informations spécifiques du client, par exemple: email, téléphone, etc. */}
                 <h2 className="text-lg font-semibold leading-6 text-primaryDarkBlue">
                     Projets Associés

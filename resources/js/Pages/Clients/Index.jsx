@@ -12,6 +12,7 @@ import {Head, Link, useForm} from "@inertiajs/react";
 import ParametrageLinks from '@/Components/ParametrageLinks';
 
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
+import {ArrowLeftIcon} from "@heroicons/react/24/outline";
 
 export default function MainClient({ auth, clients, url, parametreId  }) {
     return (
@@ -23,6 +24,10 @@ export default function MainClient({ auth, clients, url, parametreId  }) {
             {/* Section d'en-tête avec un titre et un espace pour le lien Ajouter un Client */}
             <div className="flex justify-between p-4 sm:p-6 lg:p-8">
                 <div>
+                    <a href="javascript:history.back()"
+                       className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                        <ArrowLeftIcon className="w-4 h-4"/>
+                    </a>
                     {/* Titre de la page */}
                     <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">
                         Clients

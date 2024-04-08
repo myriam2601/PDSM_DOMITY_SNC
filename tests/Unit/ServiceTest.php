@@ -8,9 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 
-/**voir si un service existe, update et delete
- * voir si un service est bien lié à un projet
- */
+
 class ServiceTest extends TestCase
 {
 
@@ -20,7 +18,7 @@ class ServiceTest extends TestCase
     public function insertion_service_dans_bdd()
     {
         $serviceData = [
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois'
@@ -38,7 +36,7 @@ class ServiceTest extends TestCase
     public function maj_service_dans_bdd()
     {
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois'
@@ -59,7 +57,7 @@ class ServiceTest extends TestCase
     public function supprimer_service_dans_bdd()
     {
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois'
@@ -77,7 +75,7 @@ class ServiceTest extends TestCase
     public function get_service()
     {
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois'

@@ -10,6 +10,7 @@ import ServicesDisplay from "@/Components/ServicesDisplay.jsx";
 import { Head, useForm } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import "../../../css/serviceStyle.css"
+import {ArrowLeftIcon} from "@heroicons/react/24/outline/index.js";
 
 export default function MainService({ auth, services, url, parametreId }) {
     const [serviceName, setServiceName] = useState("");//hook
@@ -31,6 +32,10 @@ export default function MainService({ auth, services, url, parametreId }) {
 
             <div className="flex justify-between p-4 sm:p-6 lg:p-8">
                 <div>
+                    <a href="javascript:history.back()"
+                       className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                        <ArrowLeftIcon className="w-4 h-4"/>
+                    </a>
                     <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">
                         Services
                     </h2>

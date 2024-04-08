@@ -114,7 +114,7 @@ class ClientTest extends TestCase
         ]);
 
         $service = Service::create([
-            'ser_categorie' => 'Consultation',
+            'ser_categorie' => 'PRG',
             'ser_nom' => 'Consulting IT',
             'ser_modalite' => 'à distance',
             'ser_conditions_reglements' => '30 jours fin de mois'
@@ -149,7 +149,7 @@ class ClientTest extends TestCase
         ]);
 
 
-        //query pour récupérer client spécifique avec l'id dans la bdd et with(projets) = on veut recupérer le client avec les projets qui lui sont liés
+        //query pour récupérer client spécifique avec l'id dans la bdd et with(projets) = on veut recuperer le client avec les projets qui lui sont liés
         $clientAvecSesProjets = Client::with('projets')->find($client->id);
 
         $this->assertEquals(2, $clientAvecSesProjets->projets->count());
