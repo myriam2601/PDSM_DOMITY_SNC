@@ -233,11 +233,14 @@ const PDFStructure = ({
     let totalFinalTTC = totalTTC;
 
     if (ajustements.length > 0) {
-        montantTotalAjuste = ajustements.reduce(
-            (acc, curr) => acc + parseFloat(curr.montantTotalAjuste),
-            0
-        );
-        totalFinalTTC = totalTTC - montantTotalAjuste;
+        ajustements.forEach((ajustement) => {
+            const montantAjustement = parseFloat(ajustement.montantTotalAjuste);
+            if (ajustement.nomAjustement.toLowerCase() === "rabais") {
+                totalFinalTTC -= montantAjustement; // Soustraire le montant si c'est un rabais
+            } else if (ajustement.nomAjustement.toLowerCase() === "majoration") {
+                totalFinalTTC += montantAjustement; // Ajouter le montant si c'est une majoration
+            }
+        });
     }
     const acompte = totalFinalTTC * 0.30;
     return (
@@ -376,13 +379,13 @@ const PDFStructure = ({
                         {ajustements.map((ajustement, indexAjustement) => (
                             <View key={indexAjustement} style={{ marginBottom: 10 }}>
                                 <Text style={styles.ajustementHeader}>
-                                    {ajustement.appellationAjustement} - {ajustement.nomAjustement} :
+                                    {ajustement.appellationAjustement} - {ajustement.nomAjustement} (taux: {ajustement.taux}%):
                                 </Text>
                                 {ajustement.identifiantDesignation.map((idLibelle) => {
                                     const libelleConcerne = libelles.find((libelle) => libelle.id === idLibelle);
                                     return libelleConcerne ? (
                                         <Text key={idLibelle} style={styles.ajustementText}>
-                                            - {libelleConcerne.designation} à {ajustement.montantTotalAjuste} CHF (taux: {ajustement.taux}%)
+                                            - {libelleConcerne.designation} à {ajustement.montantTotalAjuste} CHF 
                                         </Text>
                                     ) : null;
                                 })}
@@ -391,28 +394,10 @@ const PDFStructure = ({
                     </View>
                     </View>
 
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "flex-end",
-                            marginTop: 20,
-                        }}
-                    >
-                        <View style={{ ...styles.totalSection }}>
-                            <View style={styles.totalSection}>
-                                <Text>
-                                    Total TTC sans ajustements:{" "}
-                                    {totalTTC.toFixed(2)} CHF
-                                </Text>
-                                <Text>
-                                    Total à payer:{" "}
-                                    {totalFinalTTC.toFixed(2)} CHF
-                                </Text>
-                            </View>
-                            <Text>
-                                Accompte (30%): {acompte.toFixed(2)} CHF
-                            </Text>
-                        </View>
+                    <View style={styles.totalSection}>
+                        <Text>Total TTC sans ajustements: {totalTTC.toFixed(2)} CHF</Text>
+                        <Text>Total à payer après ajustements: {totalFinalTTC.toFixed(2)} CHF</Text>
+                        <Text>Accompte (30%): {acompte.toFixed(2)} CHF</Text>
                     </View>
 
                     <View style={styles.signatureSection}>
