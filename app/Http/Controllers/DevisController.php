@@ -33,7 +33,9 @@ class DevisController extends Controller
         $projet = Projet::find($idProjet);
         $service = Service::find($projet->service_id);
 
-        $devNom = 'Devis n°' . date('Y') . '-' . $service->ser_categorie;
+
+        $categorieService = strtoupper($service->ser_categorie);
+        $devNom = 'Devis n°' . date('Y') . '-' . $categorieService;
         $devDate = now();
         $devFinValidite = now()->addMonth(); // Ajoute un mois à la date actuelle
 
