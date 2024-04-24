@@ -12,7 +12,7 @@ import {
     DocumentTextIcon,
 } from '@heroicons/react/24/outline';
 import { InertiaLink } from '@inertiajs/inertia-react';
-import {Link, usePage} from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
@@ -28,9 +28,9 @@ const userNavigation = [
     { name: 'Se déconnecter', href: '/' },
 ];
 
-export default function DefaultDashboardLayout({ children  }) {
+export default function DefaultDashboardLayout({ children }) {
     const [parametreEditUrl, setParametreEditUrl] = useState(null);
-    const { parametreId } = usePage().props;
+    const { parametreId, auth } = usePage().props;
     const [showDropdown, setShowDropdown] = useState(false);
     const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
@@ -48,7 +48,6 @@ export default function DefaultDashboardLayout({ children  }) {
             })
             .catch(error => console.error('Erreur de déconnexion:', error));
     };
-
 
     useEffect(() => {
         setParametreEditUrl(parametreId ? `/parametres/${parametreId}/edit` : null);
@@ -68,6 +67,7 @@ export default function DefaultDashboardLayout({ children  }) {
             icon: Cog6ToothIcon,
         },
     ];
+
     return (
         <>
             <div>
@@ -81,7 +81,6 @@ export default function DefaultDashboardLayout({ children  }) {
                                 src="/logo_white.png"
                                 alt="Your Company"
                             />
-
                         </div>
 
                         <div className="mt-5 flex-grow flex flex-col">
@@ -95,24 +94,25 @@ export default function DefaultDashboardLayout({ children  }) {
                                         <item.icon className="mr-3 flex-shrink-0 h-6 w-6 text-gray-400" />
                                         {item.name}
                                     </Link>
-
                                 ))}
                                 {/* Add a separator or a header for administration links */}
-                                <div className="px-2">
-                                    <div className="text-xs text-gray-400">
-                                        Administration
+                                {auth.user.isAdmin && (
+                                    <div className="px-2">
+                                        <div className="text-xs text-gray-400">
+                                            Administration
+                                        </div>
+                                        {administrations.map((admin) => (
+                                            <Link
+                                                key={admin.name}
+                                                href={admin.href}
+                                                className="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                                            >
+                                                <admin.icon className="mr-3 flex-shrink-0 h-6 w-6 text-gray-400" />
+                                                {admin.name}
+                                            </Link>
+                                        ))}
                                     </div>
-                                    {administrations.map((admin) => (
-                                        <Link
-                                            key={admin.name}
-                                            href={admin.href}
-                                            className="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                                        >
-                                            <admin.icon className="mr-3 flex-shrink-0 h-6 w-6 text-gray-400" />
-                                            {admin.name}
-                                        </Link>
-                                    ))}
-                                </div>
+                                )}
                                 {/* Additional sections for the sidebar */}
                             </nav>
                         </div>
@@ -162,7 +162,6 @@ export default function DefaultDashboardLayout({ children  }) {
                                         )}
                                     </div>
 
-
                                     {/* Boîte de dialogue de confirmation de déconnexion */}
                                     {showLogoutConfirmation && (
                                         <Dialog open={showLogoutConfirmation} onClose={() => setShowLogoutConfirmation(false)} className="fixed z-10 inset-0 overflow-y-auto">
@@ -184,15 +183,13 @@ export default function DefaultDashboardLayout({ children  }) {
                                                         </div>
                                                     </div>
                                                     <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                                        <button type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 sm:ml-3 sm:w-auto sm:text-sm" onClick={() => {handleLogout()}}>Se déconnecter</button>
+                                                        <button type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 sm:ml-3 sm:w-auto sm:text-sm" onClick={() => { handleLogout() }}>Se déconnecter</button>
                                                         <button type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onClick={() => setShowLogoutConfirmation(false)}>Annuler</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </Dialog>
                                     )}
-
-
                                 </div>
 
                                 {/* Profile dropdown */}
@@ -207,6 +204,5 @@ export default function DefaultDashboardLayout({ children  }) {
                 </div>
             </div>
         </>
-
     );
 }
