@@ -31,22 +31,29 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        \Log::info('Received data:', $request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'isAdmin' => 'required|boolean',
         ]);
-
+        ;
+        ;
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'isAdmin' => $request->input('isAdmin', false), // Utiliser input() avec une valeur par défaut // Utilise l'opérateur null coalescent pour définir la valeur par défaut
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
+if ($user->isAdmin) {
+            return redirect('/parametres/create');
 
-        return redirect('/parametres/create');
+        }
+        return redirect(RouteServiceProvider::HOME);
     }
 }

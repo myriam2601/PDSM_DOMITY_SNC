@@ -117,7 +117,7 @@ Route::delete('/services/{service}', [ServiceController::class, 'destroy'])
 Route::prefix('/devis')->name('devis.')->group(function(){
     Route::get('/', [DevisController::class, 'index'])->name('index');
 
-    Route::get('/form', [DevisController::class, 'form'])->name('form'); 
+    Route::get('/form', [DevisController::class, 'form'])->name('form');
     Route::post('/store', [DevisController::class, 'store'])->name('store'); // Assurez-vous d'ajouter également un nom à cette route si vous y faites référence quelque part.
     Route::get('/generer-pdf/{id}', [PDFController::class, 'generatePDF'])->name('generatePDF'); // Pensez à nommer toutes vos routes.
     Route::get('/edit/{id}',[DevisController::class, 'edit'])->name('edit');
@@ -150,24 +150,25 @@ Route::resource('projets', ProjetController::class)
 
 Route::get('/generate-pdf', 'PdfController@generatePDF')
     ->name('generate-pdf');
-
 // Importation des routes d'authentification générées automatiquement
 require __DIR__.'/auth.php';
 
-// Route pour afficher le formulaire de création d'un Parametre
-Route::get('/parametres/create', [ParamController::class, 'create'])
-    ->name('parametres.create')
-    ->middleware(['auth', 'verified']);;
+// Groupe de routes nécessitant que l'utilisateur soit un administrateur
+Route::middleware(['admin'])->group(function () {
+    // Route pour afficher le formulaire de création d'un Paramètre
+    Route::get('/parametres/create', [ParamController::class, 'create'])
+        ->name('parametres.create');
 
-// Route pour créer un nouveau Parametre
-Route::post('/parametres', [ParamController::class, 'store'])
-    ->name('parametres.store')
-    ->middleware(['auth', 'verified']);;
+    // Route pour soumettre un nouveau Paramètre
+    Route::post('/parametres', [ParamController::class, 'store'])
+        ->name('parametres.store');
 
-Route::get('/parametres/{parametre}/edit', [ParamController::class, 'edit'])
-    ->name('parametres.edit')
-    ->middleware(['auth', 'verified']);
+    // Route pour afficher le formulaire de modification d'un Paramètre existant
+    Route::get('/parametres/{parametre}/edit', [ParamController::class, 'edit'])
+        ->name('parametres.edit');
 
-Route::match(['post', 'put'], '/parametres/{parametre}', [ParamController::class, 'update'])
-    ->name('parametres.update')
-    ->middleware(['auth', 'verified']);
+    // Route pour mettre à jour un Paramètre existant
+    Route::match(['post', 'put'], '/parametres/{parametre}', [ParamController::class, 'update'])
+        ->name('parametres.update');
+});
+
