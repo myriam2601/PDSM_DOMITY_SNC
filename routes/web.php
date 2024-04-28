@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\DevisController;
 use App\Http\Controllers\Parametre\ParamController;
@@ -8,9 +10,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Service\ServiceController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -170,5 +171,19 @@ Route::middleware(['admin'])->group(function () {
     // Route pour mettre à jour un Paramètre existant
     Route::match(['post', 'put'], '/parametres/{parametre}', [ParamController::class, 'update'])
         ->name('parametres.update');
+    // Route pour afficher la liste des utilisateurs depuis la vue Admin
+    Route::get('/admin', [AdminController::class, 'index'])
+        ->name('admin.index');
+    //Route pour afficher le formulaire de création d'un utilisateur depuis la vue admin
+    Route::get('/create-user', [RegisteredUserController::class, 'showCreateUserForm'])
+        ->name('create.user.form');
+    //Route pour créer un utilisateur depuis la vue admin
+    Route::post('/create-user', [RegisteredUserController::class, 'createUser'])
+        ->name('create.user');
+    Route::delete('/admin/users/{user}', [AdminController::class, 'delete'])
+        ->name('admin.users.delete');
 });
+
+
+
 

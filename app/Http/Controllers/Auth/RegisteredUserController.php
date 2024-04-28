@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -55,5 +56,34 @@ if ($user->isAdmin) {
 
         }
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function showCreateUserForm(): Response
+    {
+        return Inertia::render('Administrateur/CreateUser');
+    }
+
+    public function createUser(Request $request): RedirectResponse
+    {
+        // Validation des données du formulaire
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'isAdmin' => 'required|boolean',
+        ]);
+
+        // Création de l'utilisateur
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'isAdmin' => $request->input('isAdmin', false), // Utilisation de la valeur par défaut
+        ]);
+
+        // Déclenchement de l'événement Registered pour l'utilisateur créé
+        event(new Registered($user));
+
+        return redirect('/admin');
     }
 }

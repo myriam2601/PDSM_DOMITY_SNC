@@ -56,8 +56,8 @@ export default function DefaultDashboardLayout({ children }) {
     const administrations = [
         {
             id: 1,
-            name: 'Administrateurs',
-            href: '/admins',
+            name: 'Administrateur',
+            href: '/admin',
             icon: Cog6ToothIcon,
         },
         {
