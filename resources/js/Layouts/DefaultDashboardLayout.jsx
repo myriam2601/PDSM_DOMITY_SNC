@@ -13,6 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { Link, usePage } from "@inertiajs/react";
+import {Inertia} from "@inertiajs/inertia";
 
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
@@ -50,8 +51,12 @@ export default function DefaultDashboardLayout({ children }) {
     };
 
     useEffect(() => {
-        setParametreEditUrl(parametreId ? `/parametres/${parametreId}/edit` : null);
-    }, [parametreId]);
+        if (!parametreId) {
+            setParametreEditUrl('/parametres/create');
+        } else {
+        console.log("Paramètre ID: ", parametreId);
+        setParametreEditUrl(parametreId ? `/parametres/${parametreId}/edit` : null);}
+        }, [parametreId]);
 
     const administrations = [
         {
