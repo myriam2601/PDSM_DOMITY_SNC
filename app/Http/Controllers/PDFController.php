@@ -18,7 +18,7 @@ class PDFController extends Controller
         $dev_liste_prestation = $devisEntries->dev_liste_prestation;
 
         $client = $devisEntries->projet->client;
-        //dd($client);
+        
         // Passer directement le tableau PHP à Inertia; il le convertira en JSON pour vous
         return Inertia::render('PDF/PDFDisplay', [
             'dev_liste_prestation' => $dev_liste_prestation,

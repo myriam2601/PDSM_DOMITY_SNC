@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Devis;
+use App\Models\Libelle;
 use App\Models\Projet;
 use App\Models\Service;
 use Illuminate\Http\Request;
@@ -64,7 +65,6 @@ class DevisController extends Controller
 
             $libelles[] = [
                 'id' => $ligne['id'],
-
                 'designation' => $ligne['designation'],
                 'quantite' => $quantite,
                 'prixUnitaire' => $prixUnitaire,
@@ -90,7 +90,6 @@ class DevisController extends Controller
 
         $devis->projet_id = $projet->id;
 
-
         $devis->save();
 
         return redirect()->route('devis.index')->with('reussi', 'Le devis a été créé avec succès!');
@@ -102,9 +101,7 @@ class DevisController extends Controller
         // Récupère tous les devis
         $devis = Devis::with('projet.client')->get();
         $parametreId = optional(Auth::user()->parametre)->id;
-
-
-
+        $libelles = Libelle::all();
         return Inertia::render('Devis/Index', [
             'auth' => [
                 'user' => auth()->user()
@@ -113,7 +110,9 @@ class DevisController extends Controller
             'info' => session('info'),
             'echec'=> session('echec'),
             'devis' => $devis,
+            'libelles' => $libelles,
             'parametreId' => $parametreId,
+            
         ]);
     }
 

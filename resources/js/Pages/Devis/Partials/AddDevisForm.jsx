@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { LigneDevis } from "../../../Components/LigneDevis";
 import { useForm } from "@inertiajs/react";
 import ModalCalcul from "../../../Modal/ModalCalcul.jsx";
-import Conf from "../../../Modal/ModalGenerationPDF.jsx";
-import ModalGenerationPDF from "../../../Modal/ModalGenerationPDF.jsx";
-
 import PrimaryButton from "@/Components/PrimaryButton";
 import { PlusIcon } from "@heroicons/react/20/solid";
 
@@ -22,11 +19,10 @@ export default function AddDevisForm({ success, projectId, auth }) {
             },
         ], // Initialisez lignesDevis comme un tableau
         ajustements: [],
-
         projectId: localProjectId,
     });
 
-    console.log(projectId);
+    
 
     function getUID() {
         // Get the timestamp and convert

@@ -7,6 +7,7 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LibelleController;
 use App\Http\Controllers\Service\ServiceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -116,7 +117,6 @@ Route::delete('/services/{service}', [ServiceController::class, 'destroy'])
 //David
 Route::prefix('/devis')->name('devis.')->group(function(){
     Route::get('/', [DevisController::class, 'index'])->name('index');
-
     Route::get('/form', [DevisController::class, 'form'])->name('form'); 
     Route::post('/store', [DevisController::class, 'store'])->name('store'); // Assurez-vous d'ajouter également un nom à cette route si vous y faites référence quelque part.
     Route::get('/generer-pdf/{id}', [PDFController::class, 'generatePDF'])->name('generatePDF'); // Pensez à nommer toutes vos routes.
@@ -124,6 +124,11 @@ Route::prefix('/devis')->name('devis.')->group(function(){
     Route::patch('/update',[DevisController::class, 'update'])->name('update');
     Route::delete('/delete/{devis}', [DevisController::class, 'destroy'])->name('destroy');
 
+});
+
+Route::prefix('/libelle')->name('libelle.')->group(function(){
+    Route::get('/', [LibelleController::class, 'index'])->name('index');
+    Route::post('/store', [LibelleController::class, 'store'])->name('store');
 });
 
 
@@ -148,8 +153,8 @@ Route::resource('projets', ProjetController::class)
 
 
 
-Route::get('/generate-pdf', 'PdfController@generatePDF')
-    ->name('generate-pdf');
+/* Route::get('/generate-pdf', [PDFController::class, 'generatePDF'])
+    ->name('generate-pdf'); */
 
 // Importation des routes d'authentification générées automatiquement
 require __DIR__.'/auth.php';

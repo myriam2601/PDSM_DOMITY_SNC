@@ -6,13 +6,14 @@ import { Switch } from '@headlessui/react';
 import { ToastContainer, toast } from "react-toastify";
 import DevisCards from "@/Components/DevisCard";
 import {ArrowLeftIcon} from "@heroicons/react/24/outline/index.js";
+import ModalIndex from "../Libelles/ModalIndex";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
 
 
-  export default function MainDevis({ auth, devis, url, parametreId }) {
+  export default function MainDevis({ auth, devis, url, parametreId, libelles }) {
     const { flash } = usePage().props;
     const [displayCards, setDisplayCards] = useState(false);
     console.log(flash)
@@ -30,6 +31,7 @@ function classNames(...classes) {
     return (
         <DefaultDashboardLayout user={auth.user} title="Devis" url={url} parametreId={parametreId}>
             <Head title="Devis" />
+            <ModalIndex libelles={libelles}/>
             <div className="flex justify-between items-center p-4 sm:p-6 lg:p-8">
                 <a href="javascript:history.back()"
                    className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
