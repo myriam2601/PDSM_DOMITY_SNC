@@ -22,8 +22,6 @@ export default function AddDevisForm({ success, projectId, auth }) {
         projectId: localProjectId,
     });
 
-    
-
     function getUID() {
         // Get the timestamp and convert
         // it into alphanumeric input

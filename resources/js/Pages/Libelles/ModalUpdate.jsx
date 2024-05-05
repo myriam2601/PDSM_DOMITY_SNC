@@ -1,47 +1,57 @@
-import React from "react";
-import Modal from "react-modal";
+import React from 'react';
+import Modal from 'react-modal';
 import { useForm } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia";
 
-Modal.setAppElement("#app"); // Configurez cela selon l'élément racine de votre application.
-
-const ModalInsertion = ({ isOpen, onRequestClose, response }) => {
-    const { data, setData, post, processing, reset } = useForm({
-        lib_designation: "",
-        lib_code: "",
-        lib_montant: "",
-        lib_ajustement: false,
+const ModalUpdate = ({ isOpen, onRequestClose, libelle }) => {
+    
+    // Initialisation des données du formulaire directement avec les valeurs du libelle
+    const { data, setData, patch, processing } = useForm({
+        id: libelle ? libelle.id : '',
+        lib_designation: libelle ? libelle.lib_designation : '',
+        lib_code: libelle ? libelle.lib_code : '',
+        lib_montant: libelle ? libelle.lib_montant : '',
+        lib_ajustement: libelle ? libelle.lib_ajustement : false,
     });
 
+    React.useEffect(() => {
+        console.log("Mise à jour des données du formulaire :", libelle);
+        setData({
+            id: libelle ? libelle.id : '',
+            lib_designation: libelle ? libelle.lib_designation : '',
+            lib_code: libelle ? libelle.lib_code : '',
+            lib_montant: libelle ? libelle.lib_montant : '',
+            lib_ajustement: libelle ? libelle.lib_ajustement : false,
+        });
+    }, [isOpen, libelle]);
+    
+    // Gestion des changements dans les champs de formulaire
     const handleInputChange = (event) => {
         const { name, value, type, checked } = event.target;
-        setData(name, type === "checkbox" ? checked : value);
+        setData(name, type === 'checkbox' ? checked : value);
     };
 
-    function handleSubmit(e) {
-      e.preventDefault();
-      post('/libelle/store', data, {
-          onSuccess: (response) => {
-              console.log('Insertion réussie, données reçues:', response);
-              reset(); // Réinitialise le formulaire après succès
-              onRequestClose(); // Ferme le modal si nécessaire
-          },
-          onError: (errors) => {
-              console.error('Erreur lors de la requête:', errors);
-          }
-      });
-  }
-
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        patch("/libelle/update", data, {
+            onSuccess: (page) => {
+                console.log('Message de succès:', page.props.message);
+                // Autres actions après succès, comme fermer un modal ou afficher une notification
+            }
+        });
+    };
+    
     return (
+        <div>
+        
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            contentLabel="Insertion Form"
+            contentLabel="Update Libelle"
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/5 max-w-3xl h-1/2 bg-white shadow-lg rounded p-8 overflow-hidden"
             overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-75"
         >
             <form onSubmit={handleSubmit} className="space-y-4">
-                <h2 className="font-bold text-lg">Fill Libelle Details</h2>
+                <h2 className="font-bold text-lg">Modifier Libellé</h2>
                 <label className="block">
                     Designation:
                     <input
@@ -91,7 +101,7 @@ const ModalInsertion = ({ isOpen, onRequestClose, response }) => {
                         Submit
                     </button>
                     <button
-                        onClick={onRequestClose} // Ferme le modal
+                        onClick={() => onRequestClose()}
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                     >
                         Close
@@ -99,7 +109,8 @@ const ModalInsertion = ({ isOpen, onRequestClose, response }) => {
                 </div>
             </form>
         </Modal>
+        </div>
     );
 };
 
-export default ModalInsertion;
+export default ModalUpdate;

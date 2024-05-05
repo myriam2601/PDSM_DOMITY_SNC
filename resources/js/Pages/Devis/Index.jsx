@@ -13,10 +13,10 @@ function classNames(...classes) {
   }
 
 
-  export default function MainDevis({ auth, devis, url, parametreId, libelles }) {
+  export default function MainDevis({ auth, devis, url, parametreId, libelles}) {
     const { flash } = usePage().props;
     const [displayCards, setDisplayCards] = useState(false);
-    console.log(flash)
+    
     useEffect(() => {
         if (flash.reussi) {
             toast.success(flash.reussi);
@@ -31,7 +31,7 @@ function classNames(...classes) {
     return (
         <DefaultDashboardLayout user={auth.user} title="Devis" url={url} parametreId={parametreId}>
             <Head title="Devis" />
-            <ModalIndex libelles={libelles}/>
+            <ModalIndex libelles={libelles} response={usePage().props}/>
             <div className="flex justify-between items-center p-4 sm:p-6 lg:p-8">
                 <a href="javascript:history.back()"
                    className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">

@@ -1,16 +1,41 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import ModalInsertion from './ModalInsertion';  // Assurez-vous que le chemin est correct
+import React, { useState } from "react";
+import Modal from "react-modal";
+import ModalInsertion from "./ModalInsertion";
+import ModalUpdate from "./ModalUpdate";
 
-Modal.setAppElement('#app');
+Modal.setAppElement("#app");
 
-const ModalIndex = ({ libelles }) => {
+const ModalIndex = ({ libelles, response}) => {
+    
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [insertModalOpen, setInsertModalOpen] = useState(false);
+    const [isInsertionModalOpen, setInsertionModalOpen] = useState(false);
+    const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
+    const [selectedLibelle, setSelectedLibelle] = useState(null);
+    const [tri, setTri] = useState({ colonne: null, direction: "asc" });
 
-    const openInsertModal = () => {
-        setModalIsOpen(false); // Ferme ModalIndex
-        setInsertModalOpen(true); // Ouvre ModalInsertion
+    const demanderTri = (colonne) => {
+        const estAscendant = tri.colonne === colonne && tri.direction === "asc";
+        setTri({
+            colonne,
+            direction: estAscendant ? "desc" : "asc",
+        });
+    };
+
+    const filtreEtTriLibelles = () => {
+        return libelles.sort((a, b) => {
+            if (!tri.colonne) return 0;
+            let valA = a[tri.colonne];
+            let valB = b[tri.colonne];
+            if (tri.direction === "asc") {
+                return valA < valB ? -1 : 1;
+            } else {
+                return valA > valB ? -1 : 1;
+            }
+        });
+    };
+
+    const handleUpdateModalClose = () => {
+        setUpdateModalOpen(false);
     };
 
     return (
@@ -19,45 +44,103 @@ const ModalIndex = ({ libelles }) => {
                 onClick={() => setModalIsOpen(true)}
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-                Ouvrir Modal Libellés
+                Tous les libellés
             </button>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={() => setModalIsOpen(false)}
                 contentLabel="Libelle Form"
-                className="fixed inset-0 m-auto bg-white rounded shadow-lg z-50 overflow-y-auto w-1/2 h-3/4 p-8"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/5 max-w-5xl h-4/5 bg-white shadow-lg rounded p-8 overflow-hidden"
                 overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-75"
             >
-                <h2>Liste des Libellés</h2>
-                <div className="overflow-auto max-h-96">
-                    <table className="min-w-full divide-y divide-gray-300">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Designation</th>
-                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Code</th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {libelles.map((libelle, index) => (
-                                <tr key={index}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{libelle.lib_designation}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{libelle.lib_code}</td>
+                <div className="flex flex-col h-full">
+                    <h2 className="text-xl mb-4 font-semibold">
+                        Liste des Libellés
+                    </h2>
+                    <div className="flex-grow overflow-auto">
+                        <table className="min-w-full divide-y divide-gray-300">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th
+                                        scope="col"
+                                        className="px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        onClick={() =>
+                                            demanderTri("lib_designation")
+                                        }
+                                    >
+                                        Designation
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        onClick={() => demanderTri("lib_code")}
+                                    >
+                                        Code
+                                    </th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {filtreEtTriLibelles().map((libelle, index) => (
+                                    <tr
+                                        key={index}
+                                        className={
+                                            index % 2 === 0
+                                                ? "bg-gray-100"
+                                                : "bg-white"
+                                        }
+                                    >
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            {libelle.lib_designation}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+                                            {libelle.lib_code}
+                                        </td>
+
+                                        <td>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedLibelle(libelle);
+                                                    setUpdateModalOpen(true);
+                                                }}
+                                                className="text-blue-500 hover:text-blue-800"
+                                            >
+                                                Modifier
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="mt-4">
+                        <button
+                            onClick={() => setModalIsOpen(false)}
+                            className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Close
+                        </button>
+                    </div>
                 </div>
-                <div className="flex justify-end space-x-4 mt-4">
-                    <button onClick={openInsertModal} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                        Ajouter un nouveau libellé
-                    </button>
-                    <button onClick={() => setModalIsOpen(false)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                        Fermer
-                    </button>
-                </div>
-                <ModalInsertion isOpen={insertModalOpen} onRequestClose={() => setInsertModalOpen(false)} />
+
+                <button
+                    onClick={() => setInsertionModalOpen(true)}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                    Ajouter un libellé
+                </button>
+
+                <ModalInsertion
+                    isOpen={isInsertionModalOpen}
+                    onRequestClose={() => setInsertionModalOpen(false)}
+                    response={response}
+                />
+
+                <ModalUpdate
+                    isOpen={isUpdateModalOpen}
+                    onRequestClose={() => setUpdateModalOpen(false)}
+                    libelle={selectedLibelle}
+                />
             </Modal>
-            
         </div>
     );
 };

@@ -127,8 +127,9 @@ Route::prefix('/devis')->name('devis.')->group(function(){
 });
 
 Route::prefix('/libelle')->name('libelle.')->group(function(){
-    Route::get('/', [LibelleController::class, 'index'])->name('index');
+    Route::patch('/update',[LibelleController::class, 'update'])->name('update');
     Route::post('/store', [LibelleController::class, 'store'])->name('store');
+    Route::delete('/{id}', [LibelleController::class, 'destroy'])->name('destroy');
 });
 
 

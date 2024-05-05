@@ -112,7 +112,6 @@ class DevisController extends Controller
             'devis' => $devis,
             'libelles' => $libelles,
             'parametreId' => $parametreId,
-            
         ]);
     }
 
