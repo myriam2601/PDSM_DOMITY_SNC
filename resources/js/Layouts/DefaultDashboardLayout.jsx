@@ -50,7 +50,7 @@ export default function DefaultDashboardLayout({ children }) {
     };
 
     useEffect(() => {
-        setParametreEditUrl(parametreId ? `/parametres/${parametreId}/edit` : null);
+        setParametreEditUrl(parametreId ? `/parametres/${parametreId}/edit` : '/parametres/create');
     }, [parametreId]);
 
     const administrations = [

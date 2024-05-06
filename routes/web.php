@@ -182,6 +182,11 @@ Route::middleware(['admin'])->group(function () {
         ->name('create.user');
     Route::delete('/admin/users/{user}', [AdminController::class, 'delete'])
         ->name('admin.users.delete');
+    Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])
+        ->name('admin.edit');
+
+    Route::patch('/admin/users/{id}', [AdminController::class, 'update'])
+        ->name('admin.update');
 });
 
 

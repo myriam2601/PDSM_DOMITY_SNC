@@ -30,7 +30,7 @@ export default function DeleteUserForm({ userId, onClose }) {
     const deleteUser = (e) => {
         e.preventDefault();
 
-        destroy(route('users.destroy', { id: userId }), {
+        destroy(route('admin.users.delete', { id: userId }), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
             onError: () => passwordInput.current.focus(),
