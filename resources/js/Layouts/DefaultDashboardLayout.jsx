@@ -13,7 +13,6 @@ import {
 } from '@heroicons/react/24/outline';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { Link, usePage } from "@inertiajs/react";
-import {Inertia} from "@inertiajs/inertia";
 
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
