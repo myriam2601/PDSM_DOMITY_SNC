@@ -134,13 +134,7 @@ export default function DefaultDashboardLayout({ children  }) {
                             <div className="flex-1 px-4 flex justify-start">
                             </div>
                             <div className="flex items-center">
-                                <form className="relative">
-                                    <input
-                                        type="text"
-                                        className="block w-full border-gray-200 rounded-md shadow-sm py-2 px-4 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        placeholder="Rechercher un projet, un client"
-                                    />
-                                </form>
+
                                 <div className="ml-4 flex items-center space-x-4 lg:space-x-6">
                                     <button className="text-gray-400 hover:text-gray-500">
                                         <BellIcon className="h-6 w-6"/>

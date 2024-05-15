@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function DevisDisplay({ devis }) {
     const [recherche, setRecherche] = useState("");
     const [tri, setTri] = useState({ colonne: null, direction: "asc" });
-    
+
     const demanderTri = (colonne) => {
         const estAscendant = tri.colonne === colonne && tri.direction === "asc";
         setTri({
@@ -51,6 +51,8 @@ export default function DevisDisplay({ devis }) {
                         placeholder="Rechercher..."
                         value={recherche}
                         onChange={(e) => setRecherche(e.target.value)}
+                        className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+
                     />
                 </div>
 

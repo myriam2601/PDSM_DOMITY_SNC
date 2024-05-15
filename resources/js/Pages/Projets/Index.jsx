@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useMemo, useState} from "react";
 import { Head, Link } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import ProjectsDisplay from "@/Components/ProjectsDisplay";
@@ -12,10 +12,20 @@ function classNames(...classes) {
 
 export default function MainProject({ auth, projets, url, parametreId }) {
     const [displayGrid, setDisplayGrid] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [showWithDevis, setShowWithDevis] = useState(false);
+
+    const filteredProjects = useMemo(() => {
+        return projets.filter(projet => {
+            const matchesQuery = projet.nom.toLowerCase().includes(searchQuery.toLowerCase());
+            const hasDevis = showWithDevis ? projet.devis : true;
+            return matchesQuery && hasDevis;
+        });
+    }, [projets, searchQuery, showWithDevis]);
 
     return (
         <DefaultDashboardLayout user={auth.user} title="Projets" url={url} parametreId={parametreId}>
-            <Head title="Projets" />
+            <Head title="Projets"/>
 
             <div className="flex justify-between p-4 sm:p-6 lg:p-8">
                 <div>
@@ -28,7 +38,7 @@ export default function MainProject({ auth, projets, url, parametreId }) {
                         Projets
                     </h2>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center mt-6">
                     <p className="text-sm font-medium text-gray-900 mr-4">
                         {displayGrid ? "Basculer sur Vue Tableau" : "Basculer sur Vue Grille"}
                     </p>
@@ -49,6 +59,7 @@ export default function MainProject({ auth, projets, url, parametreId }) {
                         />
                     </Switch>
                 </div>
+
                 <div>
                     <Link href={route('projets.create')}>
                         <button
@@ -62,21 +73,49 @@ export default function MainProject({ auth, projets, url, parametreId }) {
                 </div>
             </div>
 
+            <div className="flex items-center space-x-4 mb-8">
+                <input
+                    type="text"
+                    placeholder="Rechercher un projet..."
+                    className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                />
+
+                <label className="flex items-center">
+                    <input
+                        type="checkbox"
+                        className="rounded text-indigo-600 focus:ring-indigo-500"
+                        checked={showWithDevis}
+                        onChange={e => setShowWithDevis(e.target.checked)}
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Afficher projets avec devis</span>
+                </label>
+            </div>
+
+
             {displayGrid ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     <div className="col-span-full">
                         <table className="min-w-full divide-y divide-gray-300">
-                            <thead className="bg-gray-50">
+                        <thead className="bg-gray-50">
                             <tr>
                                 <th scope="col"
                                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom
                                     du Projet
                                 </th>
                                 <th scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Créateur</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Début</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deadline</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Créateur
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Début
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deadline
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions
+                                </th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -88,7 +127,8 @@ export default function MainProject({ auth, projets, url, parametreId }) {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{projet.debut}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{projet.deadline}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        <Link href={`/projets/${projet.id}`} className="text-indigo-600 hover:text-indigo-900">Détail</Link>
+                                        <Link href={`/projets/${projet.id}`}
+                                              className="text-indigo-600 hover:text-indigo-900">Détail</Link>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
                                         {projet.devis ? (
@@ -110,7 +150,7 @@ export default function MainProject({ auth, projets, url, parametreId }) {
                     </div>
                 </div>
             ) : (
-                <ProjectsDisplay projets={projets}/>
+                <ProjectsDisplay projets={filteredProjects}/>
             )}
         </DefaultDashboardLayout>
     );

@@ -23,12 +23,8 @@ export default function MainService({ auth, services, url, parametreId }) {
     return (
         <DefaultDashboardLayout user={auth.user} title="Services" url={url} parametreId={parametreId}>
 
-            <Head title="Services" />
-            <div className="service-search">
-                <input type="text" placeholder="Rechercher service" onChange={(event)=>{//onChange nous renvoi une evt
-                    setServiceName(event.target.value)
-                }}/>
-            </div>
+            <Head title="Services"/>
+
 
             <Head title="Services"/>
             <div className="flex justify-between p-4 sm:p-6 lg:p-8">
@@ -53,8 +49,14 @@ export default function MainService({ auth, services, url, parametreId }) {
                         </button>
                     </Link>
                 </div>
+
             </div>
-            <ServicesDisplay services={serviceFiltered} auth={auth} />
+            <div className="service-search flex justify-start">
+                <input className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-8" type="text" placeholder="Rechercher service..." onChange={(event) => {//onChange nous renvoi une evt
+                    setServiceName(event.target.value)
+                }}/>
+            </div>
+            <ServicesDisplay services={serviceFiltered} auth={auth}/>
         </DefaultDashboardLayout>
     );
 }
