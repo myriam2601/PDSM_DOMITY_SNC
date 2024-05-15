@@ -139,9 +139,39 @@ export default function AddDevisForm({ success, projectId, auth }) {
                     </div>
                 ))}
             </div>
-            <div className="min-h-[400px] max-h-[400px] overflow-auto border border-gray-300 shadow rounded-lg w-full max-w-6xl my-10">
-                {data.libelles.map((ligne, index) => (
-                    <div key={ligne.id}>
+            <div
+                className="min-h-[400px] max-h-[400px] overflow-auto border border-gray-300 shadow rounded-lg w-full max-w-6xl my-10">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                    <tr>
+                        <th scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Désignation
+                        </th>
+                        <th scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantité
+                        </th>
+                        <th scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix
+                            Unitaire
+                        </th>
+                        <th scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">TVA
+                        </th>
+                        <th scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix
+                            HT
+                        </th>
+                        <th scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix
+                            TTC
+                        </th>
+                        <th scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                    {data.libelles.map((ligne, index) => (
                         <LigneDevis
                             id={ligne.id}
                             index={index}
@@ -149,33 +179,31 @@ export default function AddDevisForm({ success, projectId, auth }) {
                             prest_quantite={ligne.quantite}
                             prest_prix={ligne.prixUnitaire}
                             prest_tva={ligne.tva}
+                            onDelete={(e) => handleSupprimerLigne(e, ligne.id)}
+                            onSave={(data) => handleSaveData(ligne.id, data)}
                             errors={errors}
-                            onDelete={handleSupprimerLigne}
-                            onSave={(newData) =>
-                                handleSaveData(ligne.id, newData)
-                            }
                         />
-                    </div>
-                ))}
+                    ))}
+                    </tbody>
+                </table>
+                <div className="flex justify-end space-x-4 mt-10 mr-8">
+                    <button
+                        type="button"
+                        onClick={handleAjouterLigne}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Ajouter Ligne
+                    </button>
+                    <PrimaryButton disabled={processing} className="bg-green-500 hover:bg-green-700">
+                        Sauvegarder le Devis
+                    </PrimaryButton>
+                </div>
+                <div className="ml-8">
+                    <ModalCalcul tab={data} ajustement={handleAjustement}/>
+                </div>
             </div>
-            
-
-            <div className="space-x-4">
-                <button
-                    onClick={handleAjouterLigne}
-                    type="button"
-                    className="rounded-full bg-indigo-600 p-2 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                    <PlusIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-                <PrimaryButton disabled={processing} className="mt-4">
-                    Ajouter
-                </PrimaryButton>
-            </div>
-            <ModalCalcul tab={data} ajustement={handleAjustement} />
         </form>
 
-        /* <ModalGenerationPDF 
+        /* <ModalGenerationPDF
                     isOpen={showModal}
                     onClose={() => setShowModal(false)}
                     onConfirm={() => {
