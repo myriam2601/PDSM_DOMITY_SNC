@@ -35,7 +35,6 @@ function classNames(...classes) {
                    className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
                     <ArrowLeftIcon className="w-4 h-4"/>
                 </a>
-                <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">Devis</h2>
                 <div className="flex items-center">
                     <p className="text-sm font-medium text-gray-900 mr-4">
                         {displayCards ? "Basculer sur Vue Datagrid" : "Basculer sur Vue Cartes"}
@@ -57,7 +56,9 @@ function classNames(...classes) {
                         />
                     </Switch>
                 </div>
+
             </div>
+
 
             {displayCards ? (
                 <DevisCards devis={devis} auth={auth}/>

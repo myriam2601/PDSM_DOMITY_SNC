@@ -40,7 +40,7 @@ export default function MainProject({ auth, projets, url, parametreId }) {
                 </div>
                 <div className="flex items-center mt-6">
                     <p className="text-sm font-medium text-gray-900 mr-4">
-                        {displayGrid ? "Basculer sur Vue Tableau" : "Basculer sur Vue Grille"}
+                        {displayGrid ? "Basculer sur Vue Carte" : "Basculer sur Vue Tableau"}
                     </p>
                     <Switch
                         checked={displayGrid}
