@@ -102,9 +102,9 @@ export default function EditService({ auth, service }) {
                 <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                     <div className="md:col-span-12">
                         <a href="javascript:history.back()"
-                           className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
-                            <ArrowLeftIcon className="w-4 h-4"/>
-                        </a>
+                       className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                        <ArrowLeftIcon className="w-4 h-4 mr-3"/> Retour
+                    </a>
                         <h2 className="text-base font-semibold leading-7 text-primaryDarkBlue">
                             Détail du Service
                         </h2>

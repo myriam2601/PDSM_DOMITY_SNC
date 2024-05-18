@@ -15,25 +15,28 @@ export default function ShowClient({ auth, client }) {
             {/* Configuration du titre de la page dans l'en-tête du navigateur */}
             <Head title={`Détails du Client - ${client.cli_nom} ${client.cli_prenom}`}/>
 
-            {/* Bouton de modification du client */}
-            <div className="flex justify-end">
-                <Link href={route('clients.edit', {client: client.id})}>
-                    <button
-                        type="button"
-                        className="my-3 flex items-center rounded-full bg-primaryDarkBlue px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-greySecond hover:text-primaryDarkBlue"
-                    >
-                        <span>Modifier le Client</span>
-                        <PencilIcon className="h-5 w-5 ml-2" aria-hidden="true"/>
-                    </button>
-                </Link>
-            </div>
+
 
             {/* Section de contenu avec les détails du client */}
-            <div className="p-6">
-                <a href="javascript:history.back()"
-                   className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
-                    <ArrowLeftIcon className="w-4 h-4"/>
-                </a>
+
+
+                <div className="flex justify-between items-center p-4 sm:p-6 lg:p-8">
+                    <a href="javascript:history.back()"
+                       className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center -mt-6">
+                        <ArrowLeftIcon className="w-4 h-4 mr-3"/> Retour
+                    </a>
+                    <Link href={route('clients.edit', {client: client.id})}>
+                        <button
+                            type="button"
+                            className="my-3 flex items-center rounded-full bg-primaryDarkBlue px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-greySecond hover:text-primaryDarkBlue"
+                        >
+                            <span>Modifier le Client</span>
+                            <PencilIcon className="h-5 w-5 ml-2" aria-hidden="true"/>
+                        </button>
+                    </Link>
+                </div>
+
+            <div className="ml-8">
                 {/* Titre de la page avec le nom et le prénom du client */}
                 <h2 className="text-2xl font-semibold leading-7 text-primaryDarkBlue">
                     {client.cli_nom} {client.cli_prenom}

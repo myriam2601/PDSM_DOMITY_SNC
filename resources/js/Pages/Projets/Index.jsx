@@ -31,14 +31,15 @@ export default function MainProject({ auth, projets, url, parametreId }) {
                 <div>
                     <a href="javascript:history.back()"
                        className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
-                        <ArrowLeftIcon className="w-4 h-4"/>
+                        <ArrowLeftIcon className="w-4 h-4 mr-3"/> Retour
                     </a>
 
-                    <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">
+                    <h2 className="text-2xl font-semibold leading-7 text-primaryDarkBlue mt-4">
                         Projets
                     </h2>
                 </div>
-                <div className="flex items-center mt-6">
+
+                <div className="flex items-center -mt-10">
                     <p className="text-sm font-medium text-gray-900 mr-4">
                         {displayGrid ? "Basculer sur Vue Carte" : "Basculer sur Vue Tableau"}
                     </p>
@@ -73,7 +74,7 @@ export default function MainProject({ auth, projets, url, parametreId }) {
                 </div>
             </div>
 
-            <div className="flex items-center space-x-4 mb-8">
+            <div className="flex items-center space-x-4 mb-8 ml-8">
                 <input
                     type="text"
                     placeholder="Rechercher un projet..."

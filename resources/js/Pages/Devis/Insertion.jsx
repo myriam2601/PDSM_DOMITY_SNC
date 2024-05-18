@@ -27,8 +27,8 @@ export default function Insertion({ auth, projectId }) {
     return (
         <DefaultDashboardLayout user={auth.user}>
             <div className="ml-48 mt-8"><a href="javascript:history.back()"
-                    className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
-                <ArrowLeftIcon className="w-4 h-4"/>
+                                           className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                <ArrowLeftIcon className="w-4 h-4 mr-3"/> Retour
             </a></div>
             <Head title="Formulaire Devis"/>
             <AddDevisForm projectId={projectId}/>

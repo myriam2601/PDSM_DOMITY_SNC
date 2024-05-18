@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog } from '@headlessui/react';
 import {
     Bars3Icon,
     BellIcon,
@@ -50,9 +50,11 @@ export default function DefaultDashboardLayout({ children }) {
             <div>
                 <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
                     <div className="flex flex-col flex-grow pt-5 bg-gray-800 overflow-y-auto">
+                        <Link href="/dashboard">
                         <div className="flex items-center flex-shrink-0 px-4">
-                            <img className="h-8 w-auto" src="/logo_white.png" alt="Your Company" />
+                            <img className="h-8 w-auto" src="/logo_white.png" alt="Domity" />
                         </div>
+                        </Link>
                         <div className="mt-5 flex-grow flex flex-col">
                             <nav className="flex-1 px-2 space-y-1 bg-gray-800">
                                 {navigation.map((item) => (
@@ -61,7 +63,7 @@ export default function DefaultDashboardLayout({ children }) {
                                         {item.name}
                                     </Link>
                                 ))}
-                                {auth.user.isAdmin && (
+                                {auth.user.isAdmin ? (
                                     <div className="px-2">
                                         <div className="text-xs text-gray-400">Administration</div>
                                         {administrations.map((admin) => (
@@ -71,7 +73,7 @@ export default function DefaultDashboardLayout({ children }) {
                                             </Link>
                                         ))}
                                     </div>
-                                )}
+                                ) : null}
                             </nav>
                         </div>
                     </div>

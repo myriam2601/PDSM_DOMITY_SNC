@@ -45,22 +45,22 @@ export default function DevisDisplay({ devis }) {
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center" style={{marginTop: '-32px'}}></div>
 
-            <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">
+            <h2 className="text-2xl font-semibold leading-7 text-primaryDarkBlue mt-4">
                 Devis
             </h2>
 
             <div className="mt-8 flow-root">
 
 
-                <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
                     <div className="search">
                         <input
                             type="text"
-                            placeholder="Rechercher..."
+                            placeholder="Rechercher un devis..."
                             value={recherche}
                             onChange={(e) => setRecherche(e.target.value)}
-                            className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-2 ml-8 mb-4"
 
                         />
                     </div>

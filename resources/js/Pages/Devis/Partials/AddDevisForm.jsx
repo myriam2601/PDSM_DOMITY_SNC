@@ -122,6 +122,10 @@ export default function AddDevisForm({ success, projectId, auth }) {
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-center">
+            <h2 className="text-2xl font-semibold leading-7 text-primaryDarkBlue mt-8 mb-4">
+                Ajouter un devis
+            </h2>
+            <h5>Vous pouvez cliquez sur "Retour" et ajouter une devis plus tard</h5>
             <div className="ajustements-section mt-4 max-h-40 overflow-auto border border-gray-300 shadow rounded-lg">
                 {data.ajustements.map((ajustement, index) => (
                     <div
@@ -131,8 +135,8 @@ export default function AddDevisForm({ success, projectId, auth }) {
                         Ajustement : {ajustement.nomAjustement} - Taux :{" "}
                         {ajustement.taux}%
                         <button type="button"
-                            onClick={() => handleSupprimerAjustement(index)}
-                            className="ml-2 text-red-500 hover:text-red-700"
+                                onClick={() => handleSupprimerAjustement(index)}
+                                className="ml-2 text-red-500 hover:text-red-700"
                         >
                             Supprimer
                         </button>

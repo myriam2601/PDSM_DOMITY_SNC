@@ -33,7 +33,7 @@ function classNames(...classes) {
             <div className="flex justify-between items-center p-4 sm:p-6 lg:p-8">
                 <a href="javascript:history.back()"
                    className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
-                    <ArrowLeftIcon className="w-4 h-4"/>
+                    <ArrowLeftIcon className="w-4 h-4 mr-3"/> Retour
                 </a>
 
                 <div className="flex items-center">
