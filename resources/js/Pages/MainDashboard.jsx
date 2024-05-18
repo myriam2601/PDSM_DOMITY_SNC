@@ -6,7 +6,7 @@ export default function MainDashboard() {
     return (
         <DefaultDashboardLayout>
             <div className="flex justify-between mt-8 mb-8">
-                <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue mt-4">
+                <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue mt-4 ml-6">
                     Dashboard
                 </h2>
             </div>

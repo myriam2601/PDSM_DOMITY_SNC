@@ -26,9 +26,12 @@ export default function DevisCards({ devis }) {
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="search my-4">
+                <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue -mt-12 mb-4">
+                    Devis
+                </h2>
                 <input
                     type="text"
-                    className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 -ml-8 -mb-2"
                     placeholder="Rechercher..."
                     value={recherche}
                     onChange={(e) => setRecherche(e.target.value)}
