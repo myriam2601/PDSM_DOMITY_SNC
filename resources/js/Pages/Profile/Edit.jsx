@@ -1,20 +1,36 @@
+import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import DefaultDashboardLayout from '@/Layouts/DefaultDashboardLayout';
 import { Head } from '@inertiajs/react';
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+
 
 export default function Edit({ auth, mustVerifyEmail, status }) {
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>}
-        >
-            <Head title="Profile" />
+
+        <DefaultDashboardLayout user={auth.user} title="Profil">
+
+            <Head title="Profil" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <a
+                                href="#"
+                                onClick={() => window.history.back()}
+                                className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center"
+                            >
+                                <ArrowLeftIcon className="w-4 h-4"/>
+                            </a>
+                        </div>
+
+                        <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue my-4">
+                            Profil
+                        </h2>
+
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
@@ -23,14 +39,11 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
                     </div>
 
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <UpdatePasswordForm className="max-w-xl" />
+                        <UpdatePasswordForm className="max-w-xl"/>
                     </div>
 
-                    <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <DeleteUserForm className="max-w-xl" />
-                    </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </DefaultDashboardLayout>
     );
 }

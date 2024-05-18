@@ -24,7 +24,7 @@ const navigation = [
 
 
 const userNavigation = [
-    { name: 'Profile', href: '/my-profile' },
+    { name: 'Profile', href: '/profile' },
     { name: 'Se déconnecter', href: '/' },
 ];
 
@@ -152,11 +152,12 @@ export default function DefaultDashboardLayout({ children }) {
                                             <div
                                                 className="absolute right-0 mt-40 w-48 bg-white rounded-md shadow-xl z-10">
                                                 <div className="py-1">
-                                                    <button
-                                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                        onClick={() => {
-                                                        }}>Profile
-                                                    </button>
+                                                    <Link href="/profile">
+                                                        <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                            onClick={() => {
+                                                            }}>Profile
+                                                        </button>
+                                                    </Link>
                                                     <button
                                                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                         onClick={() => setShowLogoutConfirmation(true)}>Se déconnecter
