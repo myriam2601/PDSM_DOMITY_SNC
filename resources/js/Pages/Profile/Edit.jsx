@@ -18,12 +18,9 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <div className="flex items-center space-x-4 mb-4">
-                            <a
-                                href="#"
-                                onClick={() => window.history.back()}
-                                className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center"
-                            >
-                                <ArrowLeftIcon className="w-4 h-4"/>
+                            <a href="javascript:history.back()"
+                               className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                                <ArrowLeftIcon className="w-4 h-4 mr-3"/> Retour
                             </a>
                         </div>
 

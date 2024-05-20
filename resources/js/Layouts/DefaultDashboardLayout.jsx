@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Dialog } from '@headlessui/react';
 import {
     Bars3Icon,
@@ -25,10 +25,24 @@ export default function DefaultDashboardLayout({ children }) {
     const { parametreId, auth } = usePage().props;
     const [showDropdown, setShowDropdown] = useState(false);
     const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         setParametreEditUrl(parametreId ? `/parametres/${parametreId}/edit` : '/parametres/create');
     }, [parametreId]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const administrations = [
         {
@@ -50,11 +64,9 @@ export default function DefaultDashboardLayout({ children }) {
             <div>
                 <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
                     <div className="flex flex-col flex-grow pt-5 bg-gray-800 overflow-y-auto">
-                        <Link href="/dashboard">
                         <div className="flex items-center flex-shrink-0 px-4">
-                            <img className="h-8 w-auto" src="/logo_white.png" alt="Domity" />
+                            <img className="h-8 w-auto" src="/logo_white.png" alt="Your Company" />
                         </div>
-                        </Link>
                         <div className="mt-5 flex-grow flex flex-col">
                             <nav className="flex-1 px-2 space-y-1 bg-gray-800">
                                 {navigation.map((item) => (
@@ -93,14 +105,14 @@ export default function DefaultDashboardLayout({ children }) {
                                     </button>
                                     <div className="relative ml-4 flex items-center space-x-4 lg:space-x-6">
                                         <button onClick={() => setShowDropdown(!showDropdown)} className="text-gray-400 hover:text-gray-500">
-                                            <UsersIcon className="h-7 w-7" />
+                                            <UsersIcon className="h-10 w-10 text-gray-700 hover:text-gray-900 transition-transform duration-200 transform hover:scale-110 mr-10" />
                                         </button>
                                         {showDropdown && (
-                                            <div className="absolute right-0 mt-40 w-48 bg-white rounded-md shadow-xl z-10">
+                                            <div ref={dropdownRef} className="absolute right-0 mt-40 w-48 bg-white rounded-md shadow-xl z-10">
                                                 <div className="py-1">
                                                     <Link href="/profile">
                                                         <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                            Profile
+                                                            Profil
                                                         </button>
                                                     </Link>
                                                     <button

@@ -11,7 +11,7 @@ export default function DashboardStats() {
     ];
 
     return (
-        <div className="text-center">
+        <div className="text-center ml-8 mr-8">
             <h3 className="text-base font-semibold leading-6 text-gray-900 mb-8">
                 Vue d'ensemble
             </h3>
