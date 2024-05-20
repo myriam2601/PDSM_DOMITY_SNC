@@ -91,8 +91,7 @@ export default function Admin({ users }) {
                             <td className="px-6 py-4 whitespace-nowrap space-x-2">
                                 <button onClick={() => openUpdateModal(user)}
                                         className="text-indigo-600 hover:text-indigo-900 transition-transform duration-200 transform hover:scale-110">
-                                    <PencilIcon className="h-5 w-5" aria-hidden="true"/>
-                                </button>
+                                    <PencilIcon className="h-5 w-5 text-primaryDarkBlue" aria-hidden="true" />                                </button>
                                 {user.id !== currentUser.id && (
                                     <button onClick={() => deleteUser(user.id)}
                                             className="text-red-600 hover:text-red-900 transition-transform duration-200 transform hover:scale-110">
