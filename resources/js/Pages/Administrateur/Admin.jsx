@@ -89,14 +89,18 @@ export default function Admin({ users }) {
                             <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{user.isAdmin ? 'Oui' : 'Non'}</td>
                             <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                                <button onClick={() => openUpdateModal(user)} className="text-indigo-600 hover:text-indigo-900">
-                                    <PencilIcon className="h-5 w-5 text-primaryDarkBlue" aria-hidden="true" />                                </button>
+                                <button onClick={() => openUpdateModal(user)}
+                                        className="text-indigo-600 hover:text-indigo-900 transition-transform duration-200 transform hover:scale-110">
+                                    <PencilIcon className="h-5 w-5" aria-hidden="true"/>
+                                </button>
                                 {user.id !== currentUser.id && (
-                                    <button onClick={() => deleteUser(user.id)} className="text-red-600 hover:text-red-900">
-                                        <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                                    <button onClick={() => deleteUser(user.id)}
+                                            className="text-red-600 hover:text-red-900 transition-transform duration-200 transform hover:scale-110">
+                                        <TrashIcon className="h-5 w-5" aria-hidden="true"/>
                                     </button>
                                 )}
                             </td>
+
                         </tr>
                     ))}
                     </tbody>
@@ -107,7 +111,8 @@ export default function Admin({ users }) {
                     <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
                     <div className="relative bg-white p-6 rounded-lg max-w-md">
                         <div className="absolute top-0 right-0 pt-2 pr-4">
-                            <button onClick={() => setIsUpdateModalOpen(false)} className="text-gray-500 hover:text-gray-700">
+                            <button onClick={() => setIsUpdateModalOpen(false)}
+                                    className="text-gray-500 hover:text-gray-700">
                                 <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 </svg>
