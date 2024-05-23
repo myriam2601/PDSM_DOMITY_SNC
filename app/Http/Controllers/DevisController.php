@@ -16,9 +16,9 @@ class DevisController extends Controller
 {
     public function store(Request $request)
     {
-        
+
         $existingDevis = Devis::where('projet_id', $request->input('projectId'))->first();
-        
+
         if ($existingDevis) {
             $projetNom = Projet::find($existingDevis->projet_id)->nom; // Assurez-vous d'obtenir le nom directement ici
 
@@ -30,7 +30,7 @@ class DevisController extends Controller
         // Ici, vous devez également récupérer les ajustements depuis la requête, si vous les envoyez depuis le front-end
         $ajustementsArray = $request->input('ajustements'); // Assurez-vous que le nom de l'input correspond à ce que vous avez dans le front-end
         $idProjet = $request->input('projectId');
-        
+
         $projet = Projet::find($idProjet);
         $service = Service::find($projet->service_id);
 
@@ -72,7 +72,6 @@ class DevisController extends Controller
                 'prixHT' => $prixHT,
                 'prixTTC' => $prixTTC,
             ];
-
         }
 
         // Construire la structure JSON finale
@@ -101,22 +100,23 @@ class DevisController extends Controller
         // Récupère tous les devis
         $devis = Devis::with('projet.client')->get();
         $parametreId = optional(Auth::user()->parametre)->id;
-        $libelles = Libelle::all();
+
         return Inertia::render('Devis/Index', [
             'auth' => [
                 'user' => auth()->user()
             ],
             'reussi' => session('reussi'),
             'info' => session('info'),
-            'echec'=> session('echec'),
+            'echec' => session('echec'),
             'devis' => $devis,
-            'libelles' => $libelles,
+
             'parametreId' => $parametreId,
         ]);
     }
 
     public function form()
     {
+        $libelles = Libelle::all();
 
         return Inertia::render('Devis/Insertion', [
             'auth' => [
@@ -124,9 +124,9 @@ class DevisController extends Controller
             ],
             'reussi' => session('reussi'),
             'echec' => session('echec'),
+            'libelles' => $libelles,
             'projectId' => session('projectId')
         ]);
-
     }
 
     public function edit($id)
@@ -196,6 +196,5 @@ class DevisController extends Controller
         $devis->delete();
 
         return redirect()->route('devis.index');
-
     }
 }

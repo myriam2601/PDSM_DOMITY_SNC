@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { InputDesignation } from "./InputDesignation";
 import { InputFloat } from "./InputFloat";
-import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 
 export function LigneDevis({
     id,
@@ -13,8 +12,8 @@ export function LigneDevis({
     onDelete = () => {},
     onSave = () => {},
     errors,
+    libelles, // Ajoutez la liste des libellés comme prop
 }) {
-
     const [designation, setDesignation] = useState(prest_designation);
     const [quantite, setQuantite] = useState(prest_quantite);
     const [prixUnitaire, setPrixUnitaire] = useState(prest_prix);
@@ -39,10 +38,23 @@ export function LigneDevis({
         onSave({ designation, quantite, prixUnitaire, tva, prixHT, prixTTC });
     }, [designation, quantite, prixUnitaire, tva, prixHT, prixTTC]);
 
-
     const handleDelete = (e) => {
         e.preventDefault();
         onDelete(id);
+    };
+
+    const handleDesignationKeyDown = (e) => {
+        if (e.key === "Enter") {
+            const libelle = libelles.find(
+                (lib) =>
+                    lib.lib_code.toLowerCase() === e.target.value.toLowerCase()
+            );
+            if (libelle) {
+                setDesignation(libelle.lib_designation);
+                setPrixUnitaire(parseFloat(libelle.lib_montant));
+                setQuantite(1);
+            }
+        }
     };
 
     // Fonction pour formater le nombre avec deux décimales après la virgule
@@ -53,7 +65,6 @@ export function LigneDevis({
     const calculTVA_TTC = () => {
         const prixTVA = prixHT * (tva / 100);
         let prixTTC = prixHT + prixTVA;
-        // Arrondir le résultat à deux décimales, si nécessaire
         prixTTC = Math.round(prixTTC * 100) / 100;
         return prixTTC;
     };
@@ -61,16 +72,26 @@ export function LigneDevis({
     return (
         <tr className="bg-white border-b">
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <InputDesignation value={designation} onChange={setDesignation} />
+                <InputDesignation
+                    value={designation}
+                    onChange={setDesignation}
+                    onKeyDown={handleDesignationKeyDown}
+                />
                 {errors[`${index}.designation`] && (
-                    <p className="text-red-500 text-xs italic">{errors[`${index}.designation`]}</p>
+                    <p className="text-red-500 text-xs italic">
+                        {errors[`${index}.designation`]}
+                    </p>
                 )}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <InputFloat value={quantite} onChange={setQuantite} step={1} />
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <InputFloat value={prixUnitaire} onChange={setPrixUnitaire} step={0.01} />
+                <InputFloat
+                    value={prixUnitaire}
+                    onChange={setPrixUnitaire}
+                    step={0.01}
+                />
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <InputFloat value={tva} onChange={setTva} step={0.1} />
@@ -82,7 +103,10 @@ export function LigneDevis({
                 {prixTTC.toFixed(2)}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button onClick={handleDelete} className="text-red-600 hover:text-red-900">
+                <button
+                    onClick={handleDelete}
+                    className="text-red-600 hover:text-red-900"
+                >
                     Supprimer
                 </button>
             </td>

@@ -1,12 +1,12 @@
 import React from "react";
 import Modal from "react-modal";
 import { useForm } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/react";
 
-Modal.setAppElement("#app"); // Configurez cela selon l'élément racine de votre application.
+Modal.setAppElement("#app");
 
-const ModalInsertion = ({ isOpen, onRequestClose, response }) => {
-    const { data, setData, post, processing, reset } = useForm({
+const ModalInsertion = ({ isOpen, onRequestClose, onSuccess }) => {
+    const { data, setData, processing, reset } = useForm({
         lib_designation: "",
         lib_code: "",
         lib_montant: "",
@@ -18,19 +18,23 @@ const ModalInsertion = ({ isOpen, onRequestClose, response }) => {
         setData(name, type === "checkbox" ? checked : value);
     };
 
-    function handleSubmit(e) {
-      e.preventDefault();
-      post('/libelle/store', data, {
-          onSuccess: (response) => {
-              console.log('Insertion réussie, données reçues:', response);
-              reset(); // Réinitialise le formulaire après succès
-              onRequestClose(); // Ferme le modal si nécessaire
-          },
-          onError: (errors) => {
-              console.error('Erreur lors de la requête:', errors);
-          }
-      });
-  }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        router.post("/libelle/store", data, {
+            onSuccess: (page) => {
+                console.log("Insertion réussie, données reçues:", page);
+                reset(); // Réinitialise le formulaire après succès
+
+                // Appel de la fonction onSuccess avec les nouvelles données
+                onSuccess(page.props.libelles);
+
+                onRequestClose(); // Ferme le modal si nécessaire
+            },
+            onError: (errors) => {
+                console.error("Erreur lors de la requête:", errors);
+            },
+        });
+    };
 
     return (
         <Modal
@@ -91,6 +95,7 @@ const ModalInsertion = ({ isOpen, onRequestClose, response }) => {
                         Submit
                     </button>
                     <button
+                        type="button"
                         onClick={onRequestClose} // Ferme le modal
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                     >

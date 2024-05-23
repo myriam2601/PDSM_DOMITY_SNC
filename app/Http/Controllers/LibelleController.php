@@ -25,10 +25,10 @@ class LibelleController extends Controller
         $libelle->lib_code = $request->lib_code;
         $libelle->lib_montant = $request->lib_montant;
         $libelle->lib_ajustement = $request->lib_ajustement ?? false;
-        
+
         $libelle->save();
 
-        return redirect()->route('devis.index')->with('reussi', 'Insertion a bien été effectuée.');
+        return redirect()->back()->with('reussi', 'Insertion a bien été effectuée.');
     }
 
     public function index()
@@ -80,7 +80,15 @@ class LibelleController extends Controller
         ]);
 
         // Réponse en cas de succès de la mise à jour
-        return redirect()->route('devis.index')->with('reussi', 'La mise à jour du libellé a bien été effectuée.');
+        return redirect()->back()->with('reussi', 'La mise à jour du libellé a bien été effectuée.');
+    }
 
+    public function destroy($id)
+    {
+
+        $libelle = Libelle::findOrFail($id);
+        $libelle->delete();
+
+        return redirect()->back()->with('reussi', 'Le libellé a été supprimé avec succès.');
     }
 }

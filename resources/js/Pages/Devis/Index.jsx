@@ -12,7 +12,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
-export default function MainDevis({ auth, devis, url, parametreId, libelles }) {
+export default function MainDevis({ auth, devis, url, parametreId }) {
     const { flash } = usePage().props;
     const [displayCards, setDisplayCards] = useState(false);
 
@@ -34,7 +34,7 @@ export default function MainDevis({ auth, devis, url, parametreId, libelles }) {
             parametreId={parametreId}
         >
             <Head title="Devis" />
-            <ModalIndex libelles={libelles} response={usePage().props} />
+
             <div className="flex justify-between items-center p-4 sm:p-6 lg:p-8">
                 <a
                     href="javascript:history.back()"

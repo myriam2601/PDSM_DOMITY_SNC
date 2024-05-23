@@ -3,10 +3,11 @@ import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import AddDevisForm from "./Partials/AddDevisForm";
 import { Head, usePage } from "@inertiajs/react";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.min.css';
+import "react-toastify/dist/ReactToastify.min.css";
 import ModalCalcul from "@/Modal/ModalCalcul";
-import {ArrowLeftIcon} from "@heroicons/react/24/outline/index.js";
-export default function Insertion({ auth, projectId }) {
+import { ArrowLeftIcon } from "@heroicons/react/24/outline/index.js";
+
+export default function Insertion({ auth, projectId, libelles }) {
     const { flash } = usePage().props;
     console.log(flash);
     useEffect(() => {
@@ -23,18 +24,20 @@ export default function Insertion({ auth, projectId }) {
         }
     }, [flash]);
 
-
     return (
         <DefaultDashboardLayout user={auth.user}>
-            <div className="ml-48 mt-8"><a href="javascript:history.back()"
-                                           className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
-                <ArrowLeftIcon className="w-4 h-4 mr-3"/> Retour
-            </a></div>
-            <Head title="Formulaire Devis"/>
-            <AddDevisForm projectId={projectId}/>
+            <div className="ml-48 mt-8">
+                <a
+                    href="javascript:history.back()"
+                    className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center"
+                >
+                    <ArrowLeftIcon className="w-4 h-4 mr-3" /> Retour
+                </a>
+            </div>
+            <Head title="Formulaire Devis" />
+            <AddDevisForm projectId={projectId} libelles={libelles} />
 
-            <ToastContainer/>
-
+            <ToastContainer />
         </DefaultDashboardLayout>
     );
 }
