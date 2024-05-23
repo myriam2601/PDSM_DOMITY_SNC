@@ -26,20 +26,24 @@ export default function DevisCards({ devis }) {
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="search my-4">
+                <h2 className="text-2xl font-semibold leading-7 text-primaryDarkBlue -mt-8 mb-8">
+                    Devis
+                </h2>
                 <input
                     type="text"
-                    placeholder="Rechercher..."
+                    className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-4"
+                    placeholder="Rechercher un devis..."
                     value={recherche}
                     onChange={(e) => setRecherche(e.target.value)}
-                    className="input w-full rounded-md border-gray-300 shadow-sm"
                 />
+
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {filtreDevis().map((devis) => (
                     <div
                         key={devis.id}
-                        className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
+                        className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow-xl"
                     >
                         <div className="flex w-full items-center justify-between space-x-6 p-6">
                             <div className="flex-1">

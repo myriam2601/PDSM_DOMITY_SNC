@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Link } from '@inertiajs/inertia-react';
-import {Cog6ToothIcon} from "@heroicons/react/24/outline";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 const ParametrageLink = ({ parametreId }) => {
-    const parametreEditUrl = parametreId ? `/parametres/${parametreId}/edit` : '/parametres';
+    const parametreEditUrl = parametreId ? `/parametres/${parametreId}/edit` : '/parametres/create';
 
     return (
         <Link

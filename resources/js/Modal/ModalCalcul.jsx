@@ -5,7 +5,7 @@ export default function ModalCalcul({ tab, ajustement }) {
     const [checkedItems, setCheckedItems] = useState(
         new Array(tab.libelles ? tab.libelles.length : 0).fill(false)
     );
-    
+
     const [disableCheck, setDisableCheck] = useState(
         new Array(tab.libelles ? tab.libelles.length : 0).fill(false)
     );
@@ -127,7 +127,7 @@ export default function ModalCalcul({ tab, ajustement }) {
         <div>
             <button
                 type="button"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
                 onClick={toggleModal}
             >
                 Calcul
@@ -138,7 +138,8 @@ export default function ModalCalcul({ tab, ajustement }) {
                         className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
                         onClick={toggleModal}
                     ></div>
-                    <div className="modal-container bg-white w-3/4 h-3/4 mx-auto rounded shadow-lg z-50 overflow-y-auto">
+                    <div
+                        className="modal-container bg-white w-3/4 md:w-1/2 lg:w-1/3 mx-auto rounded-lg shadow-lg z-50 overflow-y-auto">
                         <div className="modal-content py-4 text-left px-6">
                             <div className="flex justify-between items-center pb-3">
                                 <p className="text-2xl font-bold">Ajustement</p>
@@ -153,114 +154,106 @@ export default function ModalCalcul({ tab, ajustement }) {
                                         height="18"
                                         viewBox="0 0 18 18"
                                     >
-                                        <path d="M16.22 14.74l-1.48 1.48L9 10.48l-5.74 5.74-1.48-1.48L7.52 9 1.78 3.26l1.48-1.48L9 7.52l5.74-5.74 1.48 1.48L10.48 9z"></path>
+                                        <path
+                                            d="M16.22 14.74l-1.48 1.48L9 10.48l-5.74 5.74-1.48-1.48L7.52 9 1.78 3.26l1.48-1.48L9 7.52l5.74-5.74 1.48 1.48L10.48 9z"></path>
                                     </svg>
                                 </div>
                             </div>
-                            <ul>
+                            <ul className="mb-4">
                                 {tab.libelles && tab.libelles.length > 0 ? (
                                     tab.libelles.map((ligne, index) => (
                                         <li
                                             key={index}
-                                            className={`flex items-center ${
-                                                disableCheck[index]
-                                                    ? "text-gray-400"
-                                                    : ""
-                                            }`}
+                                            className={`flex items-center ${disableCheck[index] ? "text-gray-400" : ""}`}
                                         >
                                             <input
                                                 type="checkbox"
                                                 checked={checkedItems[index]}
                                                 disabled={disableCheck[index]}
-                                                onChange={() =>
-                                                    handleCheckboxChange(index)
-                                                }
+                                                onChange={() => handleCheckboxChange(index)}
                                                 className="mr-2"
                                             />
-                                            <span
-                                                className={`${
-                                                    disableCheck[index]
-                                                        ? "line-through"
-                                                        : ""
-                                                }`}
-                                            >
-                                                Designation: {ligne.designation}{" "}
-                                                - Prix TTC: {ligne.prixTTC}
-                                            </span>
+                                            <span className={`${disableCheck[index] ? "line-through" : ""}`}>
+                                        Designation: {ligne.designation} - Prix TTC: {ligne.prixTTC}
+                                    </span>
                                         </li>
                                     ))
                                 ) : (
                                     <p>Aucune ligne à afficher.</p>
                                 )}
                             </ul>
-
                             <div className="mb-4">
-                                <label
-                                    htmlFor="adjustmentNameInput"
-                                    className="block"
-                                >
+                                <label htmlFor="adjustmentNameInput"
+                                       className="block text-sm font-medium text-gray-700">
                                     Appellation de l'ajustement :
                                 </label>
                                 <input
                                     type="text"
                                     id="adjustmentNameInput"
                                     value={adjustmentNameInput}
-                                    onChange={(e) =>
-                                        setAdjustmentNameInput(e.target.value)
-                                    }
-                                    className="border border-gray-300 rounded px-3 py-2 w-full"
+                                    onChange={(e) => setAdjustmentNameInput(e.target.value)}
+                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                 />
                             </div>
-
-                            <div className="mb-4">
-                                <label htmlFor="majoration" className="ml-2">
-                                    Majoration
-                                </label>
-                                <input
-                                    type="radio"
-                                    id="majoration"
-                                    name="adjustment"
-                                    value="majoration"
-                                    checked={adjustmentType === "majoration"}
-                                    onChange={() =>
-                                        setAdjustmentType("majoration")
-                                    }
-                                />
-                                <label htmlFor="rabais" className="ml-2">
-                                    Rabais
-                                </label>
-                                <input
-                                    type="radio"
-                                    id="rabais"
-                                    name="adjustment"
-                                    value="rabais"
-                                    checked={adjustmentType === "rabais"}
-                                    onChange={() => setAdjustmentType("rabais")}
-                                />
+                            <div className="mb-4 flex items-center">
+                                <div className="flex items-center">
+                                    <input
+                                        type="radio"
+                                        id="majoration"
+                                        name="adjustment"
+                                        value="majoration"
+                                        checked={adjustmentType === "majoration"}
+                                        onChange={() => setAdjustmentType("majoration")}
+                                        className="mr-2"
+                                    />
+                                    <label htmlFor="majoration" className="mr-4">
+                                        Majoration
+                                    </label>
+                                </div>
+                                <div className="flex items-center">
+                                    <input
+                                        type="radio"
+                                        id="rabais"
+                                        name="adjustment"
+                                        value="rabais"
+                                        checked={adjustmentType === "rabais"}
+                                        onChange={() => setAdjustmentType("rabais")}
+                                        className="mr-2"
+                                    />
+                                    <label htmlFor="rabais">
+                                        Rabais
+                                    </label>
+                                </div>
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="percentage" className="block">
+                                <label htmlFor="percentage" className="block text-sm font-medium text-gray-700">
                                     Pourcentage :
                                 </label>
                                 <input
                                     type="number"
                                     id="percentage"
-                                    value={percentage} // Assurez-vous que cela reflète l'état `percentage`
+                                    value={percentage}
                                     onChange={handlePercentageChange}
-                                    className="border border-gray-300 rounded px-3 py-2 w-full"
+                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                 />
                             </div>
                             <p className="text-xl font-semibold">
-                                Montant total après ajustement :{" "}
-                                {adjustedTotal.toFixed(2)}
+                                Montant total après ajustement : {adjustedTotal.toFixed(2)}
                             </p>
-                            <button type="button" onClick={handleAdjustment}>
-                                Valider l'ajustement
-                            </button>
+                            <div className="flex justify-end mt-4">
+                                <button
+                                    type="button"
+                                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+                                    onClick={handleAdjustment}
+                                >
+                                    Valider l'ajustement
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
         </div>
+
     );
 }

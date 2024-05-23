@@ -12,9 +12,9 @@ export default function ProjectsDisplay({ projets }) {
     console.log("Project data:", projets);
     return (
         <div>
-            <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 ml-7">
                 {projets.map((projet) => (
-                    <li key={projet.id} className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
+                    <li key={projet.id} className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow-xl">
                         <div className="flex w-full items-center justify-between space-x-6 p-6">
                             <div className="flex-1">
                                 <h3 className="text-lg font-medium text-gray-900">{projet.nom}</h3>

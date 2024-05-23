@@ -100,12 +100,12 @@ export default function EditService({ auth, service }) {
 
             <div className="divide-y divide-white/5 bg-white">
                 <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-                    <div className="md:col-span-12">
+                    <div className="md:col-span-12 -mt-8">
                         <a href="javascript:history.back()"
-                           className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
-                            <ArrowLeftIcon className="w-4 h-4"/>
-                        </a>
-                        <h2 className="text-base font-semibold leading-7 text-primaryDarkBlue">
+                       className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                        <ArrowLeftIcon className="w-4 h-4 mr-3"/> Retour
+                    </a>
+                        <h2 className="text-base font-semibold leading-7 text-primaryDarkBlue mt-8">
                             Détail du Service
                         </h2>
                         <p className="mt-1 text-sm leading-6 text-gray-400">

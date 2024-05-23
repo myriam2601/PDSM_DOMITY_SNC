@@ -3,14 +3,19 @@ import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout";
 import DashboardStats from "../Components/DashboardStats.jsx";
 
 export default function MainDashboard() {
-  return (
-    <DefaultDashboardLayout>
-      <div className="flex justify-between">
-        <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">
-          Dashboard
-        </h2>
-      </div>
-      <DashboardStats />
-    </DefaultDashboardLayout>
-  );
+    return (
+        <DefaultDashboardLayout>
+            <div className="flex justify-between mt-8 mb-8">
+                <h2 className="text-2xl font-semibold leading-7 text-primaryDarkBlue mt-4 ml-6">
+                    Dashboard
+                </h2>
+            </div>
+            <DashboardStats />
+        </DefaultDashboardLayout>
+
+
+
+        //MARGIN TOP : mt-4 (ou 8)
+        //MARGIN BOTTOM : mb-4 (ou 8)
+    );
 }
