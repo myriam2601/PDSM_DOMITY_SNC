@@ -8,7 +8,7 @@ import ModalIndex from "@/Pages/Libelles/ModalIndex";
 export default function AddDevisForm({ success, projectId, auth, libelles }) {
     const [localProjectId, setLocalProjectId] = useState(projectId);
     const { data, setData, post, processing, errors } = useForm({
-        libellesDevis: [
+        libelles: [
             {
                 id: getUID(),
                 designation: "",
@@ -57,15 +57,15 @@ export default function AddDevisForm({ success, projectId, auth, libelles }) {
 
         setData((currentData) => ({
             ...currentData,
-            libellesDevis: [...currentData.libellesDevis, nouvelleLigne],
+            libelles: [...currentData.libelles, nouvelleLigne],
         }));
     };
 
     const handleSupprimerLigne = (id) => {
-        const lignesMiseAJour = data.libellesDevis.filter(
+        const lignesMiseAJour = data.libelles.filter(
             (ligne) => ligne.id !== id
         );
-        setData({ ...data, libellesDevis: lignesMiseAJour });
+        setData({ ...data, libelles: lignesMiseAJour });
     };
 
     const handleSupprimerAjustement = (indexToRemove) => {
@@ -97,10 +97,10 @@ export default function AddDevisForm({ success, projectId, auth, libelles }) {
 
     const handleSaveData = (id, newData) => {
         setData((currentData) => {
-            const updatedLignesDevis = currentData.libellesDevis.map((ligne) =>
+            const updatedLignesDevis = currentData.libelles.map((ligne) =>
                 ligne.id === id ? { ...ligne, ...newData } : ligne
             );
-            return { ...currentData, libellesDevis: updatedLignesDevis };
+            return { ...currentData, libelles: updatedLignesDevis };
         });
     };
 
@@ -186,7 +186,7 @@ export default function AddDevisForm({ success, projectId, auth, libelles }) {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {data.libellesDevis.map((ligne, index) => (
+                            {data.libelles.map((ligne, index) => (
                                 <LigneDevis
                                     id={ligne.id}
                                     index={index}
