@@ -186,6 +186,16 @@ class DevisController extends Controller
         }
     }
 
+    public function updateStatus(Request $request)
+    {
+        $devis = Devis::findOrFail($request->input('id'));
+        $devis->dev_status = $request->input('newStatus');
+        $devis->save();
+
+        return response()->json(['message' => 'Status updated successfully'], 200);
+    }
+
+
 
     public function destroy(Devis $devis)
     {

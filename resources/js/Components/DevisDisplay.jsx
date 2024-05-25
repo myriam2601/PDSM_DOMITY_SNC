@@ -4,7 +4,8 @@ import { usePage } from "@inertiajs/react";
 
 import "react-toastify/dist/ReactToastify.css";
 
-export default function DevisDisplay({ devis }) {
+export default function DevisDisplay({ devis: initialDevis }) {
+    const [devis, setDevis] = useState(initialDevis);
     const [recherche, setRecherche] = useState("");
     const [tri, setTri] = useState({ colonne: null, direction: "asc" });
 
@@ -40,6 +41,34 @@ export default function DevisDisplay({ devis }) {
                 }
             });
     };
+
+    const handleStatusChange = (id, newStatus) => {
+        fetch(`/devis/update-status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // assuming you're using Laravel and have a CSRF token in a meta tag
+            },
+            body: JSON.stringify({ id, newStatus })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update the local state with the new status
+                setDevis(prevDevis => prevDevis.map(devisItem =>
+                    devisItem.id === id ? { ...devisItem, dev_status: newStatus } : devisItem
+                ));
+            })
+            .catch(error => {
+                // Handle error
+                console.error("Error updating status:", error);
+            });
+    };
+
 
     return (
         <div className="px-4 sm:px-6 lg:px-8">
@@ -158,7 +187,20 @@ export default function DevisDisplay({ devis }) {
                                         ).toLocaleDateString("fr-FR")}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        {devis.dev_status}
+                                        <select
+                                            value={devis.dev_status}
+                                            onChange={(e) =>
+                                                handleStatusChange(
+                                                    devis.id,
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                        >
+                                            <option value="en attente">En attente</option>
+                                            <option value="accepté">Accepté</option>
+                                            <option value="refusé">Refusé</option>
+                                        </select>
                                     </td>
                                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                                         <Link

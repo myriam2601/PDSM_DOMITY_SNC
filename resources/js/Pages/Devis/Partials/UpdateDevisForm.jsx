@@ -15,7 +15,7 @@ export default function UpdateDevisForm({ auth, devis }) {
         id: devis.id,
         ajustements: ajustements ? ajustements.map((item) => ({ ...item })) : [],
         libelles: libelles.map((item) => ({ ...item })),
-        statutData: devis.dev_status, // Assurez-vous que le nom de la clé est correct ici
+        statutData: devis.dev_status,
     });
 
     function getUID() {

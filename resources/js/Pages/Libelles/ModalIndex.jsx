@@ -6,7 +6,7 @@ import ModalUpdate from "./ModalUpdate";
 
 Modal.setAppElement("#app");
 
-const ModalIndex = ({ libelles = [], response, isOpen, onRequestClose }) => {
+const ModalIndex = ({ libelles = [], isOpen, onRequestClose }) => {
     const [isInsertionModalOpen, setInsertionModalOpen] = useState(false);
     const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
     const [selectedLibelle, setSelectedLibelle] = useState(null);
@@ -72,8 +72,8 @@ const ModalIndex = ({ libelles = [], response, isOpen, onRequestClose }) => {
                 isOpen={isOpen}
                 onRequestClose={onRequestClose}
                 contentLabel="Libelle Form"
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/5 max-w-5xl h-4/5 bg-white shadow-lg rounded p-8 overflow-hidden"
-                overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-75"
+                className="fixed inset-0 flex items-center justify-center p-4"
+                overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50"
             >
                 <div className="bg-white rounded-lg shadow-lg w-full max-w-5xl p-8">
                     <div className="flex justify-between items-center mb-4">
@@ -135,13 +135,16 @@ const ModalIndex = ({ libelles = [], response, isOpen, onRequestClose }) => {
                                     </td>
                                     <td className="py-4 px-4 text-sm font-medium text-gray-500 flex space-x-4">
                                         <button
-                                            onClick={() => onEdit(libelle)}
+                                            onClick={() => {
+                                                setSelectedLibelle(libelle);
+                                                setUpdateModalOpen(true);
+                                            }}
                                             className="text-blue-600 hover:text-blue-800"
                                         >
                                             Modifier
                                         </button>
                                         <button
-                                            onClick={() => onDelete(libelle.id)}
+                                            onClick={() => handleDelete(libelle.id)}
                                             className="text-red-600 hover:text-red-800"
                                         >
                                             Supprimer
@@ -152,14 +155,15 @@ const ModalIndex = ({ libelles = [], response, isOpen, onRequestClose }) => {
                             </tbody>
                         </table>
                     </div>
+                    <div className="mt-4">
+                        <button
+                            onClick={() => setInsertionModalOpen(true)}
+                            className="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Ajouter un libellé
+                        </button>
+                    </div>
                 </div>
-
-                <button
-                    onClick={() => setInsertionModalOpen(true)}
-                    className="w-full bg-green-500 hover:bg-green-300 text-white font-bold py-2 px-4 rounded"
-                >
-                    Créer un libellé
-                </button>
 
                 <ModalInsertion
                     isOpen={isInsertionModalOpen}
@@ -169,9 +173,9 @@ const ModalIndex = ({ libelles = [], response, isOpen, onRequestClose }) => {
 
                 <ModalUpdate
                     isOpen={isUpdateModalOpen}
-                    onRequestClose={() => setUpdateModalOpen(false)}
+                    onRequestClose={handleUpdateModalClose}
                     libelle={selectedLibelle}
-                    onSuccess={handleUpdateLibelle} // Passez la fonction de succès ici
+                    onSuccess={handleUpdateLibelle}
                 />
             </Modal>
         </div>
