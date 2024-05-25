@@ -145,7 +145,6 @@ class DevisController extends Controller
 
     public function update(Request $request)
     {
-
         $lignesDevisArray = $request->input('libelles');
 
         $messagesError = [
@@ -156,7 +155,6 @@ class DevisController extends Controller
         $validator = Validator::make($lignesDevisArray, [
             '*.designation' => 'required|string',
             '*.quantite' => 'required|numeric|min:1',
-
         ], $messagesError);
 
         if ($validator->fails()) {
@@ -169,27 +167,25 @@ class DevisController extends Controller
         $devis = Devis::findOrFail($request->id);
 
         $dataToUpdate = [
-            'libelles' => $request->input('libelles', []), // Utilisez une valeur par défaut vide si non présent
-            'ajustements' => $request->input('ajustements', []), // Utilisez null comme valeur par défaut si non présent
+            'libelles' => $request->input('libelles', []),
+            'ajustements' => $request->input('ajustements', []),
         ];
 
         $currentData = json_decode($devis->dev_liste_prestation, true);
 
-        // Comparaison des tableaux PHP
         $isModified = $currentData !== $dataToUpdate;
 
-        if ($isModified) {
-            // Il y a eu des modifications
+        if ($isModified || $devis->dev_status !== $request->input('statutData')) {
             $devis->dev_liste_prestation = json_encode($dataToUpdate);
             $devis->dev_status = $request->input('statutData');
 
             $devis->save();
             return redirect()->route('devis.index')->with('reussi', 'La mise à jour du devis a bien été effectuée.');
         } else {
-            // Aucune modification détectée
-            return redirect()->route('devis.index')->with('info', 'Aucune modification n\'a été detectée.');
+            return redirect()->route('devis.index')->with('info', 'Aucune modification n\'a été détectée.');
         }
     }
+
 
     public function destroy(Devis $devis)
     {

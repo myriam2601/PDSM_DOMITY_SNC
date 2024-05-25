@@ -21,6 +21,8 @@ export default function AddDevisForm({ success, projectId, auth, libelles }) {
         projectId: localProjectId,
     });
 
+    const [isLibelleModalOpen, setLibelleModalOpen] = useState(false);
+
     function getUID() {
         return Date.now().toString(36);
     }
@@ -106,7 +108,11 @@ export default function AddDevisForm({ success, projectId, auth, libelles }) {
 
     return (
         <div>
-            <ModalIndex libelles={libelles} />
+            <ModalIndex
+                libelles={libelles}
+                isOpen={isLibelleModalOpen}
+                onRequestClose={() => setLibelleModalOpen(false)}
+            />
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col items-center"
@@ -116,7 +122,7 @@ export default function AddDevisForm({ success, projectId, auth, libelles }) {
                 </h2>
 
                 <h5>
-                    Vous pouvez cliquez sur "Retour" et ajouter une devis plus
+                    Vous pouvez cliquez sur "Retour" et ajouter un devis plus
                     tard
                 </h5>
                 <div className="ajustements-section mt-4 max-h-40 overflow-auto border border-gray-300 shadow rounded-lg">
@@ -140,70 +146,70 @@ export default function AddDevisForm({ success, projectId, auth, libelles }) {
                 <div className="min-h-[400px] max-h-[400px] overflow-auto border border-gray-300 shadow rounded-lg w-full max-w-6xl my-10">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
-                            <tr>
-                                <th
-                                    scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Désignation
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Quantité
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Prix Unitaire
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    TVA
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Prix HT
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Prix TTC
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                    Actions
-                                </th>
-                            </tr>
+                        <tr>
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Désignation
+                            </th>
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Quantité
+                            </th>
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Prix Unitaire
+                            </th>
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                TVA
+                            </th>
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Prix HT
+                            </th>
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Prix TTC
+                            </th>
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Actions
+                            </th>
+                        </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {data.libelles.map((ligne, index) => (
-                                <LigneDevis
-                                    id={ligne.id}
-                                    index={index}
-                                    prest_designation={ligne.designation}
-                                    prest_quantite={ligne.quantite}
-                                    prest_prix={ligne.prixUnitaire}
-                                    prest_tva={ligne.tva}
-                                    onDelete={(e) =>
-                                        handleSupprimerLigne(ligne.id)
-                                    }
-                                    onSave={(data) =>
-                                        handleSaveData(ligne.id, data)
-                                    }
-                                    errors={errors}
-                                    libelles={libelles} // Passez la liste des libellés ici
-                                />
-                            ))}
+                        {data.libelles.map((ligne, index) => (
+                            <LigneDevis
+                                id={ligne.id}
+                                index={index}
+                                prest_designation={ligne.designation}
+                                prest_quantite={ligne.quantite}
+                                prest_prix={ligne.prixUnitaire}
+                                prest_tva={ligne.tva}
+                                onDelete={(e) =>
+                                    handleSupprimerLigne(ligne.id)
+                                }
+                                onSave={(data) =>
+                                    handleSaveData(ligne.id, data)
+                                }
+                                errors={errors}
+                                libelles={libelles} // Passez la liste des libellés ici
+                            />
+                        ))}
                         </tbody>
                     </table>
                     <div className="flex justify-end space-x-4 mt-10 mr-8">
@@ -213,6 +219,13 @@ export default function AddDevisForm({ success, projectId, auth, libelles }) {
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         >
                             Ajouter Ligne
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setLibelleModalOpen(true)}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Ajouter Libellé
                         </button>
                         <PrimaryButton
                             disabled={processing}
