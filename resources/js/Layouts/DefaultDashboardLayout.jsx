@@ -102,9 +102,6 @@ export default function DefaultDashboardLayout({ children }) {
                             <div className="flex-1 px-4 flex justify-start"></div>
                             <div className="flex items-center">
                                 <div className="ml-4 flex items-center space-x-4 lg:space-x-6">
-                                    <button className="text-gray-400 hover:text-gray-500">
-                                        <BellIcon className="h-6 w-6" />
-                                    </button>
                                     <div className="relative ml-4 flex items-center space-x-4 lg:space-x-6">
                                         <button onClick={() => setShowDropdown(!showDropdown)} className="text-gray-400 hover:text-gray-500">
                                             <UsersIcon className="h-10 w-10 text-gray-700 hover:text-gray-900 transition-transform duration-200 transform hover:scale-110 mr-10" />
