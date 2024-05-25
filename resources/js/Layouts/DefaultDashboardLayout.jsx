@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Dialog } from '@headlessui/react';
 import {
     Bars3Icon,
-    BellIcon,
     Cog6ToothIcon,
     FolderIcon,
     HomeIcon,
