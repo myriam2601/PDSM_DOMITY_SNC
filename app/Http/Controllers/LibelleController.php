@@ -9,6 +9,32 @@ use Inertia\Inertia;
 
 class LibelleController extends Controller
 {
+    //Récupération du code libellé pour le devis
+    public function search($query)
+    {
+        $libelles = Libelle::where(function ($q) use ($query) {
+            $q->where('lib_code', 'LIKE', "%{$query}%")
+                ->orWhere('lib_designation', 'LIKE', "%{$query}%");
+        })
+            ->where('lib_ajustement', 0)
+            ->get();
+
+        return response()->json(['libelles' => $libelles]);
+    }
+
+    //Récupération du code libellé pour le calcul dans le devis
+    public function ajustementSearch($query)
+    {
+        $libelles = Libelle::where(function ($q) use ($query) {
+            $q->where('lib_code', 'LIKE', "%{$query}%")
+                ->orWhere('lib_designation', 'LIKE', "%{$query}%");
+        })
+            ->where('lib_ajustement', 1)
+            ->get();
+
+        return response()->json(['libelles' => $libelles]);
+    }
+
     public function store(Request $request)
     {
 

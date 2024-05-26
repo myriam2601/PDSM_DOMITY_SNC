@@ -43,18 +43,10 @@ export function LigneDevis({
         onDelete(id);
     };
 
-    const handleDesignationKeyDown = (e) => {
-        if (e.key === "Enter") {
-            const libelle = libelles.find(
-                (lib) =>
-                    lib.lib_code.toLowerCase() === e.target.value.toLowerCase()
-            );
-            if (libelle) {
-                setDesignation(libelle.lib_designation);
-                setPrixUnitaire(parseFloat(libelle.lib_montant));
-                setQuantite(1);
-            }
-        }
+    const handleSelect = (libelle) => {
+        setDesignation(libelle.lib_designation);
+        setPrixUnitaire(parseFloat(libelle.lib_montant));
+        setQuantite(1);
     };
 
     // Fonction pour formater le nombre avec deux décimales après la virgule
@@ -75,7 +67,7 @@ export function LigneDevis({
                 <InputDesignation
                     value={designation}
                     onChange={setDesignation}
-                    onKeyDown={handleDesignationKeyDown}
+                    onSelect={handleSelect}
                 />
                 {errors[`${index}.designation`] && (
                     <p className="text-red-500 text-xs italic">
