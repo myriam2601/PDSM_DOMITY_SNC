@@ -59,7 +59,7 @@ class ParamController extends Controller
     }
     public function edit(Parametre $parametre)
     {
-        
+
         return Inertia::render('Param/Edit', [
             'parametre' => $parametre
         ]);
@@ -83,7 +83,7 @@ class ParamController extends Controller
             if ($request->hasFile('par_logo')) {
                 $path = $request->file('par_logo')->store('logos', 'public');
                 $validated['par_logo'] = $path;
-            }            
+            }
             $param = Parametre::find($parametre->id);
             if (!$param) {
                 throw new \Exception('Paramètre introuvable.');
