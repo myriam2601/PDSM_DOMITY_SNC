@@ -193,7 +193,8 @@ Route::middleware(['admin'])->group(function () {
         ->name('admin.users.delete');
     Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])
         ->name('admin.edit');
-
     Route::patch('/admin/users/{id}', [AdminController::class, 'update'])
         ->name('admin.update');
+    Route::post('/admin/toggle-registration', [AdminController::class, 'toggleRegistration'])
+        ->name('admin.toggle-registration');
 });
