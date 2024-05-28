@@ -16,10 +16,11 @@ class ParamController extends Controller
     public function create()
     {
         $user = auth()->user();
+        $param = Parametre::first();
 
         // Vérifiez si l'utilisateur a déjà un paramètre
-        if ($user->parametre()->exists()) {
-            return redirect()->route('parametres.edit', $user->parametre->id)->with([
+        if ($param) {
+            return redirect()->route('parametres.edit', $param->id)->with([
                 'message' => 'Vous avez déjà configuré vos paramètres. Vous pouvez les modifier ici.'
             ]);
         }
@@ -31,7 +32,7 @@ class ParamController extends Controller
         $validated = $request->validate([
             'par_nom_societe' => 'required|string|max:255',
             'par_adresse' => 'required|string|max:255',
-            'par_npa' => 'required|integer|size:10',
+            'par_npa' => 'required|integer|digits_between:1,10',
             'par_localite' => 'required|string|max:255',
             'par_email' => 'required|email|max:255',
             'par_telephone' => 'required|string|max:255',
