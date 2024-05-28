@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('cli_nom');
             $table->string('cli_prenom');
             $table->string('cli_email')->unique();
-            $table->integer('cli_telephone');
+            $table->string('cli_telephone');
             $table->string('cli_societe');
             $table->string('cli_adresse');
             $table->integer('cli_cli_npa'); // !!! A CHANGER

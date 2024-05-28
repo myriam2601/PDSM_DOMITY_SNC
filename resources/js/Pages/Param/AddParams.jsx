@@ -135,6 +135,7 @@ export default function ParamApp({ auth }) {
                                         value={data.par_npa}
                                         onChange={(e) => setData('par_npa', e.target.value)}
                                     />
+                                    <InputError message={errors.par_npa} className="mt-2"/>
                                 </div>
                             </div>
 

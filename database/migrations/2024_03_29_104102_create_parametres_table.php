@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('par_nom_societe');
             $table->string('par_adresse');
-            $table->string('par_npa');
+            $table->integer('par_npa');
             $table->string('par_localite');
             $table->string('par_email');
             $table->string('par_telephone');
