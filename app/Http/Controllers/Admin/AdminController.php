@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -15,7 +16,8 @@ class AdminController extends Controller
     {
         $currentUser = Auth::user();
         $users = User::all();
-        return Inertia::render('Administrateur/Admin', compact('users', 'currentUser'));
+        $settings = Setting::first();
+        return Inertia::render('Administrateur/Admin', compact('users', 'currentUser', 'settings'));
     }
 
     public function delete(User $user)
@@ -52,6 +54,14 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return Redirect::back()->with('error', $e->getMessage());
         }
+    }
+
+    public function toggleRegistration(Request $request)
+    {
+        $settings = Setting::first();
+        $settings->update(['registration_enabled' => $request->input('registration_enabled')]);
+
+        return Redirect::back()->with('success', 'Paramètre de création de compte mis à jour avec succès.');
     }
 
 }

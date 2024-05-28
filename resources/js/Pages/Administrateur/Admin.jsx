@@ -6,13 +6,14 @@ import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdateUserForm from "@/Pages/Administrateur/Partials/UpdateUserForm.jsx";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-export default function Admin({ users }) {
+export default function Admin({ users, settings }) {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const { currentUser } = usePage().props;
     const [searchQuery, setSearchQuery] = useState('');
     const [showOnlyAdmins, setShowOnlyAdmins] = useState(false);
+    const [registrationEnabled, setRegistrationEnabled] = useState(settings.registration_enabled);
 
     const openUpdateModal = (user) => {
         setSelectedUser(user);
@@ -21,6 +22,16 @@ export default function Admin({ users }) {
 
     const deleteUser = (userId) => {
         setSelectedUserId(userId);
+    };
+
+    const handleToggleRegistration = () => {
+        axios.post(route('admin.toggle-registration'), { registration_enabled: !registrationEnabled })
+            .then(response => {
+                setRegistrationEnabled(!registrationEnabled);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     };
 
     const filteredUsers = useMemo(() => {
@@ -43,15 +54,28 @@ export default function Admin({ users }) {
                         </a>
                         <h1 className="text-2xl font-semibold mt-4 mb-3">Liste des utilisateurs</h1>
                     </div>
-                    <Link href="/create-user">
-                        <button
-                            type="button"
-                            className="my-3 flex items-center rounded-full bg-primaryDarkBlue px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-greySecond hover:text-primaryDarkBlue"
-                        >
-                            <span>Ajouter un Utilisateur</span>
-                            <PlusIcon className="h-5 w-5 ml-2" aria-hidden="true"/>
-                        </button>
-                    </Link>
+                    <div className="flex items-center space-x-4">
+                        <Link href="/create-user">
+                            <button
+                                type="button"
+                                className="my-3 flex items-center rounded-full bg-primaryDarkBlue px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-greySecond hover:text-primaryDarkBlue"
+                            >
+                                <span>Ajouter un Utilisateur</span>
+                                <PlusIcon className="h-5 w-5 ml-2" aria-hidden="true"/>
+                            </button>
+                        </Link>
+                        <div className="flex items-center">
+                            <span className="text-sm text-gray-700 mr-2">Autoriser l'inscription</span>
+                            <button
+                                onClick={handleToggleRegistration}
+                                className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors duration-200 ${registrationEnabled ? 'bg-green-500' : 'bg-gray-300'}`}
+                            >
+                                <span
+                                    className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform duration-200 ${registrationEnabled ? 'translate-x-6' : 'translate-x-1'}`}
+                                />
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="flex items-center space-x-4 mb-8">
@@ -91,7 +115,8 @@ export default function Admin({ users }) {
                             <td className="px-6 py-4 whitespace-nowrap space-x-2">
                                 <button onClick={() => openUpdateModal(user)}
                                         className="text-indigo-600 hover:text-indigo-900 transition-transform duration-200 transform hover:scale-110">
-                                    <PencilIcon className="h-5 w-5 text-primaryDarkBlue" aria-hidden="true" />                                </button>
+                                    <PencilIcon className="h-5 w-5 text-primaryDarkBlue" aria-hidden="true" />
+                                </button>
                                 {user.id !== currentUser.id && (
                                     <button onClick={() => deleteUser(user.id)}
                                             className="text-red-600 hover:text-red-900 transition-transform duration-200 transform hover:scale-110">

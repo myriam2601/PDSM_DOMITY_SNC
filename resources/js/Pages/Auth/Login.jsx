@@ -5,9 +5,9 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status, canResetPassword, registrationEnabled }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -87,19 +87,23 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
                     {/* Lien vers la page d'inscription */}
-                    <span className="text-sm text-gray-600 mx-2">Don't have an account?</span>
-                    <Link
-                        href={route('register')} // Assurez-vous que cette route existe dans votre application Laravel
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Register
-                    </Link>
+                    {registrationEnabled && (
+                        <>
+                            <span className="text-sm text-gray-600 mx-2">Don't have an account?</span>
+                            <Link
+                                href={route('register')} // Assurez-vous que cette route existe dans votre application Laravel
+                                className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Register
+                            </Link>
+                        </>
+                    )}
                 </div>
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ms-4" disabled={processing}>
-                    Log in
-                </PrimaryButton></div>
-
+                        Log in
+                    </PrimaryButton>
+                </div>
             </form>
         </GuestLayout>
     );
