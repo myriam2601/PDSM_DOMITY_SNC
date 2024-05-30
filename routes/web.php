@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::fallback(function () {
+    return redirect()->route('dashboard')->with('error', 'Page non trouvée ou accès non autorisé.');
+});
 // Route d'accueil
 Route::get('/', function () {
     return redirect()->route('login');
@@ -135,6 +138,8 @@ Route::prefix('/libelle')->name('libelle.')->group(function () {
     //Route recherche de libellé dans la ligne devis
     Route::get('/search/{query}', [LibelleController::class, 'search'])->name('search');
 });
+
+
 
 //Route recherche de libellé dans le calcul devis
 Route::prefix('/ajustement')->name('ajustement.')->group(function () {

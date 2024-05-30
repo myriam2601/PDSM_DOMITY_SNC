@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { router } from "@inertiajs/react";
 import ModalInsertion from "./ModalInsertion";
@@ -6,12 +6,16 @@ import ModalUpdate from "./ModalUpdate";
 
 Modal.setAppElement("#app");
 
-const ModalIndex = ({ libelles = [], isOpen, onRequestClose }) => {
+const ModalIndex = ({ libelles, isOpen, onRequestClose, zIndex }) => {
     const [isInsertionModalOpen, setInsertionModalOpen] = useState(false);
     const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
     const [selectedLibelle, setSelectedLibelle] = useState(null);
     const [localLibelles, setLocalLibelles] = useState(libelles);
     const [tri, setTri] = useState({ colonne: null, direction: "asc" });
+
+    useEffect(() => {
+        console.log("localLibelles a été mis à jour:", localLibelles);
+    }, [localLibelles]);
 
     const demanderTri = (colonne) => {
         const estAscendant = tri.colonne === colonne && tri.direction === "asc";
@@ -55,7 +59,25 @@ const ModalIndex = ({ libelles = [], isOpen, onRequestClose }) => {
     };
 
     const handleAddLibelle = (newLibelle) => {
-        setLocalLibelles([...localLibelles, newLibelle]);
+        console.log("handleAddLibelle appelé avec:", newLibelle);
+        setLocalLibelles((prevLibelles) => {
+            if (Array.isArray(newLibelle)) {
+                return [
+                    ...prevLibelles,
+                    ...newLibelle.filter(
+                        (libelle) =>
+                            !prevLibelles.some(
+                                (existing) => existing.id === libelle.id
+                            )
+                    ),
+                ];
+            } else {
+                return [...prevLibelles, newLibelle].filter(
+                    (libelle, index, self) =>
+                        index === self.findIndex((t) => t.id === libelle.id)
+                );
+            }
+        });
     };
 
     const handleUpdateLibelle = (updatedLibelle) => {
@@ -72,12 +94,16 @@ const ModalIndex = ({ libelles = [], isOpen, onRequestClose }) => {
                 isOpen={isOpen}
                 onRequestClose={onRequestClose}
                 contentLabel="Libelle Form"
-                className="fixed inset-0 flex items-center justify-center p-4"
-                overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50"
+                className={`fixed inset-0 flex items-center justify-center p-4 z-${zIndex}`}
+                overlayClassName={`fixed inset-0 bg-gray-900 bg-opacity-50 z-${
+                    zIndex - 1
+                }`}
             >
                 <div className="bg-white rounded-lg shadow-lg w-full max-w-5xl p-8">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-semibold">Liste des Libellés</h2>
+                        <h2 className="text-2xl font-semibold">
+                            Liste des Libellés
+                        </h2>
                         <button
                             onClick={onRequestClose}
                             className="text-red-600 hover:text-red-800"
@@ -88,70 +114,82 @@ const ModalIndex = ({ libelles = [], isOpen, onRequestClose }) => {
                     <div className="overflow-x-auto">
                         <table className="min-w-full bg-white">
                             <thead className="bg-gray-100 border-b">
-                            <tr>
-                                <th
-                                    scope="col"
-                                    className="text-left py-3 px-4 font-medium text-gray-600 cursor-pointer"
-                                    onClick={() => demanderTri("lib_designation")}
-                                >
-                                    Designation
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="text-left py-3 px-4 font-medium text-gray-600 cursor-pointer"
-                                    onClick={() => demanderTri("lib_code")}
-                                >
-                                    Code
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="text-left py-3 px-4 font-medium text-gray-600 cursor-pointer"
-                                    onClick={() => demanderTri("lib_ajustement")}
-                                >
-                                    Ajustement
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="text-left py-3 px-4 font-medium text-gray-600"
-                                >
-                                    Actions
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th
+                                        scope="col"
+                                        className="text-left py-3 px-4 font-medium text-gray-600 cursor-pointer"
+                                        onClick={() =>
+                                            demanderTri("lib_designation")
+                                        }
+                                    >
+                                        Designation
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="text-left py-3 px-4 font-medium text-gray-600 cursor-pointer"
+                                        onClick={() => demanderTri("lib_code")}
+                                    >
+                                        Code
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="text-left py-3 px-4 font-medium text-gray-600 cursor-pointer"
+                                        onClick={() =>
+                                            demanderTri("lib_ajustement")
+                                        }
+                                    >
+                                        Ajustement
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="text-left py-3 px-4 font-medium text-gray-600"
+                                    >
+                                        Actions
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                            {filtreEtTriLibelles().map((libelle, index) => (
-                                <tr
-                                    key={index}
-                                    className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
-                                >
-                                    <td className="py-4 px-4 text-sm font-medium text-gray-900">
-                                        {libelle.lib_designation}
-                                    </td>
-                                    <td className="py-4 px-4 text-sm font-medium text-gray-500">
-                                        {libelle.lib_code}
-                                    </td>
-                                    <td className="py-4 px-4 text-sm font-medium text-gray-500">
-                                        {libelle.lib_ajustement ? "Oui" : "Non"}
-                                    </td>
-                                    <td className="py-4 px-4 text-sm font-medium text-gray-500 flex space-x-4">
-                                        <button
-                                            onClick={() => {
-                                                setSelectedLibelle(libelle);
-                                                setUpdateModalOpen(true);
-                                            }}
-                                            className="text-blue-600 hover:text-blue-800"
-                                        >
-                                            Modifier
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(libelle.id)}
-                                            className="text-red-600 hover:text-red-800"
-                                        >
-                                            Supprimer
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                                {filtreEtTriLibelles().map((libelle, index) => (
+                                    <tr
+                                        key={index}
+                                        className={
+                                            index % 2 === 0
+                                                ? "bg-gray-50"
+                                                : "bg-white"
+                                        }
+                                    >
+                                        <td className="py-4 px-4 text-sm font-medium text-gray-900">
+                                            {libelle.lib_designation}
+                                        </td>
+                                        <td className="py-4 px-4 text-sm font-medium text-gray-500">
+                                            {libelle.lib_code.toUpperCase()}
+                                        </td>
+                                        <td className="py-4 px-4 text-sm font-medium text-gray-500">
+                                            {libelle.lib_ajustement
+                                                ? "Oui"
+                                                : "Non"}
+                                        </td>
+                                        <td className="py-4 px-4 text-sm font-medium text-gray-500 flex space-x-4">
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedLibelle(libelle);
+                                                    setUpdateModalOpen(true);
+                                                }}
+                                                className="text-blue-600 hover:text-blue-800"
+                                            >
+                                                Modifier
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    handleDelete(libelle.id)
+                                                }
+                                                className="text-red-600 hover:text-red-800"
+                                            >
+                                                Supprimer
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
@@ -169,6 +207,7 @@ const ModalIndex = ({ libelles = [], isOpen, onRequestClose }) => {
                     isOpen={isInsertionModalOpen}
                     onRequestClose={() => setInsertionModalOpen(false)}
                     onSuccess={handleAddLibelle}
+                    zIndex={zIndex + 10}
                 />
 
                 <ModalUpdate
@@ -176,6 +215,7 @@ const ModalIndex = ({ libelles = [], isOpen, onRequestClose }) => {
                     onRequestClose={handleUpdateModalClose}
                     libelle={selectedLibelle}
                     onSuccess={handleUpdateLibelle}
+                    zIndex={zIndex + 10}
                 />
             </Modal>
         </div>

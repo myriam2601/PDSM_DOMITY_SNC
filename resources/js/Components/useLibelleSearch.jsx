@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 /*
- * Ceci est un Hook personnalisé pour récupérer le code libellé dans l'input de designation du devis
+ * Ceci est un Hook personnalisé pour récupérer les libellés pour les devis.
+ * Il exclut les libellés où lib_ajustement est true.
  */
 
 export function useLibelleSearch(query) {
@@ -15,7 +16,10 @@ export function useLibelleSearch(query) {
             axios
                 .get(`/libelle/search/${query}`)
                 .then((response) => {
-                    setResults(response.data.libelles);
+                    const filteredResults = response.data.libelles.filter(
+                        (libelle) => !libelle.lib_ajustement
+                    );
+                    setResults(filteredResults);
                     setLoading(false);
                 })
                 .catch(() => {

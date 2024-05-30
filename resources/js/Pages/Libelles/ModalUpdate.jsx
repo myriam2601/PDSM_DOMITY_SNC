@@ -1,10 +1,11 @@
-import React from "react";
-import Modal from "react-modal";
-import { useForm } from "@inertiajs/react";
-import { router } from "@inertiajs/react";
-
-const ModalUpdate = ({ isOpen, onRequestClose, libelle, onSuccess }) => {
-    const { data, setData, patch, processing, reset } = useForm({
+const ModalUpdate = ({
+    isOpen,
+    onRequestClose,
+    libelle,
+    onSuccess,
+    zIndex,
+}) => {
+    const { data, setData, patch, processing, reset, errors } = useForm({
         id: libelle ? libelle.id : "",
         lib_designation: libelle ? libelle.lib_designation : "",
         lib_code: libelle ? libelle.lib_code : "",
@@ -24,17 +25,16 @@ const ModalUpdate = ({ isOpen, onRequestClose, libelle, onSuccess }) => {
 
     const handleInputChange = (event) => {
         const { name, value, type, checked } = event.target;
-        setData(name, type === "checkbox" ? checked : value);
+        setData(name, type === "checkbox" ? checked : value.toUpperCase());
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        router.patch("/libelle/update", data, {
+        patch("/libelle/update", data, {
             onSuccess: (page) => {
-                console.log("Modification réussie, données reçues:", page);
-                onSuccess(data); // Passez les données modifiées à la fonction de succès
-                reset(); // Réinitialise le formulaire après succès
-                onRequestClose(); // Ferme le modal si nécessaire
+                onSuccess(data);
+                reset();
+                onRequestClose();
             },
             onError: (errors) => {
                 console.error("Erreur lors de la requête:", errors);
@@ -47,11 +47,15 @@ const ModalUpdate = ({ isOpen, onRequestClose, libelle, onSuccess }) => {
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Update Libelle"
-            className="fixed inset-0 flex items-center justify-center p-4"
-            overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50"
+            className={`fixed inset-0 flex items-center justify-center p-4 z-${zIndex}`}
+            overlayClassName={`fixed inset-0 bg-gray-900 bg-opacity-50 z-${
+                zIndex - 1
+            }`}
         >
             <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6">
-                <h2 className="text-2xl font-semibold mb-4">Modifier Libellé</h2>
+                <h2 className="text-2xl font-semibold mb-4">
+                    Modifier Libellé
+                </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
@@ -65,6 +69,11 @@ const ModalUpdate = ({ isOpen, onRequestClose, libelle, onSuccess }) => {
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required
                         />
+                        {errors.lib_designation && (
+                            <p className="text-red-500 text-xs italic">
+                                {errors.lib_designation}
+                            </p>
+                        )}
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
@@ -75,9 +84,15 @@ const ModalUpdate = ({ isOpen, onRequestClose, libelle, onSuccess }) => {
                             name="lib_code"
                             value={data.lib_code}
                             onChange={handleInputChange}
+                            maxLength={4}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required
                         />
+                        {errors.lib_code && (
+                            <p className="text-red-500 text-xs italic">
+                                {errors.lib_code}
+                            </p>
+                        )}
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
@@ -91,6 +106,11 @@ const ModalUpdate = ({ isOpen, onRequestClose, libelle, onSuccess }) => {
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required
                         />
+                        {errors.lib_montant && (
+                            <p className="text-red-500 text-xs italic">
+                                {errors.lib_montant}
+                            </p>
+                        )}
                     </div>
                     <div className="flex items-center">
                         <input

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAjustementSearch } from "./useAjustementSearch";
 
 export function SearchInput({ value, onChange, onSelect }) {
@@ -16,7 +16,7 @@ export function SearchInput({ value, onChange, onSelect }) {
     const handleSelect = (libelle) => {
         onSelect(libelle);
         setIsFocused(false);
-        setQuery(libelle.appellationAjustement);
+        setQuery(libelle.lib_designation);
     };
 
     const handleFocus = () => {
@@ -46,15 +46,16 @@ export function SearchInput({ value, onChange, onSelect }) {
                 onFocus={handleFocus}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primaryDarkBlue focus:border-primaryDarkBlue sm:text-sm"
             />
-            {isFocused && query && results.length > 0 && (
-                <ul className="absolute bg-white border border-gray-300 mt-1 w-full z-10">
+            {isFocused && results.length > 0 && (
+                <ul className="absolute bg-white border border-gray-300 mt-1 w-full z-10 max-h-60 overflow-auto">
                     {results.map((item) => (
                         <li
                             key={item.id}
                             className="p-2 cursor-pointer hover:bg-gray-200"
-                            onClick={() => handleSelect(item)}
+                            onMouseDown={() => handleSelect(item)}
                         >
-                            {item.lib_designation} ({item.lib_code})
+                            {item.lib_designation} (
+                            {item.lib_code.toUpperCase()})
                         </li>
                     ))}
                 </ul>
