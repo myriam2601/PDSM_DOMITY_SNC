@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 
 Modal.setAppElement("#app");
 
@@ -19,7 +19,7 @@ const ModalInsertion = ({ isOpen, onRequestClose, onSuccess, zIndex }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post("/libelle/store", data, {
+        router.post("/libelle/store", data, {
             onSuccess: (page) => {
                 console.log("Insertion réussie, données reçues:", page);
                 reset(); // Réinitialise le formulaire après succès
