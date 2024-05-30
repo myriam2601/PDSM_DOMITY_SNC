@@ -129,6 +129,7 @@ Route::prefix('/devis')->name('devis.')->group(function () {
     Route::get('/edit/{id}', [DevisController::class, 'edit'])->name('edit');
     Route::patch('/update', [DevisController::class, 'update'])->name('update');
     Route::delete('/delete/{devis}', [DevisController::class, 'destroy'])->name('destroy');
+    Route::patch('/update-status', [DevisController::class, 'updateStatus'])->name('updateStatus');
 });
 
 Route::prefix('/libelle')->name('libelle.')->group(function () {

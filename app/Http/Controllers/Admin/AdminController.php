@@ -70,12 +70,13 @@ class AdminController extends Controller
     }
 
 
-    public function toggleRegistration(Request $request): \Illuminate\Http\RedirectResponse
+    public function toggleRegistration(Request $request)
     {
         $settings = Setting::first();
         $settings->update(['registration_enabled' => $request->input('registration_enabled')]);
 
         return Redirect::back()->with('success', 'Paramètre de création de compte mis à jour avec succès.');
     }
+
 
 }
