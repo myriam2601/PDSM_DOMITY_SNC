@@ -120,14 +120,14 @@ export default function AddDevisForm({
 
     return (
         <div className={isLibelleModalOpen ? "overflow-hidden" : ""}>
-            {hasFullRights && (
+            {hasFullRights ? (
                 <ModalIndex
                     libelles={libellesModal}
                     isOpen={isLibelleModalOpen}
                     onRequestClose={() => setLibelleModalOpen(false)}
                     zIndex={50}
                 />
-            )}
+            ):null}
             <form
                 onSubmit={handleSubmit}
                 className="w-full max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg flex flex-col"
@@ -243,7 +243,7 @@ export default function AddDevisForm({
                     >
                         Ajouter Ligne
                     </button>
-                    {hasFullRights && (
+                    {hasFullRights ? (
                         <button
                             type="button"
                             onClick={() => setLibelleModalOpen(true)}
@@ -251,7 +251,7 @@ export default function AddDevisForm({
                         >
                             Libellés
                         </button>
-                    )}
+                    ):null}
                     <PrimaryButton
                         disabled={processing}
                         className="bg-green-500 hover:bg-green-700"

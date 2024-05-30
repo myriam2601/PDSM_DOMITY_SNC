@@ -90,7 +90,7 @@ export default function DefaultDashboardLayout({ children }) {
                                         {item.name}
                                     </Link>
                                 ))}
-                                {auth.user.isAdmin && (
+                                {auth.user.isAdmin ? (
                                     <Link
                                         href="/services"
                                         className="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
@@ -98,8 +98,8 @@ export default function DefaultDashboardLayout({ children }) {
                                         <DocumentPlusIcon className="mr-3 flex-shrink-0 h-6 w-6 text-gray-400" />
                                         Services
                                     </Link>
-                                )}
-                                {auth.user.isAdmin && (
+                                ): null}
+                                {auth.user.isAdmin ? (
                                     <div className="px-2">
                                         <div className="text-xs text-gray-400">
                                             Administration
@@ -115,7 +115,7 @@ export default function DefaultDashboardLayout({ children }) {
                                             </Link>
                                         ))}
                                     </div>
-                                )}
+                                ): null}
                             </nav>
                         </div>
                     </div>

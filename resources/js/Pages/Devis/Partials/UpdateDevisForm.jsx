@@ -102,14 +102,14 @@ export default function UpdateDevisForm({
 
     return (
         <div>
-            {hasFullRights && (
+            {hasFullRights ? (
                 <ModalIndex
                     libelles={libellesModal}
                     isOpen={isLibelleModalOpen}
                     onRequestClose={() => setLibelleModalOpen(false)}
                     zIndex={50}
                 />
-            )}
+            ) :null}
 
             <form
                 onSubmit={handleSubmit}
@@ -252,7 +252,7 @@ export default function UpdateDevisForm({
                     >
                         Ajouter Ligne
                     </button>
-                    {hasFullRights && (
+                    {hasFullRights ? (
                         <button
                             type="button"
                             onClick={() => setLibelleModalOpen(true)}
@@ -260,7 +260,7 @@ export default function UpdateDevisForm({
                         >
                             Libellés
                         </button>
-                    )}
+                    ) :null}
                     <PrimaryButton
                         disabled={processing}
                         className="bg-green-500 hover:bg-green-700"
