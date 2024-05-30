@@ -1,3 +1,8 @@
+import React from "react";
+import Modal from "react-modal";
+import { useForm } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
+
 const ModalUpdate = ({
     isOpen,
     onRequestClose,
@@ -30,11 +35,12 @@ const ModalUpdate = ({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        patch("/libelle/update", data, {
+        router.patch("/libelle/update", data, {
             onSuccess: (page) => {
-                onSuccess(data);
-                reset();
-                onRequestClose();
+                console.log("Modification réussie, données reçues:", page);
+                onSuccess(data); // Passez les données modifiées à la fonction de succès
+                reset(); // Réinitialise le formulaire après succès
+                onRequestClose(); // Ferme le modal si nécessaire
             },
             onError: (errors) => {
                 console.error("Erreur lors de la requête:", errors);
@@ -84,7 +90,7 @@ const ModalUpdate = ({
                             name="lib_code"
                             value={data.lib_code}
                             onChange={handleInputChange}
-                            maxLength={4}
+                            maxLength={4} // Limite à 4 caractères
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required
                         />
