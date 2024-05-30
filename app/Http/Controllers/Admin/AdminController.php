@@ -10,8 +10,21 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+
 class AdminController extends Controller
 {
+
+    public function __construct()
+    {
+        // Middleware pour vérifier si l'utilisateur est un administrateur
+        $this->middleware(function ($request, $next) {
+            if (!Auth::user()->isAdmin) {
+                return Redirect::route('dashboard')->with('error', 'Accès non autorisé');
+            }
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $currentUser = Auth::user();
@@ -56,7 +69,8 @@ class AdminController extends Controller
         }
     }
 
-    public function toggleRegistration(Request $request)
+
+    public function toggleRegistration(Request $request): \Illuminate\Http\RedirectResponse
     {
         $settings = Setting::first();
         $settings->update(['registration_enabled' => $request->input('registration_enabled')]);

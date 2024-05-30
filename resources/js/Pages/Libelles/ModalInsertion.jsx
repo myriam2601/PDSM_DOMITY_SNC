@@ -1,11 +1,11 @@
 import React from "react";
 import Modal from "react-modal";
-import { useForm, router } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 
 Modal.setAppElement("#app");
 
-const ModalInsertion = ({ isOpen, onRequestClose, onSuccess }) => {
-    const { data, setData, processing, reset } = useForm({
+const ModalInsertion = ({ isOpen, onRequestClose, onSuccess, zIndex }) => {
+    const { data, setData, post, processing, reset, errors } = useForm({
         lib_designation: "",
         lib_code: "",
         lib_montant: "",
@@ -14,7 +14,7 @@ const ModalInsertion = ({ isOpen, onRequestClose, onSuccess }) => {
 
     const handleInputChange = (event) => {
         const { name, value, type, checked } = event.target;
-        setData(name, type === "checkbox" ? checked : value);
+        setData(name, type === "checkbox" ? checked : value.toUpperCase());
     };
 
     const handleSubmit = (e) => {
@@ -23,10 +23,7 @@ const ModalInsertion = ({ isOpen, onRequestClose, onSuccess }) => {
             onSuccess: (page) => {
                 console.log("Insertion réussie, données reçues:", page);
                 reset(); // Réinitialise le formulaire après succès
-
-                // Appel de la fonction onSuccess avec les nouvelles données
-                onSuccess(page.props.libelles);
-
+                onSuccess(page.props.libellesModal);
                 onRequestClose(); // Ferme le modal si nécessaire
             },
             onError: (errors) => {
@@ -40,11 +37,15 @@ const ModalInsertion = ({ isOpen, onRequestClose, onSuccess }) => {
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Insertion Form"
-            className="fixed inset-0 flex items-center justify-center p-4"
-            overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50"
+            className={`fixed inset-0 flex items-center justify-center p-4 z-${zIndex}`}
+            overlayClassName={`fixed inset-0 bg-gray-900 bg-opacity-50 z-${
+                zIndex - 1
+            }`}
         >
             <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6">
-                <h2 className="text-2xl font-semibold mb-4">Ajouter un Libellé</h2>
+                <h2 className="text-2xl font-semibold mb-4">
+                    Ajouter un Libellé
+                </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
@@ -58,6 +59,11 @@ const ModalInsertion = ({ isOpen, onRequestClose, onSuccess }) => {
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required
                         />
+                        {errors.lib_designation && (
+                            <p className="text-red-500 text-xs italic">
+                                {errors.lib_designation}
+                            </p>
+                        )}
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
@@ -68,9 +74,15 @@ const ModalInsertion = ({ isOpen, onRequestClose, onSuccess }) => {
                             name="lib_code"
                             value={data.lib_code}
                             onChange={handleInputChange}
+                            maxLength={4} // Limite à 4 caractères
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required
                         />
+                        {errors.lib_code && (
+                            <p className="text-red-500 text-xs italic">
+                                {errors.lib_code}
+                            </p>
+                        )}
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
@@ -84,6 +96,11 @@ const ModalInsertion = ({ isOpen, onRequestClose, onSuccess }) => {
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required
                         />
+                        {errors.lib_montant && (
+                            <p className="text-red-500 text-xs italic">
+                                {errors.lib_montant}
+                            </p>
+                        )}
                     </div>
                     <div className="flex items-center">
                         <input

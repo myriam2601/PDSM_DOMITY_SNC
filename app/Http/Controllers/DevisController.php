@@ -109,37 +109,43 @@ class DevisController extends Controller
             'info' => session('info'),
             'echec' => session('echec'),
             'devis' => $devis,
-
             'parametreId' => $parametreId,
         ]);
     }
 
     public function form()
     {
-        $libelles = Libelle::all();
+        $libellesModal = Libelle::all();
+        $user = Auth::user();
+        $hasFullRights = $user->isAdmin;
 
         return Inertia::render('Devis/Insertion', [
             'auth' => [
-                'user' => auth()->user()
+                'user' => $user
             ],
             'reussi' => session('reussi'),
             'echec' => session('echec'),
-            'libelles' => $libelles,
-            'projectId' => session('projectId')
+            'libellesModal' => $libellesModal,
+            'projectId' => session('projectId'),
+            'hasFullRights' => $hasFullRights,
         ]);
     }
 
     public function edit($id)
     {
         $devis = Devis::find($id);
-
+        $libellesModal = Libelle::all();
+        $user = Auth::user();
+        $hasFullRights = $user->isAdmin;
         return Inertia::render('Devis/Edit', [
             'auth' => [
                 'user' => auth()->user()
             ],
             'devis' => $devis,
+            'libellesModal' => $libellesModal,
             'reussi' => session('reussi'),
             'echec' => session('echec'),
+            'hasFullRights' => $hasFullRights,
         ]);
     }
 

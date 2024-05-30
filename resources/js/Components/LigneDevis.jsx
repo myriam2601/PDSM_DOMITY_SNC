@@ -12,7 +12,7 @@ export function LigneDevis({
     onDelete = () => {},
     onSave = () => {},
     errors,
-    libelles, // Ajoutez la liste des libellés comme prop
+    libelles,
 }) {
     const [designation, setDesignation] = useState(prest_designation);
     const [quantite, setQuantite] = useState(prest_quantite);
@@ -43,18 +43,11 @@ export function LigneDevis({
         onDelete(id);
     };
 
-    const handleDesignationKeyDown = (e) => {
-        if (e.key === "Enter") {
-            const libelle = libelles.find(
-                (lib) =>
-                    lib.lib_code.toLowerCase() === e.target.value.toLowerCase()
-            );
-            if (libelle) {
-                setDesignation(libelle.lib_designation);
-                setPrixUnitaire(parseFloat(libelle.lib_montant));
-                setQuantite(1);
-            }
-        }
+    const handleSelect = (libelle) => {
+        setDesignation(libelle.lib_designation);
+        setPrixUnitaire(parseFloat(libelle.lib_montant));
+        setQuantite(1);
+        setTva(libelle.lib_tva || 20); // Assurez-vous d'avoir une valeur par défaut pour la TVA
     };
 
     // Fonction pour formater le nombre avec deux décimales après la virgule
@@ -69,13 +62,20 @@ export function LigneDevis({
         return prixTTC;
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+        }
+    };
+
     return (
         <tr className="bg-white border-b">
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <InputDesignation
                     value={designation}
                     onChange={setDesignation}
-                    onKeyDown={handleDesignationKeyDown}
+                    onSelect={handleSelect}
+                    onKeyDown={handleKeyDown}
                 />
                 {errors[`${index}.designation`] && (
                     <p className="text-red-500 text-xs italic">
@@ -84,17 +84,28 @@ export function LigneDevis({
                 )}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <InputFloat value={quantite} onChange={setQuantite} step={1} />
+                <InputFloat
+                    value={quantite}
+                    onChange={setQuantite}
+                    step={1}
+                    onKeyDown={handleKeyDown}
+                />
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <InputFloat
                     value={prixUnitaire}
                     onChange={setPrixUnitaire}
                     step={0.01}
+                    onKeyDown={handleKeyDown}
                 />
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <InputFloat value={tva} onChange={setTva} step={0.1} />
+                <InputFloat
+                    value={tva}
+                    onChange={setTva}
+                    step={0.1}
+                    onKeyDown={handleKeyDown}
+                />
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {prixHT.toFixed(2)}

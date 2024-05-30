@@ -1,8 +1,8 @@
 // Administrateur.js
 
-import React from 'react';
-import { Link } from '@inertiajs/inertia-react';
-import { Cog6ToothIcon } from '@heroicons/react/24/outline';
+import React from "react";
+import { Link } from "@inertiajs/inertia-react";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 const Administrateur = ({ href }) => {
     return (

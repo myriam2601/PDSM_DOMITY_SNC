@@ -14,6 +14,17 @@ use Illuminate\Validation\Rule;
 
 class ServiceController extends Controller
 {
+    public function __construct()
+    {
+        // Middleware pour vérifier si l'utilisateur est un administrateur
+        $this->middleware(function ($request, $next) {
+            if (!Auth::user()->isAdmin) {
+                return Redirect::route('dashboard')->with('error', 'Accès non autorisé');
+            }
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $services = Service::all();
@@ -41,7 +52,7 @@ class ServiceController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'ser_categorie' => 'required|string|max:255',
+            'ser_categorie' => 'required|string|max:3',
             'ser_nom' => [
                 'required',
                 'string',
@@ -50,23 +61,29 @@ class ServiceController extends Controller
             ],
             'ser_modalite' => 'required|string',
             'ser_conditions_reglements' => 'required|string',
+        ], [
+            'ser_categorie.max' => 'La catégorie ne doit pas dépasser 3 caractères.',
+            'ser_nom.unique' => 'Le nom du service doit être unique.',
+            'required' => 'Le champ :attribute est obligatoire.',
         ]);
 
-        Service::create([
-            'ser_categorie' => $validated['ser_categorie'],
-            'ser_nom' => $validated['ser_nom'],
-            'ser_modalite' => $validated['ser_modalite'],
-            'ser_conditions_reglements' => $validated['ser_conditions_reglements'],
-        ]);
-
-        return redirect()->route('services.index'); // Adjust the route name accordingly
+        try {
+            Service::create([
+                'ser_categorie' => $validated['ser_categorie'],
+                'ser_nom' => $validated['ser_nom'],
+                'ser_modalite' => $validated['ser_modalite'],
+                'ser_conditions_reglements' => $validated['ser_conditions_reglements'],
+            ]);
+            return redirect()->route('services.index')->with('reussi', 'Service ajouté avec succès');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('echec', 'Erreur lors de l\'ajout du service : ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
     {
-        //on la delete de la bdd pour le moment
         try {
-            Service::destroy( $id);
+            Service::destroy($id);
             return Redirect::route('services.index');
         } catch (\Exception $e) {
             return Redirect::back()->with('error', $e->getMessage());
@@ -75,7 +92,6 @@ class ServiceController extends Controller
 
     public function show(Service $service)
     {
-
         return Inertia::render('Services/Show', [
             'service' => $service,
         ]);
@@ -84,22 +100,34 @@ class ServiceController extends Controller
     public function edit($id)
     {
         try {
-            $service = Service::where("id", $id)->first();
-            if ($service) {
-                return Inertia::render('Services/Edit', [
-                    'service' => $service,
-                ]);
-            } else {
-                return Redirect::route('services.index')->with('error', 'Service non trouvé');
-            }
+            $service = Service::findOrFail($id);
+            return Inertia::render('Services/Edit', [
+                'auth' => [
+                    'user' => auth()->user()
+                ],
+                'service' => $service,
+                'reussi' => session('reussi'),
+                'echec' => session('echec'),
+            ]);
         } catch (\Exception $e) {
-            return Redirect::back()->with('error', $e->getMessage());
+            return Redirect::route('services.index')->with('echec', 'Service non trouvé');
         }
     }
 
     public function update(Request $request, $id): RedirectResponse
     {
-        //pour valider les champs avec les criteres
+        // Messages de validation personnalisés
+        $messages = [
+            'ser_categorie.required' => 'Le champ catégorie est obligatoire.',
+            'ser_categorie.max' => 'Le champ catégorie ne doit pas dépasser 255 caractères.',
+            'ser_nom.required' => 'Le champ nom est obligatoire.',
+            'ser_nom.max' => 'Le champ nom ne doit pas dépasser 255 caractères.',
+            'ser_nom.unique' => 'Le nom du service doit être unique.',
+            'ser_modalite.required' => 'Le champ modalité est obligatoire.',
+            'ser_conditions_reglements.required' => 'Le champ conditions de règlement est obligatoire.',
+        ];
+
+        // Validation des champs avec les critères et messages personnalisés
         $validated = $request->validate([
             'ser_categorie' => 'required|string|max:255',
             'ser_nom' => [
@@ -110,23 +138,26 @@ class ServiceController extends Controller
             ],
             'ser_modalite' => 'required|string',
             'ser_conditions_reglements' => 'required|string',
-        ]);
+        ], $messages);
 
-        $service = Service::find($id);
+        try {
+            $service = Service::find($id);
 
-        if (!$service) {
-            return Redirect::route('services.index')->with('error', 'Service non trouvé');
+            if (!$service) {
+                return Redirect::route('services.index')->with('error', 'Service non trouvé');
+            }
+
+            $service->update([
+                'ser_categorie' => $validated['ser_categorie'],
+                'ser_nom' => $validated['ser_nom'],
+                'ser_modalite' => $validated['ser_modalite'],
+                'ser_conditions_reglements' => $validated['ser_conditions_reglements'],
+            ]);
+
+            // Redirection vers la page du service mis à jour ou vers la liste des services
+            return redirect()->route('services.index')->with('success', 'Service mis à jour avec succès');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erreur lors de la mise à jour du service : ' . $e->getMessage());
         }
-
-        $service->update([
-            'ser_categorie' => $validated['ser_categorie'],
-            'ser_nom' => $validated['ser_nom'],
-            'ser_modalite' => $validated['ser_modalite'],
-            'ser_conditions_reglements' => $validated['ser_conditions_reglements'],
-        ]);
-
-        // Redirection vers la page du service mis à jour ou vers la liste des services
-        return redirect()->route('services.index')->with('success', 'Service mis à jour avec succès');
     }
-
 }

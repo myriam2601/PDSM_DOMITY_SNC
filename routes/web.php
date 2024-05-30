@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::fallback(function () {
+    return redirect()->route('dashboard')->with('error', 'Page non trouvée ou accès non autorisé.');
+});
 // Route d'accueil
 Route::get('/', function () {
     return redirect()->route('login');
@@ -126,13 +129,21 @@ Route::prefix('/devis')->name('devis.')->group(function () {
     Route::get('/edit/{id}', [DevisController::class, 'edit'])->name('edit');
     Route::patch('/update', [DevisController::class, 'update'])->name('update');
     Route::delete('/delete/{devis}', [DevisController::class, 'destroy'])->name('destroy');
-    Route::patch('/update-status', [DevisController::class, 'updateStatus'])->name('updateStatus');
 });
 
 Route::prefix('/libelle')->name('libelle.')->group(function () {
     Route::patch('/update', [LibelleController::class, 'update'])->name('update');
     Route::post('/store', [LibelleController::class, 'store'])->name('store');
     Route::delete('/{id}', [LibelleController::class, 'destroy'])->name('destroy');
+    //Route recherche de libellé dans la ligne devis
+    Route::get('/search/{query}', [LibelleController::class, 'search'])->name('search');
+});
+
+
+
+//Route recherche de libellé dans le calcul devis
+Route::prefix('/ajustement')->name('ajustement.')->group(function () {
+    Route::get('/search/{query}', [LibelleController::class, 'ajustementSearch'])->name('search');
 });
 
 

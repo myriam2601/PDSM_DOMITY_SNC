@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { SearchInput } from "@/Components/SearchInput"; // Ensure correct import
+
 export default function ModalCalcul({ tab, ajustement }) {
     const [isOpen, setIsOpen] = useState(false);
     const [checkedItems, setCheckedItems] = useState(
@@ -13,7 +15,7 @@ export default function ModalCalcul({ tab, ajustement }) {
     const [percentage, setPercentage] = useState(0);
     const [adjustedTotal, setAdjustedTotal] = useState(0);
     const [adjustmentNameInput, setAdjustmentNameInput] = useState("");
-    // Actualiser le montant total ajusté à chaque changement pertinent
+
     useEffect(() => {
         const selectedItems = tab.libelles
             ? tab.libelles.filter((_, index) => checkedItems[index])
@@ -31,11 +33,9 @@ export default function ModalCalcul({ tab, ajustement }) {
     }, [checkedItems, percentage, adjustmentType, tab.libelles]);
 
     useEffect(() => {
-        // Récupérer les IDs des lignes déjà ajustées
         const adjustedIds = tab.ajustements
             ? tab.ajustements.flatMap((ajust) => ajust.identifiantDesignation)
             : [];
-        // Déterminer quelles cases à cocher doivent être désactivées
         const newDisableCheck = tab.libelles
             ? tab.libelles.map((libelle) => adjustedIds.includes(libelle.id))
             : [];
@@ -43,21 +43,26 @@ export default function ModalCalcul({ tab, ajustement }) {
     }, [tab.ajustements, tab.libelles]);
 
     const handleAdjustment = () => {
-        // Vérifiez si au moins un libellé est sélectionné
         const isAnyItemSelected = checkedItems.some((item) => item);
-        // Vérifiez si les champs requis sont remplis
         const isFormValid =
-            adjustmentNameInput.trim() && percentage > 0 && isAnyItemSelected;
+            adjustmentNameInput &&
+            adjustmentNameInput.trim() &&
+            percentage > 0 &&
+            isAnyItemSelected;
 
         if (!isFormValid) {
             if (!isAnyItemSelected) {
                 toast.error("Vous devez sélectionner au moins un libellé.");
-            } else if (!adjustmentNameInput.trim() || percentage <= 0) {
+            } else if (
+                !adjustmentNameInput ||
+                !adjustmentNameInput.trim() ||
+                percentage <= 0
+            ) {
                 toast.error(
                     "Tous les champs doivent être remplis correctement."
                 );
             }
-            return; // Arrête l'exécution si le formulaire n'est pas valide
+            return;
         }
 
         const selectedItems = tab.libelles.filter(
@@ -72,26 +77,22 @@ export default function ModalCalcul({ tab, ajustement }) {
             montantTotalAjuste: adjustedTotal.toFixed(2),
         };
 
-        ajustement(result); // Passez le nouvel ajustement
-        toast.success("Ajustement ajouté avec succès !"); // Affichez un message de réussite
-        setIsOpen(false); // Fermez le modal
-
-        // Réinitialisez les états pour un nouvel ajustement
+        ajustement(result);
+        toast.success("Ajustement ajouté avec succès !");
+        setIsOpen(false);
         resetModalState();
     };
-    // Réinitialisez l'état du modal pour un nouvel ajustement
+
     const resetModalState = () => {
         setCheckedItems(new Array(tab.libelles?.length ?? 0).fill(false));
         setAdjustmentType("majoration");
-        setPercentage(""); // Changez ceci pour permettre la saisie directe des chiffres
+        setPercentage(0); // Ensure this is a number
         setAdjustmentNameInput("");
         setAdjustedTotal(0);
     };
 
     const toggleModal = () => {
-        // Vérifiez d'abord s'il existe des libelles
         const hasLibelles = tab.libelles && tab.libelles.length > 0;
-        // Ensuite, vérifiez si tous les libelles sont remplis correctement (selon vos critères de 'rempli correctement')
         const allLibellesFilled =
             hasLibelles &&
             tab.libelles.every(
@@ -102,7 +103,6 @@ export default function ModalCalcul({ tab, ajustement }) {
             );
 
         if (!hasLibelles || !allLibellesFilled) {
-            // Si aucun libelle n'est présent ou si tous les libelles ne sont pas correctement remplis, affichez un message d'erreur
             toast.error(
                 "Impossible d'ouvrir le calcul car il existe des lignes vides ou incomplètes."
             );
@@ -119,8 +119,12 @@ export default function ModalCalcul({ tab, ajustement }) {
 
     const handlePercentageChange = (e) => {
         const value = e.target.value;
-        // Convertir la valeur en flottant seulement si elle n'est pas vide, sinon utiliser une chaîne vide
-        setPercentage(value ? parseFloat(value).toString() : "");
+        setPercentage(value ? parseFloat(value) : 0); // Ensure this is a number
+    };
+
+    const handleAdjustmentNameSelect = (ajustement) => {
+        setAdjustmentNameInput(ajustement.lib_designation);
+        setPercentage(ajustement.lib_montant);
     };
 
     return (
@@ -138,8 +142,7 @@ export default function ModalCalcul({ tab, ajustement }) {
                         className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
                         onClick={toggleModal}
                     ></div>
-                    <div
-                        className="modal-container bg-white w-3/4 md:w-1/2 lg:w-1/3 mx-auto rounded-lg shadow-lg z-50 overflow-y-auto">
+                    <div className="modal-container bg-white w-3/4 md:w-1/2 lg:w-1/3 mx-auto rounded-lg shadow-lg z-50 overflow-y-auto">
                         <div className="modal-content py-4 text-left px-6">
                             <div className="flex justify-between items-center pb-3">
                                 <p className="text-2xl font-bold">Ajustement</p>
@@ -154,8 +157,7 @@ export default function ModalCalcul({ tab, ajustement }) {
                                         height="18"
                                         viewBox="0 0 18 18"
                                     >
-                                        <path
-                                            d="M16.22 14.74l-1.48 1.48L9 10.48l-5.74 5.74-1.48-1.48L7.52 9 1.78 3.26l1.48-1.48L9 7.52l5.74-5.74 1.48 1.48L10.48 9z"></path>
+                                        <path d="M16.22 14.74l-1.48 1.48L9 10.48l-5.74 5.74-1.48-1.48L7.52 9 1.78 3.26l1.48-1.48L9 7.52l5.74-5.74 1.48 1.48L10.48 9z"></path>
                                     </svg>
                                 </div>
                             </div>
@@ -164,18 +166,31 @@ export default function ModalCalcul({ tab, ajustement }) {
                                     tab.libelles.map((ligne, index) => (
                                         <li
                                             key={index}
-                                            className={`flex items-center ${disableCheck[index] ? "text-gray-400" : ""}`}
+                                            className={`flex items-center ${
+                                                disableCheck[index]
+                                                    ? "text-gray-400"
+                                                    : ""
+                                            }`}
                                         >
                                             <input
                                                 type="checkbox"
                                                 checked={checkedItems[index]}
                                                 disabled={disableCheck[index]}
-                                                onChange={() => handleCheckboxChange(index)}
+                                                onChange={() =>
+                                                    handleCheckboxChange(index)
+                                                }
                                                 className="mr-2"
                                             />
-                                            <span className={`${disableCheck[index] ? "line-through" : ""}`}>
-                                        Designation: {ligne.designation} - Prix TTC: {ligne.prixTTC}
-                                    </span>
+                                            <span
+                                                className={`${
+                                                    disableCheck[index]
+                                                        ? "line-through"
+                                                        : ""
+                                                }`}
+                                            >
+                                                Designation: {ligne.designation}{" "}
+                                                - Prix TTC: {ligne.prixTTC}
+                                            </span>
                                         </li>
                                     ))
                                 ) : (
@@ -183,16 +198,16 @@ export default function ModalCalcul({ tab, ajustement }) {
                                 )}
                             </ul>
                             <div className="mb-4">
-                                <label htmlFor="adjustmentNameInput"
-                                       className="block text-sm font-medium text-gray-700">
+                                <label
+                                    htmlFor="adjustmentNameInput"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
                                     Appellation de l'ajustement :
                                 </label>
-                                <input
-                                    type="text"
-                                    id="adjustmentNameInput"
+                                <SearchInput
                                     value={adjustmentNameInput}
-                                    onChange={(e) => setAdjustmentNameInput(e.target.value)}
-                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                    onChange={setAdjustmentNameInput}
+                                    onSelect={handleAdjustmentNameSelect}
                                 />
                             </div>
                             <div className="mb-4 flex items-center">
@@ -202,11 +217,18 @@ export default function ModalCalcul({ tab, ajustement }) {
                                         id="majoration"
                                         name="adjustment"
                                         value="majoration"
-                                        checked={adjustmentType === "majoration"}
-                                        onChange={() => setAdjustmentType("majoration")}
+                                        checked={
+                                            adjustmentType === "majoration"
+                                        }
+                                        onChange={() =>
+                                            setAdjustmentType("majoration")
+                                        }
                                         className="mr-2"
                                     />
-                                    <label htmlFor="majoration" className="mr-4">
+                                    <label
+                                        htmlFor="majoration"
+                                        className="mr-4"
+                                    >
                                         Majoration
                                     </label>
                                 </div>
@@ -217,16 +239,19 @@ export default function ModalCalcul({ tab, ajustement }) {
                                         name="adjustment"
                                         value="rabais"
                                         checked={adjustmentType === "rabais"}
-                                        onChange={() => setAdjustmentType("rabais")}
+                                        onChange={() =>
+                                            setAdjustmentType("rabais")
+                                        }
                                         className="mr-2"
                                     />
-                                    <label htmlFor="rabais">
-                                        Rabais
-                                    </label>
+                                    <label htmlFor="rabais">Rabais</label>
                                 </div>
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="percentage" className="block text-sm font-medium text-gray-700">
+                                <label
+                                    htmlFor="percentage"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
                                     Pourcentage :
                                 </label>
                                 <input
@@ -238,7 +263,8 @@ export default function ModalCalcul({ tab, ajustement }) {
                                 />
                             </div>
                             <p className="text-xl font-semibold">
-                                Montant total après ajustement : {adjustedTotal.toFixed(2)}
+                                Montant total après ajustement :{" "}
+                                {adjustedTotal.toFixed(2)}
                             </p>
                             <div className="flex justify-end mt-4">
                                 <button
@@ -254,6 +280,5 @@ export default function ModalCalcul({ tab, ajustement }) {
                 </div>
             )}
         </div>
-
     );
 }

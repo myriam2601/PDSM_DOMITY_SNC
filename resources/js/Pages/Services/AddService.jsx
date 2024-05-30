@@ -53,7 +53,7 @@ export default function AddService({ auth }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('services.store'), {
+        post(route("services.store"), {
             onSuccess: () => reset(),
         });
     };
@@ -66,12 +66,11 @@ export default function AddService({ auth }) {
     }
 
     const renderRichTextInput = function ({ name, label, goTo, arrowDirection }) {
+
         return (
             <div className="step-wrap">
                 <div className="step-wrap-header">
-                    <label>
-                        {label}
-                    </label>
+                    <label>{label}</label>
                     <div>
                         <button className="step-arrow" onClick={goTo}>
                             {arrowDirection === "left" && <ArrowLeftIcon width={40} />}
@@ -90,6 +89,7 @@ export default function AddService({ auth }) {
         );
     }
 
+
     return (
         <DefaultDashboardLayout user={auth.user}>
             <Head title="Ajouter un Service" />
@@ -98,6 +98,7 @@ export default function AddService({ auth }) {
                     <div className="md:col-span-12">
                         <a href="javascript:history.back()"
                            className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+
                             <ArrowLeftIcon className="w-4 h-4 mr-3" /> Retour
                         </a>
                         <h2 className="text-base font-semibold leading-7 text-primaryDarkBlue">
@@ -108,11 +109,16 @@ export default function AddService({ auth }) {
                         </p>
                     </div>
 
-                    <form onSubmit={submit} className="md:col-span-12 space-y-6">
+                    <form
+                        onSubmit={submit}
+                        className="md:col-span-12 space-y-6"
+                    >
                         <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12">
                             <div className="sm:col-span-6">
-                                <label htmlFor="ser_nom"
-                                       className="block text-sm font-medium leading-6 text-primaryDarkBlue">
+                                <label
+                                    htmlFor="ser_nom"
+                                    className="block text-sm font-medium leading-6 text-primaryDarkBlue"
+                                >
                                     Nom
                                 </label>
                                 <select
@@ -128,11 +134,14 @@ export default function AddService({ auth }) {
                                     ))}
                                 </select>
                                 <InputError message={errors.ser_nom} className="mt-2"/>
+
                             </div>
 
                             <div className="sm:col-span-6">
-                                <label htmlFor="ser_categorie"
-                                       className="block text-sm font-medium leading-6 text-primaryDarkBlue">
+                                <label
+                                    htmlFor="ser_categorie"
+                                    className="block text-sm font-medium leading-6 text-primaryDarkBlue"
+                                >
                                     Catégorie
                                 </label>
                                 <select
@@ -158,6 +167,7 @@ export default function AddService({ auth }) {
                                             e.preventDefault();
                                             setStep("condition");
                                         }
+
                                     })}
                                 </div>
                             )}
@@ -172,12 +182,14 @@ export default function AddService({ auth }) {
                                             e.preventDefault();
                                             setStep("modalite");
                                         }
+
                                     })}
                                 </div>
                             )}
                         </div>
                         <div className="flex justify-end">
                             <PrimaryButton disabled={processing || !fieldCompleted()}>Ajouter</PrimaryButton>
+
                         </div>
                     </form>
                 </div>

@@ -7,7 +7,12 @@ import "react-toastify/dist/ReactToastify.min.css";
 import ModalCalcul from "@/Modal/ModalCalcul";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline/index.js";
 
-export default function Insertion({ auth, projectId, libelles }) {
+export default function Insertion({
+    auth,
+    projectId,
+    libellesModal,
+    hasFullRights,
+}) {
     const { flash } = usePage().props;
     console.log(flash);
     useEffect(() => {
@@ -35,7 +40,12 @@ export default function Insertion({ auth, projectId, libelles }) {
                 </a>
             </div>
             <Head title="Formulaire Devis" />
-            <AddDevisForm projectId={projectId} libelles={libelles} />
+            <AddDevisForm
+                projectId={projectId}
+                libellesModal={libellesModal}
+                hasFullRights={hasFullRights}
+                auth={auth}
+            />
 
             <ToastContainer />
         </DefaultDashboardLayout>
