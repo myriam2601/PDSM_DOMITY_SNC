@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
@@ -14,12 +15,14 @@ class ClientController extends Controller
 {
     public function index()
     {
+        $parametreId = optional(Auth::user()->parametre)->id;
         $clients = Client::all();
         return Inertia::render('Clients/Index', [
             'auth' => [
                 'user' => auth()->user()
             ],
             'clients' => $clients,
+            'parametreId' => $parametreId,
         ]);
     }
 
@@ -39,7 +42,7 @@ class ClientController extends Controller
             'cli_nom' => 'required|string|max:255',
             'cli_prenom' => 'required|string|max:255',
             'cli_email' => 'required|email|unique:client,cli_email', // Adjust to your client table name and email field
-            'cli_telephone' => 'required|integer',
+            'cli_telephone' => 'required|string',
             'cli_societe' => 'required|string',
             'cli_adresse' => 'required|string',
             'cli_cli_npa' => 'required|integer',
@@ -55,7 +58,7 @@ class ClientController extends Controller
             'cli_cli_npa' => $validated['cli_cli_npa'],
         ]);
 
-        return redirect()->route('clients.index'); // Adjust the route name accordingly
+        return redirect()->route('clients.index');
     }
 
     public function show(Client $client)
@@ -66,6 +69,7 @@ class ClientController extends Controller
             'client' => $clientWithProjets,
         ]);
     }
+
     public function edit($id)
     {
             $client = Client::find($id);
@@ -90,7 +94,7 @@ class ClientController extends Controller
                     'email',
                     Rule::unique('client', 'cli_email')->ignore($id),
                 ],
-                'cli_telephone' => 'required|integer',
+                'cli_telephone' => 'required|string',
                 'cli_societe' => 'required|string',
                 'cli_adresse' => 'required|string',
                 'cli_cli_npa' => 'required|integer',

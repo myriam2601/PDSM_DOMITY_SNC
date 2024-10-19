@@ -20,7 +20,7 @@ npm-debug.log
 /yarn.lock
 
 # Ignore les fichiers de build
-/public/build/
+#/public/build/
 
 # Ignore les fichiers d'environnement local
 Homestead.json

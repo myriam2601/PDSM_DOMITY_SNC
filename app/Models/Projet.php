@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Projet extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'projet';
 
     protected $fillable = [
-        'user_id', 'client_id','nom', 'debut', 'deadline', 'description',
-        // Assurez-vous que 'client_id' n'est pas inclus ici tant que la table clients n'est pas en place
+        'user_id', 'nom', 'client_id', 'service_id', 'debut', 'deadline', 'description',
     ];
 
     public function user(): BelongsTo
@@ -22,10 +22,21 @@ class Projet extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'service_id');
+    }
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
     }
-    // Vous pouvez ajouter la relation avec Client plus tard ici
+
+
+    public function devis()
+    {
+        return $this->hasOne(Devis::class);
+    }
+
 
 }

@@ -7,7 +7,7 @@ import React, {useMemo, useState} from "react";
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { PlusIcon } from "@heroicons/react/20/solid";
 import ServicesDisplay from "@/Components/ServicesDisplay.jsx";
-import { Head, useForm } from "@inertiajs/react";
+import {Head, Link, useForm} from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import "../../../css/serviceStyle.css"
 import Modal from "@/Components/Modal";
@@ -28,18 +28,20 @@ export default function MainService({ auth, services, url }) {
     },[services, serviceName])
 
     return (
-        <DefaultDashboardLayout user={auth.user} title="Services" url={url}>
+        <DefaultDashboardLayout user={auth.user} title="Services" url={url} parametreId={parametreId}>
 
-            <Head title="Services" />
-            <div className="service-search">
-                <input type="text" placeholder="Rechercher service" onChange={(event)=>{//onChange nous renvoi une evt
-                    setServiceName(event.target.value)
-                }}/>
-            </div>
+            <Head title="Services"/>
 
+
+            <Head title="Services"/>
             <div className="flex justify-between p-4 sm:p-6 lg:p-8">
                 <div>
-                    <h2 className="text-lg font-semibold leading-7 text-primaryDarkBlue">
+                    <a href="javascript:history.back()"
+                       className="rounded-full p-2 hover:bg-gray-200 inline-flex justify-center items-center">
+                        <ArrowLeftIcon className="w-4 h-4 mr-3"/> Retour
+                    </a>
+
+                    <h2 className="text-2xl font-semibold leading-7 text-primaryDarkBlue mt-4">
                         Services
                     </h2>
                 </div>
@@ -56,8 +58,14 @@ export default function MainService({ auth, services, url }) {
                 </Modal>
             </div>
                 </div>
+
             </div>
-            <ServicesDisplay services={serviceFiltered} auth={auth} />
+            <div className="service-search flex justify-start">
+                <input className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-8 ml-8" type="text" placeholder="Rechercher un service..." onChange={(event) => {//onChange nous renvoi une evt
+                    setServiceName(event.target.value)
+                }}/>
+            </div>
+            <ServicesDisplay services={serviceFiltered} auth={auth}/>
         </DefaultDashboardLayout>
     );
 }
