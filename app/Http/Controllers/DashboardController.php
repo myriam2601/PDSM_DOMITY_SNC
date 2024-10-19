@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $parametreId = optional($user->parametre)->id;
+        //$parametreId = optional($user->parametre)->id;
 
         // Récupérer le nombre de clients depuis la base de données
         $clientsCount = Client::count();
@@ -30,7 +30,7 @@ class DashboardController extends Controller
             'auth' => [
                 'user' => auth()->user()
             ],
-            'parametreId' => $parametreId,
+            //'parametreId' => $parametreId,
             'clientsCount' => $clientsCount,
             'projetsCount' => $projetsCount,
             'devisCount' => $devisCount,

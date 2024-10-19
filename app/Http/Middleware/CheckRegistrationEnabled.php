@@ -14,13 +14,13 @@ class CheckRegistrationEnabled
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        $settings = Setting::first();
+        /* $settings = Setting::first();
         if (!$settings->registration_enabled && $request->is('register')) {
             return redirect()->route('login')->with('error', 'L\'inscription est désactivée.');
         }
 
-        return $next($request);
+        return $next($request); */
     }
 }

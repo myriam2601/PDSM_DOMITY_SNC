@@ -22,14 +22,14 @@ class ProjetController extends Controller
      */
     public function index(): Response
     {
-        $parametreId = optional(Auth::user()->parametre)->id;
+        //$parametreId = optional(Auth::user()->parametre)->id;
 
         return Inertia::render('Projets/Index', [
             'auth' => [
                 'user' => auth()->user()
             ],
             'projets' => Projet::with(['user:id,name', 'devis'])->latest()->get(), // Assurez-vous d'inclure 'devis' ici
-            'parametreId' => $parametreId,
+            //'parametreId' => $parametreId,
         ]);
     }
 

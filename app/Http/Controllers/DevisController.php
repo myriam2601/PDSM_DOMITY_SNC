@@ -99,7 +99,7 @@ class DevisController extends Controller
     {
         // Récupère tous les devis
         $devis = Devis::with('projet.client')->get();
-        $parametreId = optional(Auth::user()->parametre)->id;
+        //$parametreId = optional(Auth::user()->parametre)->id;
 
         return Inertia::render('Devis/Index', [
             'auth' => [

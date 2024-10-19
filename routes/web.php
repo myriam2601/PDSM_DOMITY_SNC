@@ -28,12 +28,12 @@ Route::fallback(function () {
     return redirect()->route('dashboard')->with('error', 'Page non trouvée ou accès non autorisé.');
 });
 // Route d'accueil
-Route::get('/', function () {
+/* Route::get('/', function () {
     return redirect()->route('login');
-});
+}); */
 
 // Route du tableau de bord
-Route::get('/dashboard', [DashboardController::class, 'index'])
+Route::get('/', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 

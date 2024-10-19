@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm, Head } from "@inertiajs/react";
+import { useForm, Head, router } from "@inertiajs/react";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 
@@ -13,13 +13,30 @@ export default function AddService({ onServiceAdded, auth, onClose }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("services.store"), {
+        router.post("services.store"), ({
+
             onSuccess: () => {
+                console.log("ca success !")
                 const newService = response.props.service; // Assurez-vous de retourner le service ajouté depuis la réponse du backend
                 console.log(newService);
                 onServiceAdded(newService); // Ajoute le nouveau service à la liste
                 reset();
                 onClose(); // Fermer le modal après l'ajout
+            },
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        router.patch("/libelle/update", data, {
+            onSuccess: (page) => {
+                console.log("Modification réussie, données reçues:", page);
+                onSuccess(data); // Passez les données modifiées à la fonction de succès
+                reset(); // Réinitialise le formulaire après succès
+                onRequestClose(); // Ferme le modal si nécessaire
+            },
+            onError: (errors) => {
+                console.error("Erreur lors de la requête:", errors);
             },
         });
     };

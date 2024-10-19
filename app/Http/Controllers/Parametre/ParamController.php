@@ -62,7 +62,7 @@ class ParamController extends Controller
     {
 
         return Inertia::render('Param/Edit', [
-            'parametre' => $parametre
+            //'parametre' => $parametre
         ]);
     }
 
@@ -85,7 +85,7 @@ class ParamController extends Controller
                 $path = $request->file('par_logo')->store('logos', 'public');
                 $validated['par_logo'] = $path;
             }
-            $param = Parametre::find($parametre->id);
+            $param = Parametre::find(tre->id);
             if (!$param) {
                 throw new \Exception('Paramètre introuvable.');
             }
@@ -95,13 +95,13 @@ class ParamController extends Controller
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Capturer et rediriger les erreurs de validation
-            return redirect()->route('parametres.edit', $parametre->id)->withErrors($e->validator->errors())->withInput();
+            //return redirect()->route('parametres.edit', $parametre->id)->withErrors($e->validator->errors())->withInput();
         } catch (\Exception $e) {
             // Capturer et gérer toutes les autres erreurs
             Log::error($e->getMessage());
-            return redirect()->route('parametres.edit', $parametre->id)->with([
+            /* return redirect()->route('parametres.edit', $parametre->id)->with([
                 'error' => 'Une erreur s\'est produite lors de la mise à jour des paramètres.'
-            ]);
+            ]); */
         }
     }
 

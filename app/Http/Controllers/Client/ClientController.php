@@ -15,14 +15,14 @@ class ClientController extends Controller
 {
     public function index()
     {
-        $parametreId = optional(Auth::user()->parametre)->id;
+        //$parametreId = optional(Auth::user()->parametre)->id;
         $clients = Client::all();
         return Inertia::render('Clients/Index', [
             'auth' => [
                 'user' => auth()->user()
             ],
             'clients' => $clients,
-            'parametreId' => $parametreId,
+            //'parametreId' => $parametreId,
         ]);
     }
 
