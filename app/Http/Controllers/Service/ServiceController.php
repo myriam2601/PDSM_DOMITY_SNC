@@ -34,7 +34,7 @@ class ServiceController extends Controller
                 'user' => auth()->user()
             ],
             'services' => $services,
-            'parametreId' => $parametreId,
+            //'parametreId' => $parametreId,
         ]);
     }
 
