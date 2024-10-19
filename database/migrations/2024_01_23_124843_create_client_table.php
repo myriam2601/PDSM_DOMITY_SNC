@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('cli_telephone');
             $table->string('cli_societe');
             $table->string('cli_adresse');
-            $table->integer('cli_cli_npa');
+            $table->integer('cli_npa');
             $table->timestamps(); // Cette ligne ajoute les colonnes 'updated_at' et 'created_at'
         });
     }

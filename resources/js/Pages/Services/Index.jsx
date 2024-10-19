@@ -10,9 +10,17 @@ import ServicesDisplay from "@/Components/ServicesDisplay.jsx";
 import { Head, useForm } from "@inertiajs/react";
 import DefaultDashboardLayout from "@/Layouts/DefaultDashboardLayout.jsx";
 import "../../../css/serviceStyle.css"
+import Modal from "@/Components/Modal";
+import AddService from "./AddService";
 
 export default function MainService({ auth, services, url }) {
-    const [serviceName, setServiceName] = useState("");//hook
+    
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [serviceName, setServiceName] = useState('');
+    
     const serviceFiltered = useMemo(()=>{ //usememo return variable pour le filtre
         return services.filter((service)=>{
             return service.ser_nom.toLowerCase().includes(serviceName.toLowerCase())
@@ -36,15 +44,17 @@ export default function MainService({ auth, services, url }) {
                     </h2>
                 </div>
                 <div>
-                    <a href={route('services.create')}>
-                        <button
-                            type="button"
-                            className="my-3 flex items-center bg-primaryDarkBlue px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-greySecond hover:text-primaryDarkBlue"
-                        >
-                            <span>Nouveau Service</span>
-                            <PlusIcon className="h-5 w-5 ml-2" aria-hidden="true" />
-                        </button>
-                    </a>
+                <div>
+                {/* Bouton pour ouvrir la modal */}
+                <button className="bouton-add-service mb-4" onClick={openModal}>
+                    Ajouter un Service
+                </button>
+
+                {/* Modal */}
+                <Modal isOpen={isModalOpen} onClose={closeModal}>
+                <AddService />
+                </Modal>
+            </div>
                 </div>
             </div>
             <ServicesDisplay services={serviceFiltered} auth={auth} />
